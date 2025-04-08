@@ -29,6 +29,12 @@ public abstract class Upgrade
         }
     }
 
+    // Reset the upgrade level (for testing purposes)
+    public void ResetUpgrade()
+    {
+        level = 0;
+    }
+
     /// <summary>
     /// Applies the effect of the upgrade to the player.
     /// Derived classes must implement this method.
