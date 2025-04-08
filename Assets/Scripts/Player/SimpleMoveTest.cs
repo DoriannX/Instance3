@@ -5,6 +5,7 @@ namespace PlayerTest
     public class SimpleMoveTest : MonoBehaviour
     {
         [SerializeField] private float moveSpeed = 5f;
+        [SerializeField] private float rotationSpeed = 5f;
         private Transform playerTransform;
 
         private void Awake()
@@ -14,24 +15,31 @@ namespace PlayerTest
 
         private void Update()
         {
-            Vector3 _moveDirection = Vector3.zero;
+            Vector3 rotationDirection = Vector3.zero;
             if (Input.GetKey(KeyCode.W))
             {
-                _moveDirection += Vector3.forward;
+                rotationDirection += Vector3.forward;
             }
             if (Input.GetKey(KeyCode.S))
             {
-                _moveDirection += Vector3.back;
+                rotationDirection += Vector3.back;
             }
             if (Input.GetKey(KeyCode.A))
             {
-                _moveDirection += Vector3.left;
+                rotationDirection += Vector3.left;
             }
             if (Input.GetKey(KeyCode.D))
             {
-                _moveDirection += Vector3.right;
+                rotationDirection += Vector3.right;
             }
-            playerTransform.position += _moveDirection.normalized * (Time.deltaTime * moveSpeed);
+
+            if (rotationDirection.normalized.magnitude == 0)
+            {
+                return;
+            }
+
+            playerTransform.forward = Vector3.Lerp(playerTransform.forward, rotationDirection.normalized, Time.deltaTime * rotationSpeed);
+            playerTransform.position += playerTransform.forward * (Time.deltaTime * moveSpeed);
         }
     }
 }
