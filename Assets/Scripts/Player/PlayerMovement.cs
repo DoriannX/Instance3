@@ -12,17 +12,18 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 movementInput;
     private Vector3 lastMoveDirection = Vector3.right; // Default dash direction
 
-    // A reference to the Entity (or Player) component, to use the unified speed.
-    private Entity entity;
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
-        entity = GetComponent<Entity>();
     }
 
-    public void HandleMovement()
+    /// <summary>
+    /// Handles player movement.
+    /// Receives the current speed from the Player (Entity.Speed) to apply movement.
+    /// </summary>
+    /// <param name="currentSpeed">Movement speed passed by the Player.</param>
+    public void HandleMovement(float currentSpeed)
     {
         // --- Read input ---
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -30,9 +31,8 @@ public class PlayerMovement : MonoBehaviour
         // Create a movement vector on the XZ plane.
         movementInput = new Vector3(horizontal, 0f, vertical).normalized;
 
-        // --- Apply movement ---
-        // Use the speed value defined in the Entity component.
-        rb.linearVelocity = movementInput * entity.Speed;
+        // --- Apply movement using the provided speed ---
+        rb.linearVelocity = movementInput * currentSpeed;
 
         // --- Store last movement direction for dash ---
         if (movementInput != Vector3.zero)
