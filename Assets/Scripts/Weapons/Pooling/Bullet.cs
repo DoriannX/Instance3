@@ -1,11 +1,12 @@
 using System;
 using Pooling;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Bullet : MonoBehaviour, IPooledObject<Bullet>
 {
-    [SerializeField] private float _speed = 10f;
-    private Action<Bullet> _releaseFunc;
+    [FormerlySerializedAs("_speed")] [SerializeField] private float speed = 10f;
+    private Action<Bullet> releaseFunc;
     private Transform bulletTransform;
 
     private void Awake()
@@ -15,17 +16,22 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
 
     private void Update()
     {
-        bulletTransform.position += bulletTransform.forward * _speed * Time.deltaTime;
+        bulletTransform.position += bulletTransform.forward * (speed * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (releaseFunc == null)
+        {
+            Debug.LogError($"[Bullet] Release function not set on bullet {gameObject.name}");
+            return;
+        }
         Debug.Log("hit bullet");
-        _releaseFunc(this);
+        releaseFunc(this);
     }
 
-    public void SetReleaseFunc(Action<Bullet> releaseFunc)
+    public void SetReleaseFunc(Action<Bullet> currentReleaseFunc)
     {
-        _releaseFunc = releaseFunc;
+        releaseFunc = currentReleaseFunc;
     }
 }

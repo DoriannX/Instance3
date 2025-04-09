@@ -6,16 +6,16 @@ namespace Pooling
 {
     public class Pool<T> : IPool<T> where T : class, IPooledObject<T> 
     {
-        private readonly Func<T> _createFunc;
-        private readonly Action<T> _onGetFunc;
-        private readonly Action<T> _onReleaseFunc;
-        private readonly Stack<T> _pooledObjects;
+        private readonly Func<T> createFunc;
+        private readonly Action<T> onGetFunc;
+        private readonly Action<T> onReleaseFunc;
+        private readonly Stack<T> pooledObjects;
 
-        private int _aliveObjectsCount;
+        private int aliveObjectsCount;
 
-        public int PooledObjectsCount => _pooledObjects.Count;
+        public int PooledObjectsCount => pooledObjects.Count;
 
-        public int AliveObjectsCount => _aliveObjectsCount;
+        public int AliveObjectsCount => aliveObjectsCount;
 
         public Pool(Func<T> createFunc, int capacity = 50, int preAllocationCount = 0) : this(createFunc, null, null, capacity, preAllocationCount) {}
 
@@ -25,11 +25,11 @@ namespace Pooling
             Assert.IsTrue(capacity >= 1, "The capacity of the pool must be greater than or equal to 1.");
             Assert.IsTrue(preAllocationCount >= 0, "The pre-allocation count of the pool must be greater than or equal to 0.");
 
-            _pooledObjects = new Stack<T>(capacity);
-            _createFunc = createFunc;
-            _onGetFunc = onGetFunc;
-            _onReleaseFunc = onReleaseFunc;
-            _aliveObjectsCount = 0;
+            pooledObjects = new Stack<T>(capacity);
+            this.createFunc = createFunc;
+            this.onGetFunc = onGetFunc;
+            this.onReleaseFunc = onReleaseFunc;
+            aliveObjectsCount = 0;
             PreAllocatePooledObjects(preAllocationCount);
         }
 
@@ -44,17 +44,17 @@ namespace Pooling
 
         public T Get() 
         {
-            T pooledObject = _pooledObjects.Count > 0 ? _pooledObjects.Pop() : CreatePoolObject();
+            T pooledObject = pooledObjects.Count > 0 ? pooledObjects.Pop() : CreatePoolObject();
 
-            _aliveObjectsCount++;
+            aliveObjectsCount++;
 
-            _onGetFunc?.Invoke(pooledObject);
+            onGetFunc?.Invoke(pooledObject);
             return pooledObject;
         }
 
         private T CreatePoolObject() 
         {
-            T pooledObject = _createFunc.Invoke();
+            T pooledObject = createFunc.Invoke();
             Assert.IsNotNull(pooledObject, "The object to create can't be null.");
             pooledObject.SetReleaseFunc(Release);
             return pooledObject;
@@ -63,9 +63,9 @@ namespace Pooling
         public void Release(T pooledObject) 
         {
             Assert.IsNotNull(pooledObject, "The object to release can't be null.");
-            _pooledObjects.Push(pooledObject);
-            _aliveObjectsCount--;
-            _onReleaseFunc?.Invoke(pooledObject);
+            pooledObjects.Push(pooledObject);
+            aliveObjectsCount--;
+            onReleaseFunc?.Invoke(pooledObject);
         }
     }
 }

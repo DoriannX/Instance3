@@ -71,7 +71,7 @@ public class PlayerAttack : MonoBehaviour
         {
             Transform bulletSpawner = poolSpawner.transform;
 
-            Bullet bullet = poolSpawner._pool.Get();
+            Bullet bullet = poolSpawner.pool.Get();
             bullet.transform.position = bulletSpawner.position;
             bullet.transform.rotation = playerTransform.rotation;
             bullet.gameObject.SetActive(true);
@@ -86,14 +86,14 @@ public class PlayerAttack : MonoBehaviour
 
     //private void OnDrawGizmos()
     //{
-    //    // Dessiner la boîte du BoxCast      
-    //    Vector3 boxHalfExtents = Vector3.one * meleeWeapon.attackRange; // Taille de la boîte (moitié des dimensions)
-    //    Quaternion orientation = playerTransform.rotation; // Orientation de la boîte
+    //    // Dessiner la boï¿½te du BoxCast      
+    //    Vector3 boxHalfExtents = Vector3.one * meleeWeapon.attackRange; // Taille de la boï¿½te (moitiï¿½ des dimensions)
+    //    Quaternion orientation = playerTransform.rotation; // Orientation de la boï¿½te
 
-    //    // Couleur de la boîte
+    //    // Couleur de la boï¿½te
     //    Gizmos.color = Color.red;        
 
-    //    // Dessiner la boîte à la position finale
+    //    // Dessiner la boï¿½te ï¿½ la position finale
     //    Gizmos.matrix = Matrix4x4.TRS(playerTransform.position + playerTransform.forward * meleeWeapon.attackRange, orientation, Vector3.one);
     //    Gizmos.DrawCube(Vector3.zero, boxHalfExtents*2);
     //}
