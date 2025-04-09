@@ -17,7 +17,7 @@ namespace PlayerTest
         {
             if (!TryGetComponent(out player))
             {
-                Debug.LogError($"[PlayerSave] Missing Player component on {gameObject.name}");
+                Debug.LogWarning($"[PlayerSave] Missing Player component on {gameObject.name}");
                 enabled = false;
             }
         }
