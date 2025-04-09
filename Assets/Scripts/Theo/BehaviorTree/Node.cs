@@ -14,14 +14,15 @@ namespace BehaviorTree
         protected NodeState state;
 
         public Node parent;
-        protected List<Node> children = new List<Node>();
+        protected readonly List<Node> children = new();
 
-        private Dictionary<string, object> _dataContext = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> dataContext = new();
 
         public Node()
         {
             parent = null;
         }
+        
         public Node(List<Node> children)
         {
             foreach (Node child in children)
@@ -40,13 +41,12 @@ namespace BehaviorTree
 
         public void SetData(string key, object value)
         {
-            _dataContext[key] = value;
+            dataContext[key] = value;
         }
 
         public object GetData(string key)
         {
-            object value = null;
-            if (_dataContext.TryGetValue(key, out value))
+            if (dataContext.TryGetValue(key, out var value))
                 return value;
 
             Node node = parent;
@@ -63,9 +63,9 @@ namespace BehaviorTree
 
         public bool ClearData(string key)
         {
-            if (_dataContext.ContainsKey(key))
+            if (dataContext.ContainsKey(key))
             {
-                _dataContext.Remove(key);
+                dataContext.Remove(key);
                 return true;
             }
 

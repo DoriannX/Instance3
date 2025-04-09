@@ -1,4 +1,5 @@
 using BehaviorTree;
+using Theo.Enemy;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,6 +9,8 @@ namespace Enemy.BehaviorTree
     {
         private float patrolWaitTimer;
         private int patrolPointIndex;
+
+        private NavMeshPath currentPath;
         
         private readonly float patrolWaitTime;
         private readonly float patrolSpeed;
@@ -16,15 +19,19 @@ namespace Enemy.BehaviorTree
         private readonly Transform[] patrolPoints;
         private readonly NavMeshAgent navMeshAgent;
         
-        public TaskPatrol(Transform[] patrolPoints, NavMeshAgent navMeshAgent, float patrolSpeed, float patrolWaitTime, float patrolStopDistance)
+        private readonly PatrolMovementType patrolMovementType;
+        private int patrolPointIndexIncrementer = 1;
+        
+        public TaskPatrol(Transform[] patrolPoints, PatrolMovementType patrolMovementType, NavMeshAgent navMeshAgent, float patrolSpeed, float patrolWaitTime, float patrolStopDistance)
         {
             this.patrolPoints = patrolPoints;
             this.navMeshAgent = navMeshAgent;
+            this.patrolMovementType = patrolMovementType;
             this.patrolWaitTime = patrolWaitTime;
             this.patrolStopDistance = patrolStopDistance;
             this.patrolSpeed = patrolSpeed;
             
-            patrolPointIndex = -1;
+            patrolPointIndex = 0;
             patrolWaitTimer = 0f;
         }
         
@@ -33,8 +40,12 @@ namespace Enemy.BehaviorTree
             if (patrolPoints.Length == 0)
                 return NodeState.FAILURE;
             
-            navMeshAgent.speed = patrolSpeed;
-            navMeshAgent.stoppingDistance = patrolStopDistance;
+            if (currentPath != navMeshAgent.path)
+            {
+                navMeshAgent.speed = patrolSpeed;
+                navMeshAgent.stoppingDistance = patrolStopDistance;
+                SetDestination(patrolPoints[patrolPointIndex].position);
+            }
 
             if (AgentHasReachedDestination())
             {
@@ -42,8 +53,9 @@ namespace Enemy.BehaviorTree
                 
                 if (patrolWaitTimer >= patrolWaitTime)
                 {
-                    patrolPointIndex = ++patrolPointIndex % patrolPoints.Length;
-                    navMeshAgent.SetDestination(patrolPoints[patrolPointIndex].position);
+                    IncreasePatrolPointIndex();
+                    SetDestination(patrolPoints[patrolPointIndex].position);
+
                     patrolWaitTimer = 0f;
                 }
                 
@@ -59,5 +71,35 @@ namespace Enemy.BehaviorTree
                    (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude < 0.01f);
         }
 
+        private void IncreasePatrolPointIndex()
+        {
+            switch (patrolMovementType)
+            {
+                case PatrolMovementType.Loop :
+                {
+                    patrolPointIndex = ++patrolPointIndex % patrolPoints.Length;
+                    break;
+                }
+                case PatrolMovementType.BackAndForth :
+                {
+                    if (patrolPointIndex == patrolPoints.Length - 1)
+                        patrolPointIndexIncrementer = -1;
+                    else if (patrolPointIndex == 0)
+                        patrolPointIndexIncrementer = 1;
+
+                    patrolPointIndex += patrolPointIndexIncrementer;
+                    break;
+                }
+            }
+        }
+        
+        private void SetDestination(Vector3 destination)
+        {
+            if (navMeshAgent.isOnNavMesh)
+            {
+                navMeshAgent.SetDestination(destination);
+                currentPath = navMeshAgent.path;
+            }
+        }
     }
 }

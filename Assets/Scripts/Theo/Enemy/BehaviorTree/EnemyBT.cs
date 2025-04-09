@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using BehaviorTree;
+using Theo.Enemy;
 using UnityEngine;
 using UnityEngine.AI;
 using Tree = BehaviorTree.Tree;
@@ -31,6 +32,7 @@ namespace Enemy.BehaviorTree
         
         [Header("Patrol")]
         [SerializeField] private Transform[] patrolPoints;
+        [SerializeField] private PatrolMovementType patrolMovementType;
         [SerializeField] private float patrolSpeed = 2f;
         [SerializeField] private float patrolWaitTime = 2f;
         [SerializeField] private float patrolStopDistance = 0.5f;
@@ -52,7 +54,7 @@ namespace Enemy.BehaviorTree
                     new TaskGoToTarget(navMeshAgent, chaseSpeed, chaseStopDistance, targetKey)
                     
                 }),
-                new TaskPatrol(patrolPoints, navMeshAgent, patrolSpeed, patrolWaitTime, patrolStopDistance),
+                new TaskPatrol(patrolPoints, patrolMovementType, navMeshAgent, patrolSpeed, patrolWaitTime, patrolStopDistance),
             });
         }
     }

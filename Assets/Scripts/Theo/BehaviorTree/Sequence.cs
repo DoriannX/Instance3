@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 
-
 namespace BehaviorTree
 {
     public class Sequence : Node

@@ -57,7 +57,9 @@ namespace Enemy.BehaviorTree
 
         private void Attack()
         {
-            previousTargetEntityManager.TakeDamage(damage);
+            if (previousTargetEntityManager.TakeDamage(damage))
+                ClearData(targetKey);
+            
             lastAttackTime = Time.time;
         }
 
