@@ -66,11 +66,6 @@ public class Player : Entity
         // UpdateUI();
     }
 
-    public void SetCooldownMultiplier(float newCooldown)
-    {
-        cooldownMultiplier = newCooldown;
-    }
-
     /*
     private void UpdateUI()
     {
