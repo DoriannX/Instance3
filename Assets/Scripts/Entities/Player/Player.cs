@@ -17,15 +17,14 @@ public class Player : Entity
 
     private void Awake()
     {
-        // Base Entity setup
+        // Base Entity setup.
         healthComponent = GetComponent<EntityHealth>();
 
-        // Player-specific component references
+        // Player-specific component references.
         movement = GetComponent<PlayerMovement>();
         // attack = GetComponent<PlayerAttack>();
-        // ui = FindObjectOfType<UI>(); // Assuming UI is scene-based and singleton-style
+        // ui = FindObjectOfType<UI>(); // Assuming UI is scene-based and singleton-style.
     }
-
     private void Start()
     {
         // UpdateUI();
@@ -35,12 +34,11 @@ public class Player : Entity
     {
         // Pass the speed from Entity to the movement component.
         movement.HandleMovement(this.Speed);
-
         // Future attack handling would go here:
         // attack.HandleAttack();
     }
 
-    public void AddChips(int amount)
+    public virtual void AddChips(int amount)
     {
         chips += amount;
         // UpdateUI();
@@ -53,8 +51,20 @@ public class Player : Entity
     }
     */
 
-    public float GetAmmoMultiplier() => ammoMultiplier;
-    public float GetCooldownMultiplier() => cooldownMultiplier;
+    public virtual float GetAmmoMultiplier() => ammoMultiplier;
+    public virtual float GetCooldownMultiplier() => cooldownMultiplier;
+    
+    public virtual void SetAmmoMultiplier(float multiplier)
+    {
+        ammoMultiplier = multiplier;
+        // UpdateUI();
+    }
+    
+    public virtual void SetCooldownMultiplier(float multiplier)
+    {
+        cooldownMultiplier = multiplier;
+        // UpdateUI();
+    }
 
     /*
     private void UpdateUI()
