@@ -38,7 +38,7 @@ namespace Enemy.BehaviorTree
                 
                 if (IsInFOV(targetTransform) && IsVisible(targetTransform))
                 {
-                    parent.parent.SetData("target", targetTransform);
+                    parent.parent.SetData(targetKey, targetTransform);
                     return NodeState.SUCCESS;
                 }
             }

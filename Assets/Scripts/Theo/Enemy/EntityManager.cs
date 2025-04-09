@@ -8,13 +8,10 @@ namespace Theo.Enemy
         
         public bool TakeDamage(float damage)
         {
-            Debug.Log($"{name}: TakeDamage({damage})");
-
             health -= health;
             
             if (health <= 0)
             {
-                Debug.Log($"{name}: Already dead");
                 gameObject.SetActive(false);
                 return true;
             }
