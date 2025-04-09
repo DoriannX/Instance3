@@ -7,18 +7,29 @@ namespace Enemy.BehaviorTree
 {
     public class TaskAttackEnemy : Node
     {
+        private readonly float cooldownTime;
+        private readonly float damage;
         private readonly string targetKey;
         
         private Transform previousTargetTransform;
         private EntityManager previousTargetEntityManager;
         
-        public TaskAttackEnemy(string targetKey)
+        private float lastAttackTime;
+        
+        public TaskAttackEnemy(float cooldownTime, float damage, string targetKey)
         {
+            this.cooldownTime = cooldownTime;
+            this.damage = damage;
             this.targetKey = targetKey;
+            
+            lastAttackTime = Time.time;
         }
         
         public override NodeState Evaluate()
         {
+            if (!CheckAttackTime())
+                return NodeState.FAILURE;
+            
             object data = GetData(targetKey);
             
             if (data == null)
@@ -29,7 +40,7 @@ namespace Enemy.BehaviorTree
 
             if (target == previousTargetTransform)
             {
-                previousTargetEntityManager.TakeDamage(1f);
+                Attack();
                 return NodeState.SUCCESS;
             }
             
@@ -39,9 +50,20 @@ namespace Enemy.BehaviorTree
             previousTargetTransform = target;
             previousTargetEntityManager = entityManager;
             
-            previousTargetEntityManager.TakeDamage(1f);
+            Attack();
             
             return NodeState.SUCCESS;
+        }
+
+        private void Attack()
+        {
+            previousTargetEntityManager.TakeDamage(damage);
+            lastAttackTime = Time.time;
+        }
+
+        private bool CheckAttackTime()
+        {
+            return Time.time > lastAttackTime + cooldownTime;
         }
     }
 }

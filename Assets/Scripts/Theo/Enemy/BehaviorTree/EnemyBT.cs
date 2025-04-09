@@ -13,18 +13,25 @@ namespace Enemy.BehaviorTree
         [SerializeField] private NavMeshAgent navMeshAgent;
         [SerializeField] private LayerMask enemyLayer;
         
-        [Header("Detection")]
+        [Header("Attack Detection")]
+        [SerializeField] private float attackDetectionRadius = 1.5f;
+        
+        [Header("Attack")]
+        [SerializeField] private float attackDamage = 1f;
+        [SerializeField] private float attackCooldownTime = 1f;
+        
+        [Header("FOV Detection")]
         [SerializeField] private float fovDetectionRadius = 10f;
         [SerializeField] private float fovAngle = 90f;
         [SerializeField] private int maxEnemyDetection = 10;
+        
+        [Header("Chase")]
+        [SerializeField] private float chaseSpeed = 3.5f;
         
         [Header("Patrol")]
         [SerializeField] private Transform[] patrolPoints;
         [SerializeField] private float patrolSpeed = 2f;
         [SerializeField] private float patrolWaitTime = 2f;
-        
-        [Header("Chase")]
-        [SerializeField] private float chaseSpeed = 3.5f;
         
         [Header("NavMeshAgent")]
         [SerializeField] private float stoppingDistance = 0.5f;
@@ -39,8 +46,8 @@ namespace Enemy.BehaviorTree
             {
                 new Sequence(new List<Node>
                 {
-                    new CheckEnemyInAttackRange(transform, stoppingDistance, targetKey),
-                    new TaskAttackEnemy(targetKey)
+                    new CheckEnemyInAttackRange(transform, attackDetectionRadius, targetKey),
+                    new TaskAttackEnemy(attackCooldownTime, attackDamage, targetKey)
                 }),
                 new Sequence(new List<Node>
                 {

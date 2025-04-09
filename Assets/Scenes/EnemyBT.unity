@@ -595,9 +595,13 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
+  attackDetectionRadius: 3
+  attackDamage: 5.05
+  attackCooldownTime: 10
   fovDetectionRadius: 10
   fovAngle: 90
   maxEnemyDetection: 10
+  chaseSpeed: 3.5
   patrolPoints:
   - {fileID: 897661825}
   - {fileID: 610350788}
@@ -606,7 +610,6 @@ MonoBehaviour:
   - {fileID: 930398392}
   patrolSpeed: 2
   patrolWaitTime: 2
-  chaseSpeed: 3.5
   stoppingDistance: 2
 --- !u!136 &765398549
 CapsuleCollider:
@@ -802,7 +805,7 @@ Transform:
   m_GameObject: {fileID: 770107907}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 4}
+  m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
