@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace PlayerTest
+namespace Player
 {
     public class SimpleMoveTest : MonoBehaviour
     {

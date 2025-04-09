@@ -1,124 +1,114 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-public class PlayerMovement : MonoBehaviour
+namespace Player
 {
-    [Header("Dash Settings")] [SerializeField]
-    private float dashDistance = 3.0f;
-
-    [SerializeField] private float dashDuration = 0.2f;
-    [SerializeField] private float dashCooldown = 0.25f;
-
-    [SerializeField]
-    private float invulnerabilityDuration = 0.1f;
-
-    private float lastDashTime;
-    private bool isDashing = false;
-    private bool isInvulnerable = false;
-
-    private Rigidbody rb;
-    private Vector3 movementInput;
-    private Vector3 lastMoveDirection = Vector3.right;
-    private Vector3 currentVel;
-
-    private void Awake()
+    [RequireComponent(typeof(Rigidbody))]
+    public class PlayerMovement : MonoBehaviour
     {
-        rb = GetComponent<Rigidbody>();
-        rb.useGravity = true;
-    }
+        [Header("Dash Settings")] [SerializeField]
+        private float dashDistance = 3.0f;
 
-    private void Start()
-    {
-        AllowImmediateDash();
-    }
+        [SerializeField] private float dashDuration = 0.2f;
+        [SerializeField] private float dashCooldown = 0.25f;
 
-    private void AllowImmediateDash()
-    {
-        lastDashTime = Time.time - dashCooldown - dashDuration;
-    }
-    
-    public void HandleMovement(float currentSpeed)
-    {
-        if (!isDashing)
+        [SerializeField]
+        private float invulnerabilityDuration = 0.1f;
+
+        private float lastDashTime;
+        private bool isDashing = false;
+        private bool isInvulnerable = false;
+
+        private Rigidbody rb;
+        private Vector3 movementInput;
+        private Vector3 lastMoveDirection = Vector3.right;
+        private Vector3 currentVel;
+
+        private void Awake()
         {
-            movementInput = GetMovementInput();
-            currentVel =  AddGravityToVelocity(movementInput * currentSpeed);
+            rb = GetComponent<Rigidbody>();
+            rb.useGravity = true;
+        }
 
-            if (movementInput != Vector3.zero)
+        private void Start()
+        {
+            AllowImmediateDash();
+        }
+
+        private void AllowImmediateDash()
+        {
+            lastDashTime = Time.time - dashCooldown - dashDuration;
+        }
+    
+        public void HandleMovement(float currentSpeed)
+        {
+            if (!isDashing)
             {
-                lastMoveDirection = movementInput;
+                currentVel =  AddGravityToVelocity(movementInput * currentSpeed);
+
+                if (movementInput != Vector3.zero)
+                {
+                    lastMoveDirection = movementInput;
+                }
             }
         }
-    }
 
-    private Vector3 AddGravityToVelocity(Vector3 velocity)
-    {
-        velocity.y = rb.linearVelocity.y;
-        return velocity;
-    }
-
-    private Vector3 GetMovementInput()
-    {
-        Vector3 movementValue = Vector3.zero;
-        movementValue.x = Input.GetAxisRaw("Horizontal");
-        movementValue.z = Input.GetAxisRaw("Vertical"); 
-        return movementValue;
-    }
-
-    private void StartDash()
-    {
-        bool isDashOnCooldown = Time.time < lastDashTime + dashDuration + dashCooldown;
-        if (isDashing || isDashOnCooldown)
+        private Vector3 AddGravityToVelocity(Vector3 velocity)
         {
-            return;
+            velocity.y = rb.linearVelocity.y;
+            return velocity;
         }
 
-        isInvulnerable = true;
-        isDashing = true;
-        lastDashTime = Time.time;
-    }
-
-    public void HandleDash()
-    {
-        CheckDashInput();
-        if (isDashing)
+        public void StartDash()
         {
-            currentVel = AddGravityToVelocity(lastMoveDirection.normalized * (dashDistance / dashDuration));
-            CheckDashFinish();
-        }
-    }
+            bool isDashOnCooldown = Time.time < lastDashTime + dashDuration + dashCooldown;
+            if (isDashing || isDashOnCooldown)
+            {
+                return;
+            }
 
-    private void CheckDashFinish()
-    {
-        bool isDashFinished = Time.time > lastDashTime + dashDuration;
-        if(isDashFinished)
+            isInvulnerable = true;
+            isDashing = true;
+            lastDashTime = Time.time;
+        }
+
+        public void HandleDash()
         {
-            isDashing = false;
+            if (isDashing)
+            {
+                currentVel = AddGravityToVelocity(lastMoveDirection.normalized * (dashDistance / dashDuration));
+                CheckDashFinish();
+            }
         }
-    }
 
-    private void CheckDashInput()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
+        private void CheckDashFinish()
         {
-            StartDash();
+            bool isDashFinished = Time.time > lastDashTime + dashDuration;
+            if(isDashFinished)
+            {
+                isDashing = false;
+            }
         }
-    }
 
-    public void CheckVulnerability()
-    {
-        bool hasInvulnerabilityExpired = Time.time > lastDashTime + dashDuration + invulnerabilityDuration;
-        if (isInvulnerable && hasInvulnerabilityExpired)
+        public void CheckVulnerability()
         {
-            isInvulnerable = false;
+            bool hasInvulnerabilityExpired = Time.time > lastDashTime + dashDuration + invulnerabilityDuration;
+            if (isInvulnerable && hasInvulnerabilityExpired)
+            {
+                isInvulnerable = false;
+            }
         }
-    }
 
-    public void ApplyVelocity()
-    {
-        Vector3 currentVelWithGravity = currentVel;
-        currentVelWithGravity.y = rb.linearVelocity.y;
-        rb.linearVelocity = currentVelWithGravity;
+        public void ApplyVelocity()
+        {
+            Vector3 currentVelWithGravity = currentVel;
+            currentVelWithGravity.y = rb.linearVelocity.y;
+            rb.linearVelocity = currentVelWithGravity;
+        }
+
+        public void SetMovementInput(Vector2 moveInput)
+        {
+            movementInput = moveInput;
+        }
     }
 }
 
