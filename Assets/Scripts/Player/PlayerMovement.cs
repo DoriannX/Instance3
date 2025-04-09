@@ -1,14 +1,16 @@
 using UnityEngine;
-using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Dash Settings")]
-    [SerializeField] private float dashDistance = 3.0f;      // Distance to dash
-    [SerializeField] private float dashDuration = 0.2f;      // Total time for the dash burst
-    [SerializeField] private float dashCooldown = 0.25f;     // Cooldown between dashes
-    [SerializeField] private float invulnerabilityDuration = 0.1f; // Duration of invulnerability (a fraction of dashDuration)
+    [Header("Dash Settings")] [SerializeField]
+    private float dashDistance = 3.0f;
+
+    [SerializeField] private float dashDuration = 0.2f;
+    [SerializeField] private float dashCooldown = 0.25f;
+
+    [SerializeField]
+    private float invulnerabilityDuration = 0.1f;
 
     private float lastDashTime;
     private bool isDashing = false;
@@ -16,73 +18,232 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rb;
     private Vector3 movementInput;
-    private Vector3 lastMoveDirection = Vector3.right; // Default dash direction
+    private Vector3 lastMoveDirection = Vector3.right;
+    private Vector3 currentVel;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        rb.useGravity = false;
+        rb.useGravity = true;
     }
 
-    /// <summary>
-    /// Handles player movement.
-    /// Receives the current speed from the Player (Entity.Speed) to apply movement.
-    /// </summary>
-    /// <param name="currentSpeed">Movement speed passed by the Player.</param>
+    private void Start()
+    {
+        AllowImmediateDash();
+    }
+
+    private void AllowImmediateDash()
+    {
+        lastDashTime = Time.time - dashCooldown - dashDuration;
+    }
+    
     public void HandleMovement(float currentSpeed)
     {
-        // Only process normal movement if not currently dashing.
         if (!isDashing)
         {
-            // --- Read input ---
-            float horizontal = Input.GetAxisRaw("Horizontal");
-            float vertical = Input.GetAxisRaw("Vertical");
-            // Create a movement vector on the XZ plane.
-            movementInput = new Vector3(horizontal, 0f, vertical).normalized;
+            movementInput = GetMovementInput();
+            currentVel =  AddGravityToVelocity(movementInput * currentSpeed);
 
-            // --- Apply normal movement using the provided speed ---
-            rb.linearVelocity = movementInput * currentSpeed;
-
-            // --- Store last movement direction for dash ---
             if (movementInput != Vector3.zero)
             {
                 lastMoveDirection = movementInput;
             }
         }
-
-        // --- Dash Input ---
-        if (Input.GetKeyDown(KeyCode.Space) && !isDashing && Time.time >= lastDashTime + dashCooldown)
-        {
-            StartCoroutine(DashCoroutine());
-        }
     }
 
-    private IEnumerator DashCoroutine()
+    private Vector3 AddGravityToVelocity(Vector3 velocity)
     {
-        // Begin dash
-        isDashing = true;
+        velocity.y = rb.linearVelocity.y;
+        return velocity;
+    }
+
+    private Vector3 GetMovementInput()
+    {
+        Vector3 movementValue = Vector3.zero;
+        movementValue.x = Input.GetAxisRaw("Horizontal");
+        movementValue.z = Input.GetAxisRaw("Vertical"); 
+        return movementValue;
+    }
+
+    private void StartDash()
+    {
+        bool isDashOnCooldown = Time.time < lastDashTime + dashDuration + dashCooldown;
+        if (isDashing || isDashOnCooldown)
+        {
+            return;
+        }
+
         isInvulnerable = true;
-        
-        // Calculate dash velocity to cover dashDistance in dashDuration.
-        // (dashDistance/dashDuration) gives the required speed.
-        Vector3 dashVelocity = lastMoveDirection.normalized * (dashDistance / dashDuration);
-        
-        // Override current velocity.
-        rb.linearVelocity = dashVelocity;
-        
-        // Wait for invulnerability period.
-        yield return new WaitForSeconds(invulnerabilityDuration);
-        isInvulnerable = false;
-        
-        // Wait for remaining dash duration.
-        yield return new WaitForSeconds(dashDuration - invulnerabilityDuration);
-        
-        // End dash: reset velocity so that normal movement can resume.
-        rb.linearVelocity = Vector3.zero;
-        isDashing = false;
+        isDashing = true;
         lastDashTime = Time.time;
     }
 
-    // Optionally, you could expose a public property for invulnerability
-    public bool IsInvulnerable => isInvulnerable;
+    public void HandleDash()
+    {
+        CheckDashInput();
+        if (isDashing)
+        {
+            currentVel = AddGravityToVelocity(lastMoveDirection.normalized * (dashDistance / dashDuration));
+            CheckDashFinish();
+        }
+    }
+
+    private void CheckDashFinish()
+    {
+        bool isDashFinished = Time.time > lastDashTime + dashDuration;
+        if(isDashFinished)
+        {
+            isDashing = false;
+        }
+    }
+
+    private void CheckDashInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StartDash();
+        }
+    }
+
+    public void CheckVulnerability()
+    {
+        bool hasInvulnerabilityExpired = Time.time > lastDashTime + dashDuration + invulnerabilityDuration;
+        if (isInvulnerable && hasInvulnerabilityExpired)
+        {
+            isInvulnerable = false;
+        }
+    }
+
+    public void ApplyVelocity()
+    {
+        Vector3 currentVelWithGravity = currentVel;
+        currentVelWithGravity.y = rb.linearVelocity.y;
+        rb.linearVelocity = currentVelWithGravity;
+    }
 }
+
+/*
+
+Here's a structured review of the `PlayerMovement.cs` file:
+   
+   ### General Issues
+   1. Missing `FixedUpdate` for physics-based movement
+   2. No input abstraction - direct use of `Input.GetAxisRaw` and `Input.GetKeyDown` makes testing difficult
+   3. No serialized fields for input keys/axes names
+   4. No XML documentation for public methods
+   5. Mixing of movement and dash mechanics in one class (potential violation of Single Responsibility Principle)
+   
+   ### Fields
+   - Consider making `dashDistance`, `dashDuration`, etc. readonly since they're configuration values
+   - `currentVel` name is unclear - should be `currentVelocity`
+   - Missing validation for serialized fields (should be positive values)
+   
+   ### Methods Review
+   
+   #### `HandleMovement`
+   ```csharp
+   // Issues:
+   // 1. Should be in FixedUpdate since it deals with physics
+   // 2. Missing input validation for currentSpeed
+   // 3. Unnecessary allocation of Vector3 every frame
+   public void HandleMovement(float currentSpeed)
+   ```
+   
+   #### `GetMovementInput`
+   ```csharp
+   // Issues:
+   // 1. Hardcoded input axes names
+   // 2. No input normalization for diagonal movement
+   // Suggested fix:
+   private Vector3 GetMovementInput()
+   {
+       Vector3 movementValue = new Vector3(
+           Input.GetAxisRaw("Horizontal"),
+           0f,
+           Input.GetAxisRaw("Vertical")
+       );
+       return movementValue.normalized;
+   }
+   ```
+   
+   #### Dash-related Methods
+   ```csharp
+   // Issues:
+   // 1. State management is scattered across multiple methods
+   // 2. Magic number in invulnerability calculation
+   // 3. No events/callbacks for dash state changes
+   ```
+   
+   ### Suggested Improvements
+   
+   1. Move to physics-based updates:
+   ```csharp
+   private void FixedUpdate()
+   {
+       HandleMovement(currentSpeed);
+       HandleDash();
+       ApplyVelocity();
+       CheckVulnerability();
+   }
+   ```
+   
+   2. Add input configuration:
+   ```csharp
+   [Header("Input Settings")]
+   [SerializeField] private string horizontalAxisName = "Horizontal";
+   [SerializeField] private string verticalAxisName = "Vertical";
+   [SerializeField] private KeyCode dashKey = KeyCode.Space;
+   ```
+   
+   3. Add validation:
+   ```csharp
+   private void OnValidate()
+   {
+       dashDistance = Mathf.Max(0f, dashDistance);
+       dashDuration = Mathf.Max(0.01f, dashDuration);
+       dashCooldown = Mathf.Max(0f, dashCooldown);
+       invulnerabilityDuration = Mathf.Max(0f, invulnerabilityDuration);
+   }
+   ```
+   
+   4. Consider splitting into separate components:
+   - `PlayerInput`
+   - `PlayerMovement`
+   - `PlayerDash`
+   
+   ### Missing Features
+   1. No events for state changes (dash start/end, invulnerability)
+   2. No interpolation for smooth movement
+   3. No collision handling during dash
+   4. No dash direction visualization/feedback
+   5. No movement speed configuration
+   
+   ### Performance Considerations
+   1. Cache Input axis names as string IDs
+   2. Avoid Vector3 allocations in tight loops
+   3. Consider using `[SerializeField] private bool debug;` for debug logs
+   
+   ### Unity-specific Issues
+   1. `GetComponent<Rigidbody>()` in Awake is correct, but consider caching component references in fields
+   2. Missing proper cleanup in `OnDisable`/`OnDestroy`
+   3. Consider using `[RequireComponent(typeof(Collider))]` if collision detection is needed
+   
+   Consider implementing these improvements based on your specific requirements and performance needs.
+
+*/
+
+/*
+
+Please generate unit tests for this class.
+
+   Use a clean and readable structure.
+
+   Cover all public methods, including edge cases and invalid inputs.
+
+   Use the appropriate testing framework (e.g., NUnit for Unity or xUnit/NUnit for standard C#).
+
+   If mocking is needed, suggest or use a mocking framework like Moq.
+
+   Ensure that each test is named clearly and describes what it's testing.
+
+*/

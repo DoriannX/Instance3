@@ -34,7 +34,10 @@ public class Player : Entity
     private void Update()
     {
         // Pass the speed from Entity to the movement component.
-        movement.HandleMovement(this.Speed);
+        movement.CheckVulnerability();
+        movement.HandleDash();
+        movement.HandleMovement(Speed);
+        movement.ApplyVelocity();
 
         // Future attack handling would go here:
         // attack.HandleAttack();
