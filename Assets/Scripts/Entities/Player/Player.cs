@@ -25,7 +25,6 @@ public class Player : Entity
         // attack = GetComponent<PlayerAttack>();
         // ui = FindObjectOfType<UI>(); // Assuming UI is scene-based and singleton-style.
     }
-
     private void Start()
     {
         // UpdateUI();
@@ -39,7 +38,7 @@ public class Player : Entity
         // attack.HandleAttack();
     }
 
-    public void AddChips(int amount)
+    public virtual void AddChips(int amount)
     {
         chips += amount;
         // UpdateUI();
@@ -52,8 +51,20 @@ public class Player : Entity
     }
     */
 
-    public float GetAmmoMultiplier() => ammoMultiplier;
-    public float GetCooldownMultiplier() => cooldownMultiplier;
+    public virtual float GetAmmoMultiplier() => ammoMultiplier;
+    public virtual float GetCooldownMultiplier() => cooldownMultiplier;
+    
+    public virtual void SetAmmoMultiplier(float multiplier)
+    {
+        ammoMultiplier = multiplier;
+        // UpdateUI();
+    }
+    
+    public virtual void SetCooldownMultiplier(float multiplier)
+    {
+        cooldownMultiplier = multiplier;
+        // UpdateUI();
+    }
 
     public void SetCooldownMultiplier(float newCooldown)
     {
