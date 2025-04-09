@@ -7,6 +7,7 @@ namespace Theo.Enemy
         public void TakeDamage(float damage)
         {
             Debug.Log($"{name}: TakeDamage({damage})");
+            gameObject.SetActive(false);
         }
     }
 }

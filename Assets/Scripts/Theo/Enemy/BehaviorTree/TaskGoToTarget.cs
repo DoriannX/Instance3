@@ -9,12 +9,14 @@ namespace Enemy.BehaviorTree
     {
         private readonly NavMeshAgent navMeshAgent;
         private readonly float speed;
+        private readonly float stopDistance;
         private readonly string targetKey;
  
-        public TaskGoToTarget(NavMeshAgent navMeshAgent, float speed, string targetKey)
+        public TaskGoToTarget(NavMeshAgent navMeshAgent, float speed, float stopDistance, string targetKey)
         {
             this.navMeshAgent = navMeshAgent;
             this.speed = speed;
+            this.stopDistance = stopDistance;
             this.targetKey = targetKey;
         }
         
@@ -30,6 +32,7 @@ namespace Enemy.BehaviorTree
             
             navMeshAgent.SetDestination(target.position);
             navMeshAgent.speed = speed;
+            navMeshAgent.stoppingDistance = stopDistance;
             
             return AgentHasReachedDestination() ? NodeState.SUCCESS : NodeState.RUNNING;
         }

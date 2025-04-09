@@ -27,44 +27,33 @@ namespace Enemy.BehaviorTree
         
         [Header("Chase")]
         [SerializeField] private float chaseSpeed = 3.5f;
+        [SerializeField] private float chaseStopDistance = 1.5f;
         
         [Header("Patrol")]
         [SerializeField] private Transform[] patrolPoints;
         [SerializeField] private float patrolSpeed = 2f;
         [SerializeField] private float patrolWaitTime = 2f;
-        
-        [Header("NavMeshAgent")]
-        [SerializeField] private float stoppingDistance = 0.5f;
+        [SerializeField] private float patrolStopDistance = 0.5f;
         
         private readonly string targetKey = "Target";
 
         protected override Node SetupTree()
         {
-            SetupNavMeshAgent();
-            
             return new Selector(new List<Node>
             {
                 new Sequence(new List<Node>
                 {
-                    new CheckEnemyInAttackRange(transform, attackDetectionRadius, targetKey),
+                    new CheckEnemyInAttackRange(transform, enemyLayer, attackDetectionRadius, targetKey, maxEnemyDetection),
                     new TaskAttackEnemy(attackCooldownTime, attackDamage, targetKey)
                 }),
                 new Sequence(new List<Node>
                 {
                     new CheckEnemyInFOVRange(transform, enemyLayer, fovDetectionRadius, fovAngle, maxEnemyDetection, targetKey),
-                    new TaskGoToTarget(navMeshAgent, chaseSpeed, targetKey)
+                    new TaskGoToTarget(navMeshAgent, chaseSpeed, chaseStopDistance, targetKey)
                     
                 }),
-                new TaskPatrol(patrolPoints, patrolSpeed, patrolWaitTime, navMeshAgent),
+                new TaskPatrol(patrolPoints, navMeshAgent, patrolSpeed, patrolWaitTime, patrolStopDistance),
             });
-        }
-
-        private void SetupNavMeshAgent()
-        {
-            if (!navMeshAgent)
-                throw new MissingFieldException("NavMeshAgent is not assigned");
-
-            navMeshAgent.stoppingDistance = stoppingDistance;
         }
     }
 }
