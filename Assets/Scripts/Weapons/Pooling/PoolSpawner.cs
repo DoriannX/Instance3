@@ -4,38 +4,26 @@ namespace Pooling
 {
     public class PoolSpawner : MonoBehaviour
     {
-        [SerializeField] private GameObject _cubePrefab; 
-        [SerializeField] private float _spawnInterval = 0.1f;
-        [SerializeField] private float _radius = 5.0f;
+        [Header("References")]
+        [SerializeField] private GameObject _bulletPrefab; 
         
-        private Pool<Cube> _pool;
-        private float _timer;
+        public Pool<Bullet> _pool;
 
         private void Awake()
         {
-            _pool = new Pool<Cube>(() => Instantiate(_cubePrefab).GetComponent<Cube>(),
+            _pool = new Pool<Bullet>(() => Instantiate(_bulletPrefab).GetComponent<Bullet>(),
                 pooledObject => { pooledObject.gameObject.SetActive(true); },
-                ResetCube,
+                ResetBullet,
                 50,
                 10);
         }
-        
-        private void Update()
+                
+        private void ResetBullet(Bullet bullet)
         {
-            _timer += Time.deltaTime;
-            if (_timer >= _spawnInterval)
-            {
-                _pool.Get().transform.position = Random.insideUnitSphere * _radius;
-                _timer = 0.0f;
-            }
-        }
-        
-        private void ResetCube(Cube cube)
-        {
-            cube.gameObject.SetActive(false);
-            Transform cubeTransform = cube.transform;
-            cubeTransform.position = Vector3.zero;
-            cubeTransform.rotation = Quaternion.identity;
+            bullet.gameObject.SetActive(false);
+            Transform bulletTransform = bullet.transform;
+            bulletTransform.position = Vector3.zero;
+            bulletTransform.rotation = Quaternion.identity;
         }
     }
 }

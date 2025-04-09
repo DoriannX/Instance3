@@ -1,39 +1,59 @@
+using Pooling;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField] private LayerMask enemyLayer;
+    [Header("Weapons References")]
     private MeleeWeapon meleeWeapon;
     private RangeWeapon rangeWeapon;
     private Transform playerTransform;
+    private PoolSpawner poolSpawner;
 
-    private void Start()
+    [Header("Weapons Settings")]
+    [SerializeField] private LayerMask enemyLayer;
+    private float meleeCooldownTimer = 0f;
+    private float rangeCooldownTimer = 0f;
+
+    private void Awake()
     {
         meleeWeapon = GetComponentInChildren<MeleeWeapon>(true);
         rangeWeapon = GetComponentInChildren<RangeWeapon>(true);
         playerTransform = GetComponent<Transform>();
-    }
+        poolSpawner = GetComponentInChildren<PoolSpawner>(true);
+    }    
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (meleeCooldownTimer > 0f)
+        {
+            meleeCooldownTimer -= Time.deltaTime;
+        }
+
+        if (rangeCooldownTimer > 0f)
+        {
+            rangeCooldownTimer -= Time.deltaTime;
+        }
+
+        if (Input.GetKey(KeyCode.Mouse0))
         {
             Attack();
-        }        
+        }
     }
 
     private void Attack()
     {
-        if(meleeWeapon.gameObject.activeSelf)
+        if (meleeWeapon.gameObject.activeSelf && meleeCooldownTimer <= 0f)
         {
             MeleeAttack();
+            meleeCooldownTimer = meleeWeapon.cooldown;
         }
 
-        if (rangeWeapon.gameObject.activeSelf)
+        if (rangeWeapon.gameObject.activeSelf && rangeCooldownTimer <= 0f)
         {
             RangeAttack();
+            rangeCooldownTimer = rangeWeapon.cooldown;
         }
-    }
+    }    
 
     private void MeleeAttack()
     {
@@ -47,7 +67,21 @@ public class PlayerAttack : MonoBehaviour
 
     private void RangeAttack()
     {
-        Debug.Log("Range attack");
+        if(rangeWeapon.ammoAmount > 0)
+        {
+            Transform bulletSpawner = poolSpawner.transform;
+
+            Bullet bullet = poolSpawner._pool.Get();
+            bullet.transform.position = bulletSpawner.position;
+            bullet.transform.rotation = playerTransform.rotation;
+            bullet.gameObject.SetActive(true);
+            rangeWeapon.ammoAmount--;
+        }
+        else
+        {
+            Debug.Log("No ammo left");
+            return;
+        }
     }
 
     //private void OnDrawGizmos()
