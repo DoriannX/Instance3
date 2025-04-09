@@ -39,6 +39,11 @@ namespace Enemy.BehaviorTree
             {
                 new Sequence(new List<Node>
                 {
+                    new CheckEnemyInAttackRange(transform, stoppingDistance, targetKey),
+                    new TaskAttackEnemy(targetKey)
+                }),
+                new Sequence(new List<Node>
+                {
                     new CheckEnemyInFOVRange(transform, enemyLayer, fovDetectionRadius, fovAngle, maxEnemyDetection, targetKey),
                     new TaskGoToTarget(navMeshAgent, chaseSpeed, targetKey)
                     
