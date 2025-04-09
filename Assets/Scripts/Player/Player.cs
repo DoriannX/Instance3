@@ -39,7 +39,7 @@ public class Player : Entity
         // attack.HandleAttack();
     }
 
-    public void AddChips(int amount)
+    public virtual void AddChips(int amount)
     {
         chips += amount;
         // UpdateUI();
@@ -52,16 +52,16 @@ public class Player : Entity
     }
     */
 
-    public float GetAmmoMultiplier() => ammoMultiplier;
-    public float GetCooldownMultiplier() => cooldownMultiplier;
+    public virtual float GetAmmoMultiplier() => ammoMultiplier;
+    public virtual float GetCooldownMultiplier() => cooldownMultiplier;
     
-    public void SetAmmoMultiplier(float multiplier)
+    public virtual void SetAmmoMultiplier(float multiplier)
     {
         ammoMultiplier = multiplier;
         // UpdateUI();
     }
     
-    public void SetCooldownMultiplier(float multiplier)
+    public virtual void SetCooldownMultiplier(float multiplier)
     {
         cooldownMultiplier = multiplier;
         // UpdateUI();
