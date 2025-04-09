@@ -7,7 +7,7 @@ using UnityEngine;
 
 // put one of the child classes on a gameobject, specify the amount it is given
 
-abstract public class ItemDrop : MonoBehaviour //Assign the "Drop" tag to the gameobejct with the trigger that will detect the collision
+abstract public class ItemDrop : MonoBehaviour //Assign the "Drop" tag to the gameobject with the trigger that will detect the collision
 {
     abstract public bool GetPicked();
     abstract public void OnPickUp(GameObject gm);
