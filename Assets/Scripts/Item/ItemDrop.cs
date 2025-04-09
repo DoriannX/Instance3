@@ -3,8 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(SphereCollider))] 
 [RequireComponent(typeof(MeshRenderer))] 
-[RequireComponent(typeof(Mesh))] 
-
+[RequireComponent(typeof(MeshFilter))] 
 // put one of the child classes on a gameobject, specify the amount it is given
 
 abstract public class ItemDrop : MonoBehaviour //Assign the "Drop" tag to the gameobject with the trigger that will detect the collision
