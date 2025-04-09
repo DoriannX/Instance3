@@ -10,6 +10,7 @@ namespace Enemy.BehaviorTree
         private int patrolPointIndex;
         
         private readonly float patrolWaitTime;
+        private readonly float patrolSpeed;
         
         private readonly Transform[] patrolPoints;
         private readonly NavMeshAgent navMeshAgent;
@@ -19,7 +20,7 @@ namespace Enemy.BehaviorTree
             this.patrolPoints = patrolPoints;
             this.patrolWaitTime = patrolWaitTime;
             this.navMeshAgent = navMeshAgent;
-            this.navMeshAgent.speed = patrolSpeed;
+            this.patrolSpeed = patrolSpeed;
             
             patrolPointIndex = 0;
             patrolWaitTimer = 0f;
@@ -29,6 +30,8 @@ namespace Enemy.BehaviorTree
         {
             if (patrolPoints.Length == 0)
                 return NodeState.FAILURE;
+            
+            navMeshAgent.speed = patrolSpeed;
 
             if (AgentHasReachedDestination())
             {
