@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7706229029317061221}
+  - component: {fileID: 6145457557867754523}
   m_Layer: 0
-  m_Name: Canon
+  m_Name: Canon(SpawnBullet)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,6 +32,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1087083206190424635}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6145457557867754523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092467522360079318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1441c7b4ccc4287b9cc4f847a1cb3d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bulletPrefab: {fileID: 7349190956011176986, guid: e645000e88bae824a87d1a72ce6b3dcd, type: 3}
 --- !u!1 &7008258649584635352
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,5 +169,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Tazer
   damage: 1
-  cooldown: 1.5
+  cooldown: 0.25
   ammoAmount: 10
