@@ -1,63 +1,21 @@
-using System.Collections;
+using System;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
+using UnityEngine.Serialization;
 
-public class Chips : ItemDrop
+namespace Item.Drops
 {
-    [SerializeField] private uint chipsAmnt;
-    [SerializeField] private GameObject entity;
-    [SerializeField] private Vector3 startPos;
-    [SerializeField] private float travelTime;
-    [SerializeField] public bool gotPickedUp = false;
-    [SerializeField] private bool arrived = false;
-    public override void OnPickUp(GameObject gm) //Get the actor that called the 
+    public class Chips : ItemDrop
     {
-        entity = gm;
-        startPos = transform.position;
-        if(!gotPickedUp) StartCoroutine(GoToEntity());
-        gotPickedUp = true;
-    }
+        [FormerlySerializedAs("chipsAmnt")] [SerializeField]
+        private uint chipsAmount;
 
-    protected override IEnumerator GoToEntity()
-    {
-        float elapsedTime = 0;
-        while (elapsedTime < travelTime) 
+        public override void ApplyEffect()
         {
-            elapsedTime += Time.deltaTime;
-            transform.position = Vector3.Lerp(startPos, entity.transform.position, elapsedTime / travelTime);
-            if (arrived)
+            if (targetPlayer is not Player player)
             {
-                StopAllCoroutines();
-                gameObject.GetComponent<MeshRenderer>().enabled = false;
-                Destroy(gameObject);
+                throw new InvalidCastException($"Wrong Entity: {targetPlayer}");
             }
-            yield return null;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject == entity && !other.isTrigger) //when the object collides with the one that called him he will start its own destruction
-        {
-            arrived = true;
-        }
-    }
-
-    public override bool GetPicked() //check if child classes of ItemDrop got picked by someone already
-    {
-        return gotPickedUp;
-    }
-
-    private void OnDestroy()
-    {
-        PlayerScript playerScript;
-        if (entity.TryGetComponent<PlayerScript>(out playerScript)) // If the script that called is the PlayerScript, EntityHealth will be assigned thanks to RequiredComponent
-        {
-            entity.GetComponent<PlayerScript>().AddChips((int)chipsAmnt);
-        }
-        else
-        {
-            Debug.Log($"Wrong Entity : {entity}");
+            player.AddChips((int)chipsAmount);
         }
     }
 }

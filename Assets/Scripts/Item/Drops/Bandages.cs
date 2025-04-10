@@ -1,63 +1,27 @@
-using System.Collections;
+using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class Bandages : ItemDrop
+namespace Item.Drops
 {
-    [SerializeField] private uint healAmnt;
-    [SerializeField] private GameObject entity;
-    [SerializeField] private Vector3 startPos;
-    [SerializeField] private float travelTime;
-    [SerializeField] private bool gotPickedUp = false;
-    [SerializeField] private bool arrived = false;
-
-    public override void OnPickUp(GameObject gm) //Get the actor that called the 
+    public class Bandages : ItemDrop
     {
-        entity = gm;
-        startPos = transform.position;
-        if (!gotPickedUp) StartCoroutine(GoToEntity());
-        gotPickedUp = true;
-    }
+        [FormerlySerializedAs("healAmnt")] [SerializeField] private uint healAmount = 10;
 
-    protected override IEnumerator GoToEntity()
-    {
-        float elapsedTime = 0;
-        while (elapsedTime < travelTime)
+        public override void ApplyEffect()
         {
-            elapsedTime += Time.deltaTime;
-            transform.position = Vector3.Lerp(startPos, entity.transform.position, elapsedTime / travelTime);
-            if (arrived)
+            if (targetPlayer is not Player player)
             {
-                StopAllCoroutines();
-                gameObject.GetComponent<MeshRenderer>().enabled = false;
-                Destroy(gameObject);
+                throw new InvalidCastException($"Wrong Entity: {targetPlayer}");
             }
-            yield return null;
-        }
-    }
+            Debug.Log($"Heal amount: {healAmount}");
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject == entity && !other.isTrigger) //when the object collides with the one that called him he will start its own destruction
-        {
-            arrived = true;
+            player.GetComponent<EntityHealth>().Heal((int)healAmount);
         }
-    }
-
-    public override bool GetPicked()
-    {
-        return gotPickedUp;
-    }
-
-    private void OnDestroy()
-    {
-        PlayerScript playerScript;
-        if (entity.TryGetComponent<PlayerScript>(out playerScript)) // If the script that called is the PlayerScript, EntityHealth will be assigned thanks to RequiredComponent
+        
+        public void SetHealAmount(uint amount)
         {
-            entity.GetComponent<EntityHealth>().Heal((int)healAmnt);
-        }
-        else
-        {
-            Debug.Log($"Wrong Entity : {entity}");
+            healAmount = amount;
         }
     }
 }

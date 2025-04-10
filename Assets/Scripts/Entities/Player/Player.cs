@@ -6,7 +6,7 @@ using UnityEngine;
 public class Player : Entity
 {
     // --- Player-specific attributes ---
-    [SerializeField] private int chips = 0;
+    [field: SerializeField] public int Chips { get; private set; } = 0;
     [SerializeField] private float ammoMultiplier = 1.0f;
     [SerializeField] private float cooldownMultiplier = 1.0f;
 
@@ -40,7 +40,7 @@ public class Player : Entity
 
     public virtual void AddChips(int amount)
     {
-        chips += amount;
+        Chips += amount;
         // UpdateUI();
     }
 
