@@ -1,65 +1,66 @@
 using System;
 using UnityEngine;
 
-namespace Player
+[RequireComponent(typeof(PlayerMovement))]
+public class PlayerDash : MonoBehaviour
 {
-    [RequireComponent(typeof(PlayerMovement))]
-    public class PlayerDash : MonoBehaviour
+    [Header("Dash Settings"), Min(0.1f)] [SerializeField]
+    private float dashDistance = 3.0f;
+
+    [field: SerializeField, Min(0.01f)] public float dashDuration { get; private set; } = 0.2f;
+    [SerializeField, Min(0)] private float dashCooldown = 0.25f;
+
+    public float lastDashTime { get; private set; }
+    public bool isDashing { get; private set; }
+
+    public event Action OnDash;
+    private PlayerMovement playerMovement;
+
+    private void Awake()
     {
-        [Header("Dash Settings"), Min(0.1f)] [SerializeField]
-        private float dashDistance = 3.0f;
-        [field: SerializeField, Min(0.01f)] public float dashDuration { get; private set; } = 0.2f;
-        [SerializeField, Min(0)] private float dashCooldown = 0.25f;
+        playerMovement = GetComponent<PlayerMovement>();
+    }
 
-        public float lastDashTime { get; private set; }
-        public bool isDashing { get; private set; }
+    private void Start()
+    {
+        AllowImmediateDash();
+    }
 
-        public event Action OnDash;
-        private PlayerMovement playerMovement;
+    private void AllowImmediateDash()
+    {
+        lastDashTime = Time.time - dashCooldown - dashDuration;
+    }
 
-        private void Awake()
+    public void StartDash()
+    {
+        bool isDashOnCooldown = Time.time < lastDashTime + dashDuration + dashCooldown;
+        if (isDashing || isDashOnCooldown)
         {
-            playerMovement = GetComponent<PlayerMovement>();
+            return;
         }
 
-        private void Start()
-        {
-            AllowImmediateDash();
-        }
-        private void AllowImmediateDash()
-        {
-            lastDashTime = Time.time - dashCooldown - dashDuration;
-        }
+        OnDash?.Invoke();
 
-        public void StartDash()
-        {
-            bool isDashOnCooldown = Time.time < lastDashTime + dashDuration + dashCooldown;
-            if (isDashing || isDashOnCooldown)
-            {
-                return;
-            }
-            OnDash?.Invoke();
+        isDashing = true;
+        lastDashTime = Time.time;
+    }
 
-            isDashing = true;
-            lastDashTime = Time.time;
-        }
-
-        public void HandleDash()
+    public void HandleDash()
+    {
+        if (isDashing)
         {
-            if (isDashing)
-            {
-                playerMovement.SetVelocity(playerMovement.AddGravityToVelocity(playerMovement.lastMoveDirection.normalized * (dashDistance / dashDuration)));
-                CheckDashFinish();
-            }
+            playerMovement.SetVelocity(playerMovement.AddGravityToVelocity(playerMovement.lastMoveDirection.normalized *
+                                                                           (dashDistance / dashDuration)));
+            CheckDashFinish();
         }
-        private void CheckDashFinish()
-        {
-            bool isDashFinished = Time.time > lastDashTime + dashDuration;
-            if(isDashFinished)
-            {
-                isDashing = false;
-            }
-        }
+    }
 
+    private void CheckDashFinish()
+    {
+        bool isDashFinished = Time.time > lastDashTime + dashDuration;
+        if (isDashFinished)
+        {
+            isDashing = false;
+        }
     }
 }

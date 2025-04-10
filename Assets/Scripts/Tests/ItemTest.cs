@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Entities.Player;
 using Item;
 using Item.Drops;
 using NUnit.Framework;
