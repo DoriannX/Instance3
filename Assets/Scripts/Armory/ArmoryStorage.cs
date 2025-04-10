@@ -14,7 +14,6 @@ namespace Armory
         
         private void Awake()
         {
-            weaponsInStock = new Weapon[nbWeapons];
             FillStock();
         }
 
@@ -26,6 +25,7 @@ namespace Armory
                 return;
             }
             
+            weaponsInStock = new Weapon[nbWeapons];
             List<Weapon> availableWeapons = new List<Weapon>(possibleWeapons);
             
             for (int i = 0; i < nbWeapons; i++)
