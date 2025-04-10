@@ -1,6 +1,8 @@
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(PlayerDash))]
+[RequireComponent(typeof(PlayerVulnerabilityManager))]
 // [RequireComponent(typeof(PlayerAttack))]
 [RequireComponent(typeof(EntityHealth))]
 public class Player : Entity
@@ -12,6 +14,9 @@ public class Player : Entity
 
     // --- References ---
     private PlayerMovement movement;
+    private PlayerDash dash;
+
+    private PlayerVulnerabilityManager vulnerabilityManager;
     // private PlayerAttack attack;
     // private UI ui;
 
@@ -20,11 +25,14 @@ public class Player : Entity
         // Base Entity setup.
         healthComponent = GetComponent<EntityHealth>();
 
-        // Player-specific component references.
+        // Player-specific component references
         movement = GetComponent<PlayerMovement>();
+        vulnerabilityManager = GetComponent<PlayerVulnerabilityManager>();
+        dash = GetComponent<PlayerDash>();
         // attack = GetComponent<PlayerAttack>();
-        // ui = FindObjectOfType<UI>(); // Assuming UI is scene-based and singleton-style.
+        // ui = FindObjectOfType<UI>(); // Assuming UI is scene-based and singleton-style
     }
+
     private void Start()
     {
         // UpdateUI();
@@ -32,10 +40,20 @@ public class Player : Entity
 
     private void Update()
     {
-        // Pass the speed from Entity to the movement component.
-        movement.HandleMovement(this.Speed);
+        vulnerabilityManager.CheckVulnerability();
+
         // Future attack handling would go here:
         // attack.HandleAttack();
+    }
+
+    public void StartDash()
+    {
+        dash.StartDash();
+    }
+
+    public void SetMovementInput(Vector3 moveInput)
+    {
+        movement.SetMovementInput(moveInput);
     }
 
     public virtual void AddChips(int amount)
@@ -44,22 +62,33 @@ public class Player : Entity
         // UpdateUI();
     }
 
-    /*
-    public void Interact(InteractableObject obj)
+    private void FixedUpdate()
     {
-        obj.Interact(this);
+        dash.HandleDash();
+        if (!dash.isDashing)
+        {
+            movement.HandleMovement(Speed);
+        }
+
+        movement.ApplyVelocity();
     }
-    */
+
+    /*
+public void Interact(InteractableObject obj)
+{
+    obj.Interact(this);
+}
+*/
 
     public virtual float GetAmmoMultiplier() => ammoMultiplier;
     public virtual float GetCooldownMultiplier() => cooldownMultiplier;
-    
+
     public virtual void SetAmmoMultiplier(float multiplier)
     {
         ammoMultiplier = multiplier;
         // UpdateUI();
     }
-    
+
     public virtual void SetCooldownMultiplier(float multiplier)
     {
         cooldownMultiplier = multiplier;
@@ -67,10 +96,10 @@ public class Player : Entity
     }
 
     /*
-    private void UpdateUI()
-    {
-        if (ui != null)
-            ui.Update(this);
-    }
-    */
+private void UpdateUI()
+{
+    if (ui != null)
+        ui.Update(this);
+}
+*/
 }
