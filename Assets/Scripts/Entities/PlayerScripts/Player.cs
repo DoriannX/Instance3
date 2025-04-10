@@ -6,13 +6,13 @@ namespace Player
     [RequireComponent(typeof(PlayerDash))]
     [RequireComponent(typeof(PlayerVulnerabilityManager))]
 // [RequireComponent(typeof(PlayerAttack))]
-    [RequireComponent(typeof(EntityHealth))]
-    public class Player : Entity
-    {
-        // --- Player-specific attributes ---
-        [SerializeField] private int chips = 0;
-        [SerializeField] private float ammoMultiplier = 1.0f;
-        [SerializeField] private float cooldownMultiplier = 1.0f;
+[RequireComponent(typeof(EntityHealth))]
+public class Player : Entity
+{
+    // --- Player-specific attributes ---
+    [field: SerializeField] public int Chips { get; private set; } = 0;
+    [SerializeField] private float ammoMultiplier = 1.0f;
+    [SerializeField] private float cooldownMultiplier = 1.0f;
 
         // --- References ---
         private PlayerMovement movement;
@@ -21,10 +21,10 @@ namespace Player
         // private PlayerAttack attack;
         // private UI ui;
 
-        private void Awake()
-        {
-            // Base Entity setup
-            healthComponent = GetComponent<EntityHealth>();
+    private void Awake()
+    {
+        // Base Entity setup.
+        healthComponent = GetComponent<EntityHealth>();
 
             // Player-specific component references
             movement = GetComponent<PlayerMovement>();
@@ -57,6 +57,11 @@ namespace Player
             movement.SetMovementInput(moveInput);
         }
 
+    public virtual void AddChips(int amount)
+    {
+        Chips += amount;
+        // UpdateUI();
+    }
         private void FixedUpdate()
         {
             dash.HandleDash();
@@ -81,8 +86,20 @@ namespace Player
     }
     */
 
-        public float GetAmmoMultiplier() => ammoMultiplier;
-        public float GetCooldownMultiplier() => cooldownMultiplier;
+    public virtual float GetAmmoMultiplier() => ammoMultiplier;
+    public virtual float GetCooldownMultiplier() => cooldownMultiplier;
+    
+    public virtual void SetAmmoMultiplier(float multiplier)
+    {
+        ammoMultiplier = multiplier;
+        // UpdateUI();
+    }
+    
+    public virtual void SetCooldownMultiplier(float multiplier)
+    {
+        cooldownMultiplier = multiplier;
+        // UpdateUI();
+    }
 
         /*
     private void UpdateUI()
