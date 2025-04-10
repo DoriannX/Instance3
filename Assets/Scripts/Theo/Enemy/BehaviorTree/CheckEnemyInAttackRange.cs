@@ -37,7 +37,7 @@ namespace Enemy.BehaviorTree
             
             var nbEnemy = Physics.OverlapBoxNonAlloc(transform.position + transform.forward * radius, boxSize, colliders, transform.rotation, layerAttack);
             
-            if (colliders.Length == 0)
+            if (nbEnemy == 0)
                 return NodeState.FAILURE;
             
             for (int i = 0; i < nbEnemy; i++)

@@ -58,7 +58,7 @@ namespace Enemy.BehaviorTree
                 if (!IsVisible(targetTransform)) 
                     continue;
                 
-                parent.parent.SetData(targetKey, colliders[0].transform);
+                parent.parent.SetData(targetKey, colliders[i].transform);
                 return NodeState.SUCCESS;
 
             }
