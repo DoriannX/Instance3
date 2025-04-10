@@ -3,14 +3,15 @@ using UnityEngine.InputSystem;
 
 namespace Player
 {
+    [RequireComponent(typeof(Player))]
     public class InputManager : MonoBehaviour
     {
-        private PlayerMovement playerMovement;
+        private Player player;
         private void Awake()
         {
             // If not assigned in inspector
-            if (playerMovement == null)
-                playerMovement = GetComponent<PlayerMovement>();
+            if (player == null)
+                player = GetComponent<Player>();
         }
 
         public void OnMovePerformed(InputAction.CallbackContext context)
@@ -18,12 +19,16 @@ namespace Player
             Vector2 input = context.ReadValue<Vector2>();
             Vector3 moveInput = Vector3.zero;
             moveInput.Set(input.x, 0, input.y);
-            playerMovement.SetMovementInput(moveInput);
+            player.SetMovementInput(moveInput);
         }
 
         public void OnDashPerformed(InputAction.CallbackContext context)
         {
-            playerMovement.StartDash();
+            if (!context.started)
+            {
+                return;
+            }
+            player.StartDash();
         }
     }
 }

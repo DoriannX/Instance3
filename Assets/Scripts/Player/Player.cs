@@ -3,6 +3,8 @@ using UnityEngine;
 namespace Player
 {
     [RequireComponent(typeof(PlayerMovement))]
+    [RequireComponent(typeof(PlayerDash))]
+    [RequireComponent(typeof(PlayerVulnerabilityManager))]
 // [RequireComponent(typeof(PlayerAttack))]
     [RequireComponent(typeof(EntityHealth))]
     public class Player : Entity
@@ -14,6 +16,8 @@ namespace Player
 
         // --- References ---
         private PlayerMovement movement;
+        private PlayerDash dash;
+        private PlayerVulnerabilityManager vulnerabilityManager;
         // private PlayerAttack attack;
         // private UI ui;
 
@@ -24,6 +28,8 @@ namespace Player
 
             // Player-specific component references
             movement = GetComponent<PlayerMovement>();
+            vulnerabilityManager = GetComponent<PlayerVulnerabilityManager>();
+            dash = GetComponent<PlayerDash>();
             // attack = GetComponent<PlayerAttack>();
             // ui = FindObjectOfType<UI>(); // Assuming UI is scene-based and singleton-style
         }
@@ -35,17 +41,30 @@ namespace Player
 
         private void Update()
         {
-            // Pass the speed from Entity to the movement component.
-            movement.CheckVulnerability();
+            vulnerabilityManager.CheckVulnerability();
 
             // Future attack handling would go here:
             // attack.HandleAttack();
         }
+        
+        public void StartDash()
+        {
+            dash.StartDash();
+        }
+        
+        public void SetMovementInput(Vector3 moveInput)
+        {
+            movement.SetMovementInput(moveInput);
+        }
 
         private void FixedUpdate()
         {
-            movement.HandleDash();
-            movement.HandleMovement(Speed);
+            dash.HandleDash();
+            if (!dash.isDashing)
+            {
+                movement.HandleMovement(Speed);
+            }
+            
             movement.ApplyVelocity();
         }
 

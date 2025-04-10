@@ -5,99 +5,36 @@ namespace Player
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerMovement : MonoBehaviour
     {
-        [Header("Dash Settings")] [SerializeField]
-        private float dashDistance = 3.0f;
-
-        [SerializeField] private float dashDuration = 0.2f;
-        [SerializeField] private float dashCooldown = 0.25f;
-
-        [SerializeField]
-        private float invulnerabilityDuration = 0.1f;
-
-        private float lastDashTime;
-        private bool isDashing = false;
-        private bool isInvulnerable = false;
-
         private Rigidbody rb;
         private Vector3 movementInput;
-        private Vector3 lastMoveDirection = Vector3.right;
+        public Vector3 lastMoveDirection { get; private set; } = Vector3.right;
         private Vector3 currentVel;
 
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
-            rb.useGravity = true;
         }
-
-        private void Start()
+        
+        public void SetVelocity(Vector3 velocity)
         {
-            AllowImmediateDash();
-        }
-
-        private void AllowImmediateDash()
-        {
-            lastDashTime = Time.time - dashCooldown - dashDuration;
+            currentVel = velocity;
         }
     
         public void HandleMovement(float currentSpeed)
         {
-            if (!isDashing)
-            {
-                currentVel =  AddGravityToVelocity(movementInput * currentSpeed);
+            currentVel = AddGravityToVelocity(movementInput * currentSpeed);
 
-                if (movementInput != Vector3.zero)
-                {
-                    lastMoveDirection = movementInput;
-                }
+            if (movementInput != Vector3.zero)
+            {
+                lastMoveDirection = movementInput;
             }
         }
 
-        private Vector3 AddGravityToVelocity(Vector3 velocity)
+        public Vector3 AddGravityToVelocity(Vector3 velocity)
         {
             velocity.y = rb.linearVelocity.y;
             return velocity;
         }
-
-        public void StartDash()
-        {
-            bool isDashOnCooldown = Time.time < lastDashTime + dashDuration + dashCooldown;
-            if (isDashing || isDashOnCooldown)
-            {
-                return;
-            }
-
-            isInvulnerable = true;
-            isDashing = true;
-            lastDashTime = Time.time;
-        }
-
-        public void HandleDash()
-        {
-            if (isDashing)
-            {
-                currentVel = AddGravityToVelocity(lastMoveDirection.normalized * (dashDistance / dashDuration));
-                CheckDashFinish();
-            }
-        }
-
-        private void CheckDashFinish()
-        {
-            bool isDashFinished = Time.time > lastDashTime + dashDuration;
-            if(isDashFinished)
-            {
-                isDashing = false;
-            }
-        }
-
-        public void CheckVulnerability()
-        {
-            bool hasInvulnerabilityExpired = Time.time > lastDashTime + dashDuration + invulnerabilityDuration;
-            if (isInvulnerable && hasInvulnerabilityExpired)
-            {
-                isInvulnerable = false;
-            }
-        }
-
         public void ApplyVelocity()
         {
             Vector3 currentVelWithGravity = currentVel;
@@ -105,9 +42,9 @@ namespace Player
             rb.linearVelocity = currentVelWithGravity;
         }
 
-        public void SetMovementInput(Vector2 moveInput)
+        public void SetMovementInput(Vector3 moveInput)
         {
-            movementInput = moveInput;
+            movementInput = Vector3.ClampMagnitude(moveInput, 1f);
         }
     }
 }
