@@ -18,5 +18,5 @@ MonoBehaviour:
   damage: 1
   cooldown: 0.5
   bulletSpread: 5
-  ammoConsume: 0
+  ammoConsume: 10
   ammoShoot: 3

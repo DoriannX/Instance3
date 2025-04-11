@@ -7,6 +7,8 @@ public class MeleeWeapon : Weapon
     [SerializeField] private LayerMask enemyLayer;
     private float attackRange;
 
+    public Transform playerTransform; //For DrawGizmos
+       
     public override void LoadData(WeaponData data)
     {
         base.LoadData(data);
@@ -17,9 +19,9 @@ public class MeleeWeapon : Weapon
         attackRange = Mathf.Clamp(meleeWeaponData.attackRange, 0.1f, 100f);
     }
 
-    public override void Attack()
+    public override void Attack(Transform playerTransform)
     {
-        Collider[] hitColliders = Physics.OverlapBox(weaponTransform.position + weaponTransform.forward * attackRange, (Vector3.one * attackRange), weaponTransform.rotation, enemyLayer);
+        Collider[] hitColliders = Physics.OverlapBox(playerTransform.position + playerTransform.forward * attackRange, (Vector3.one * attackRange), playerTransform.rotation, enemyLayer);
 
         if (hitColliders.Length > 0)
         {
@@ -31,9 +33,9 @@ public class MeleeWeapon : Weapon
     {
         // Couleur de la boîte
         Gizmos.color = Color.red;
-               
+
         // Dessiner la boîte à la position finale
-        Gizmos.matrix = Matrix4x4.TRS(weaponTransform.position + weaponTransform.forward * attackRange, weaponTransform.rotation, Vector3.one);
+        Gizmos.matrix = Matrix4x4.TRS(playerTransform.position + playerTransform.forward * attackRange, playerTransform.rotation, Vector3.one);
         Gizmos.DrawCube(Vector3.zero, Vector3.one * attackRange * 2);
     }
 }

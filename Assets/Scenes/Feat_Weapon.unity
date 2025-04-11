@@ -814,6 +814,10 @@ PrefabInstance:
       propertyPath: weaponData
       value: 
       objectReference: {fileID: 11400000, guid: ab16820772263774ca1f239648b4e564, type: 2}
+    - target: {fileID: 3174521618182604050, guid: 7ba573234186880469f2cea112169af7, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 1604609258}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

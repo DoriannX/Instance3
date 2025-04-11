@@ -29,7 +29,7 @@ public class RangeWeapon : Weapon
         ammoShoot = Mathf.Clamp(rangeWeaponData.ammoShoot, 1, 10);
     }
 
-    public override void Attack()
+    public override void Attack(Transform playerTransform)
     {
         for (int i = 0; i < ammoShoot; i++)
         {
@@ -38,7 +38,7 @@ public class RangeWeapon : Weapon
 
             float spreadAngle = (ammoShoot > 1) ? (i - (ammoShoot - 1) / 2f) * bulletSpread : 0f;
 
-            bullet.transform.rotation = weaponTransform.rotation * Quaternion.Euler(0, spreadAngle, 0);
+            bullet.transform.rotation = playerTransform.rotation * Quaternion.Euler(0, spreadAngle, 0);
             bullet.gameObject.SetActive(true);
         }
 

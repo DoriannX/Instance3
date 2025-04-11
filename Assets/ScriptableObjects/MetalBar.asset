@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: MetalBar
   description: A metal of bar
-  mesh: {fileID: 0}
+  mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
   damage: 1
   cooldown: 1
   attackRange: 0.5
