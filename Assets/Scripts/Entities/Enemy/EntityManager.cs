@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Theo.Enemy
+namespace Entities.Enemy
 {
     public class EntityManager : MonoBehaviour
     {

@@ -3,7 +3,7 @@ using BehaviorTree;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Enemy.BehaviorTree
+namespace Entities.Enemy.BehaviorTree
 {
     public class TaskGoToTarget : Node
     {

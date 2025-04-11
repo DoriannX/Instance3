@@ -1,9 +1,8 @@
 using System;
 using BehaviorTree;
-using Theo.Enemy;
 using UnityEngine;
 
-namespace Enemy.BehaviorTree
+namespace Entities.Enemy.BehaviorTree
 {
     public class TaskAttackEnemy : Node
     {

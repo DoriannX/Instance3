@@ -2,7 +2,7 @@ using System;
 using BehaviorTree;
 using UnityEngine;
 
-namespace Enemy.BehaviorTree
+namespace Entities.Enemy.BehaviorTree
 {
     public class CheckEnemyInAttackRange : Node
     {

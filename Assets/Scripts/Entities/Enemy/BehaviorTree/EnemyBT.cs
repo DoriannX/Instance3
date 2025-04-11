@@ -1,12 +1,10 @@
-using System;
 using System.Collections.Generic;
 using BehaviorTree;
-using Theo.Enemy;
 using UnityEngine;
 using UnityEngine.AI;
 using Tree = BehaviorTree.Tree;
 
-namespace Enemy.BehaviorTree
+namespace Entities.Enemy.BehaviorTree
 {
     public sealed class EnemyBT : Tree
     {
