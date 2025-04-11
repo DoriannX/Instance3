@@ -7,7 +7,7 @@ public class RangeWeapon : Weapon
     protected BulletSpawner bulletSpawner;
 
     [Header("Range Weapon Stats")]
-    private int ammoConsumme;
+    private int ammoConsume;
     private float bulletSpread;
     private int ammoShoot;
 
@@ -24,9 +24,9 @@ public class RangeWeapon : Weapon
         if (data is not RangeWeaponData rangeWeaponData)
             throw new InvalidCastException("WeaponData is not a rangeWeaponData");
 
-        bulletSpread = rangeWeaponData.bulletSpread;
-        ammoConsumme = rangeWeaponData.ammoConsumme;
-        ammoShoot = rangeWeaponData.ammoShoot;
+        bulletSpread = Mathf.Clamp(rangeWeaponData.bulletSpread, 1, 360);
+        ammoConsume = Mathf.Clamp(rangeWeaponData.ammoConsume, 1, 30);
+        ammoShoot = Mathf.Clamp(rangeWeaponData.ammoShoot, 1, 10);
     }
 
     public override void Attack()
@@ -42,10 +42,10 @@ public class RangeWeapon : Weapon
             bullet.gameObject.SetActive(true);
         }
 
-        onWeaponUsed?.Invoke(ammoConsumme);
+        onWeaponUsed?.Invoke(ammoConsume);
     }
 
-    public int AmmoConsumme => ammoConsumme;
+    public int AmmoConsume => ammoConsume;
     public float BulletSpread => bulletSpread;
     public int AmmoShoot => ammoShoot;
 }

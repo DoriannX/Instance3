@@ -5,7 +5,7 @@ public class MeleeWeapon : Weapon
 {
     [Header("Melee Weapon Stats")]
     [SerializeField] private LayerMask enemyLayer;
-    private float attackRange;    
+    private float attackRange;
 
     public override void LoadData(WeaponData data)
     {
@@ -14,7 +14,7 @@ public class MeleeWeapon : Weapon
         if (data is not MeleeWeaponData meleeWeaponData)
             throw new InvalidCastException("WeaponData is not a meleeWeaponData");
 
-        attackRange = meleeWeaponData.attackRange;
+        attackRange = Mathf.Clamp(meleeWeaponData.attackRange, 0.1f, 100f);
     }
 
     public override void Attack()
@@ -25,5 +25,15 @@ public class MeleeWeapon : Weapon
         {
             Debug.Log("Hit enemies");
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Couleur de la boîte
+        Gizmos.color = Color.red;
+               
+        // Dessiner la boîte à la position finale
+        Gizmos.matrix = Matrix4x4.TRS(weaponTransform.position + weaponTransform.forward * attackRange, weaponTransform.rotation, Vector3.one);
+        Gizmos.DrawCube(Vector3.zero, Vector3.one * attackRange * 2);
     }
 }

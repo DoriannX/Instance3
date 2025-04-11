@@ -17,6 +17,6 @@ MonoBehaviour:
   mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   damage: 1
   cooldown: 0.5
-  bulletSpread: 10
-  ammoConsumme: 5
+  bulletSpread: 5
+  ammoConsume: 0
   ammoShoot: 3

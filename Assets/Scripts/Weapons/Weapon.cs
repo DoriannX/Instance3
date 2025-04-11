@@ -10,7 +10,7 @@ public abstract class Weapon : MonoBehaviour
     protected Transform weaponTransform;
     protected Action<int> onWeaponUsed;
 
-    private void Awake()
+    private void Start()
     {
         SetupWeapon();
         LoadData(weaponData);

@@ -16,7 +16,10 @@ public class PlayerAttack : MonoBehaviour
         meleeWeapon = GetComponentInChildren<MeleeWeapon>(true);
         rangeWeapon = GetComponentInChildren<RangeWeapon>(true);
 
-        rangeWeapon.OnWeaponUsed += ConsummeAmmo;
+        if (rangeWeapon != null)
+        {
+            rangeWeapon.OnWeaponUsed += ConsumeAmmo;
+        }
 
         if (meleeWeapon != null && !rangeWeapon.gameObject.activeSelf)
         {
@@ -32,33 +35,37 @@ public class PlayerAttack : MonoBehaviour
     {
         if (rangeWeapon != null)
         {
-            rangeWeapon.OnWeaponUsed -= ConsummeAmmo;
+            rangeWeapon.OnWeaponUsed -= ConsumeAmmo;
         }
     }
 
     private void Update()
     {
+        SwitchWeapon();
+
         Cooldown();
 
         if (Input.GetKey(KeyCode.Mouse0))
         {
             Attack();
         }
+
     }
 
     private void Attack()
     {
-        if(cooldownTimer > 0) 
+        if (cooldownTimer > 0)
             return;
 
         if (currentWeapon is RangeWeapon)
         {
-            if(ammoAmount > rangeWeapon.AmmoConsumme)
+            if (ammoAmount > rangeWeapon.AmmoConsume)
             {
                 currentWeapon.Attack();
             }
             else
-            {              
+            {
+                Debug.Log("Not enough ammo");
                 return;
             }
         }
@@ -67,19 +74,42 @@ public class PlayerAttack : MonoBehaviour
             currentWeapon.Attack();
         }
 
-        cooldownTimer = currentWeapon.Cooldown;      
+        cooldownTimer = currentWeapon.Cooldown;
     }
 
-    private void ConsummeAmmo(int ammo)
+    private void ConsumeAmmo(int ammo)
     {
         ammoAmount -= ammo;
     }
 
     private void Cooldown()
     {
-        if(cooldownTimer > 0f)
+        if (cooldownTimer > 0f)
         {
             cooldownTimer -= Time.deltaTime;
         }
+    }
+
+    private void SwitchWeapon()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Debug.Log("Switching weapon");
+
+            if (currentWeapon == meleeWeapon)
+            {
+                meleeWeapon.gameObject.SetActive(false);
+                rangeWeapon.gameObject.SetActive(true);
+                currentWeapon = rangeWeapon;
+                Debug.Log("Switched to range weapon");
+            }
+            else if (currentWeapon == rangeWeapon)
+            {
+                rangeWeapon.gameObject.SetActive(false);
+                meleeWeapon.gameObject.SetActive(true);
+                currentWeapon = meleeWeapon;
+                Debug.Log("Switched to melee weapon");
+            }
+        }        
     }
 }
