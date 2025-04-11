@@ -10,16 +10,20 @@ namespace Entities.Enemy.BehaviorTree
         private readonly float damage;
         private readonly string targetKey;
         
-        private Transform previousTargetTransform;
-        private EntityManager previousTargetEntityManager;
+        /*private Transform previousTargetTransform;
+        private EntityManager previousTargetEntityManager;*/
+        private readonly Weapon weapon;
+        private readonly Transform selfTransform;
         
         private float lastAttackTime;
         
-        public TaskAttackEnemy(float cooldownTime, float damage, string targetKey)
+        public TaskAttackEnemy(Transform transform, Weapon weapon, float cooldownTime, float damage, string targetKey)
         {
             this.cooldownTime = cooldownTime;
             this.damage = damage;
             this.targetKey = targetKey;
+            selfTransform = transform;
+            this.weapon = weapon;
             
             lastAttackTime = Time.time;
         }
@@ -34,33 +38,19 @@ namespace Entities.Enemy.BehaviorTree
             if (data == null)
                 return NodeState.FAILURE;
             
-            if (data is not Transform target)
-                throw new InvalidCastException("Target is not a Transform");
-
-            if (target == previousTargetTransform)
-            {
-                Attack();
-                return NodeState.SUCCESS;
-            }
-            
-            if (!target.TryGetComponent(out EntityManager entityManager))
-                throw new InvalidCastException("Target does not have EntityManager component");
-            
-            previousTargetTransform = target;
-            previousTargetEntityManager = entityManager;
-            
-            Attack();
+            weapon?.Attack(selfTransform);
+            lastAttackTime = Time.time;
             
             return NodeState.SUCCESS;
         }
 
-        private void Attack()
+        /*private void Attack()
         {
             if (previousTargetEntityManager.TakeDamage(damage))
                 ClearData(targetKey);
             
             lastAttackTime = Time.time;
-        }
+        }*/
 
         private bool CheckAttackTime()
         {

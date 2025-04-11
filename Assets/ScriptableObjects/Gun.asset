@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Basic Gun
   description: Shoots 1 bullet in front of you
-  mesh: {fileID: 0}
+  mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   damage: 1
   cooldown: 0.1
+  attackRange: 5
   bulletSpread: 2
-  ammoConsumme: 1
-  bulletPrefab: {fileID: 7349190956011176986, guid: e645000e88bae824a87d1a72ce6b3dcd, type: 3}
+  ammoConsume: 0
+  ammoShoot: 1

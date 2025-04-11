@@ -1,5 +1,6 @@
 using System;
 using BehaviorTree;
+using Entities.Enemy.BehaviorTree.Modes;
 using UnityEngine;
 
 namespace Entities.Enemy.BehaviorTree
@@ -13,12 +14,13 @@ namespace Entities.Enemy.BehaviorTree
         private readonly Collider[] colliders;
         private readonly LayerMask layerAttack;
         private readonly Vector3 boxSize;
+        private readonly AttackMode attackMode;
         
-        
-        public CheckEnemyInAttackRange(Transform transform, LayerMask layerAttack, float radius, string targetKey, int maxEnemyDetection)
+        public CheckEnemyInAttackRange(Transform transform, LayerMask layerAttack, AttackMode attackMode, float radius, string targetKey, int maxEnemyDetection)
         {
             this.transform = transform;
             this.layerAttack = layerAttack;
+            this.attackMode = attackMode;
             this.radius = radius;
             this.targetKey = targetKey;
             
@@ -35,7 +37,17 @@ namespace Entities.Enemy.BehaviorTree
             if (data is not Transform targetTransform)
                 throw new InvalidCastException("Target is not a Transform");
             
-            var nbEnemy = Physics.OverlapBoxNonAlloc(transform.position + transform.forward * radius, boxSize, colliders, transform.rotation, layerAttack);
+            int nbEnemy = 0;
+
+            switch (attackMode)
+            {
+                case AttackMode.Melee:
+                    nbEnemy = Physics.OverlapBoxNonAlloc(transform.position + transform.forward * radius, boxSize, colliders, transform.rotation, layerAttack);
+                    break;
+                case AttackMode.Range:
+                    nbEnemy = Physics.OverlapSphereNonAlloc(transform.position, radius, colliders, layerAttack);
+                    break;
+            }
             
             if (nbEnemy == 0)
                 return NodeState.FAILURE;
