@@ -26,6 +26,7 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
             Debug.LogError($"[Bullet] Release function not set on bullet {gameObject.name}");
             return;
         }
+        Debug.Log(other.name);
         Debug.Log("hit bullet");
         releaseFunc(this);
     }

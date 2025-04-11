@@ -61,7 +61,7 @@ public class PlayerAttack : MonoBehaviour
 
         if (currentWeapon is RangeWeapon)
         {
-            if (ammoAmount > rangeWeapon.AmmoConsume)
+            if (ammoAmount >= rangeWeapon.AmmoConsume)
             {
                 currentWeapon.Attack(playerTransform);
             }

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Pooling
 {
@@ -8,13 +10,16 @@ namespace Pooling
         [Header("References")]
 
         [SerializeField] private GameObject bulletPrefab;
-        private Transform transformSpawner;
+        private Transform bulletTransform;
+
+        private void Awake()
+        {
+            bulletTransform = transform;
+        }
 
         private void Start()
         {
-            transformSpawner = GetComponent<Transform>();
-
-            pool = new Pool<Bullet>(() => Instantiate(bulletPrefab, transformSpawner).GetComponent<Bullet>(),
+            pool = new Pool<Bullet>(() => Instantiate(bulletPrefab, bulletTransform.position, Quaternion.identity).GetComponent<Bullet>(),
                 pooledObject => { pooledObject.gameObject.SetActive(true); },
                 ResetBullet,
                 50,

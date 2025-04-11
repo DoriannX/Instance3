@@ -1,8 +1,10 @@
+using Entities.PlayerScripts;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerDash))]
 [RequireComponent(typeof(PlayerVulnerabilityManager))]
+[RequireComponent(typeof(PlayerOrientation))]
 // [RequireComponent(typeof(PlayerAttack))]
 [RequireComponent(typeof(EntityHealth))]
 public class Player : Entity
@@ -15,6 +17,7 @@ public class Player : Entity
     // --- References ---
     private PlayerMovement movement;
     private PlayerDash dash;
+    private PlayerOrientation orientation;
 
     private PlayerVulnerabilityManager vulnerabilityManager;
     // private PlayerAttack attack;
@@ -30,6 +33,7 @@ public class Player : Entity
         movement = GetComponent<PlayerMovement>();
         vulnerabilityManager = GetComponent<PlayerVulnerabilityManager>();
         dash = GetComponent<PlayerDash>();
+        orientation = GetComponent<PlayerOrientation>();
         // attack = GetComponent<PlayerAttack>();
         // ui = FindObjectOfType<UI>(); // Assuming UI is scene-based and singleton-style
     }
@@ -45,6 +49,16 @@ public class Player : Entity
 
         // Future attack handling would go here:
         // attack.HandleAttack();
+    }
+    
+    public void SetMousePos(Vector3 mousePos)
+    {
+        orientation.SetMousePos(mousePos);
+    }
+    
+    public void SetRightStickInput(Vector3 rightStickInput)
+    {
+        orientation.SetRightStickInput(rightStickInput);
     }
 
     public void StartDash()
