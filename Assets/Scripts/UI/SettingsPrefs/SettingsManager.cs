@@ -4,6 +4,10 @@ using UnityEngine.UI;
 
 public class SettingsManager : MonoBehaviour
 {
+    private const string MusicVolumeKey = "musicVolume";
+    private const string SFXVolumeKey = "SFXVolume";
+    private const string FullScreenKey = "fullScreen";
+
     [SerializeField] private AudioMixer audioMixer;
 
     [SerializeField] private Slider musicSlider;
@@ -13,7 +17,7 @@ public class SettingsManager : MonoBehaviour
 
     private void Start()
     {
-        if (PlayerPrefs.HasKey("musicVolume") || PlayerPrefs.HasKey("SFXVolume"))
+        if (PlayerPrefs.HasKey(MusicVolumeKey) || PlayerPrefs.HasKey(SFXVolumeKey))
         {
             LoadVolume();
         }
@@ -23,7 +27,7 @@ public class SettingsManager : MonoBehaviour
             SetSFXVolume();
         }
 
-        if (PlayerPrefs.HasKey("fullScreen"))
+        if (PlayerPrefs.HasKey(FullScreenKey))
         {
             LoadToggleScreen();
         }
@@ -33,27 +37,26 @@ public class SettingsManager : MonoBehaviour
         }
 
         SetFullScreen();
-
-        MusicManager.instance.PlayMusic("MainMenu");
     }
 
     public void SetMusicVolume()
     {
-        float volume = musicSlider.value;
+        float volume = Mathf.Clamp(musicSlider.value, 0.0001f, 1f);
         audioMixer.SetFloat("Music", Mathf.Log10(volume) * 20);
-        PlayerPrefs.SetFloat("musicVolume", volume);
+        PlayerPrefs.SetFloat(MusicVolumeKey, volume);
     }
+
     public void SetSFXVolume()
     {
-        float volume = sfxSlider.value;
+        float volume = Mathf.Clamp(sfxSlider.value, 0.0001f, 1f);
         audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
-        PlayerPrefs.SetFloat("SFXVolume", volume);
+        PlayerPrefs.SetFloat(SFXVolumeKey, volume);
     }
 
     private void LoadVolume()
     {
-        musicSlider.value = PlayerPrefs.GetFloat("musicVolume");
-        sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume");
+        musicSlider.value = PlayerPrefs.GetFloat(MusicVolumeKey);
+        sfxSlider.value = PlayerPrefs.GetFloat(SFXVolumeKey);
 
         SetMusicVolume();
         SetSFXVolume();
@@ -62,24 +65,18 @@ public class SettingsManager : MonoBehaviour
     public void SetToggleScreen()
     {
         int toggle = fullscreenToggle.isOn ? 1 : 0;
-        PlayerPrefs.SetInt("fullScreen", toggle);
+        PlayerPrefs.SetInt(FullScreenKey, toggle);
     }
 
     private void LoadToggleScreen()
     {
-        fullscreenToggle.isOn = (PlayerPrefs.GetInt("fullScreen") != 0);
+        fullscreenToggle.isOn = (PlayerPrefs.GetInt(FullScreenKey) != 0);
 
         SetToggleScreen();
     }
 
-    public void SetFullScreen()
+    private void SetFullScreen()
     {
         Screen.fullScreen = fullscreenToggle.isOn;
-    }
-
-    private void Update()
-    {        
-        if(Input.GetKeyDown(KeyCode.Space)) SFXManager.instance.PlaySFX("Test");
-        if(Input.GetKeyDown(KeyCode.Q)) MusicManager.instance.PlayMusic("InGame");
     }
 }

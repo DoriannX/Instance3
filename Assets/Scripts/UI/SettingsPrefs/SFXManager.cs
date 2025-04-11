@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class SFXManager : MonoBehaviour
 {
     public static SFXManager instance { get; private set; }
@@ -18,6 +19,11 @@ public class SFXManager : MonoBehaviour
     public void PlaySFX(string name)
     {
         SFXClip clip = audioClips.Find(x => x.name == name);
+        if (clip.audioClip == null)
+        {
+            Debug.LogError($"SFX clip with name {name} not found.");
+            return;
+        }
         audioSource.PlayOneShot(clip.audioClip);
     }
 }

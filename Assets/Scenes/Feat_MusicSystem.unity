@@ -385,7 +385,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 846964770}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: SetFullScreen
+        m_MethodName: SetToggleScreen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
