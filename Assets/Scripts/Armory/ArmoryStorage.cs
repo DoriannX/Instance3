@@ -30,7 +30,7 @@ namespace Armory
             
             for (int i = 0; i < nbWeapons; i++)
             {
-                int randomIndex = Random.Range(0, availableWeapons.Count - 1);
+                int randomIndex = Random.Range(0, availableWeapons.Count);
                 weaponsInStock[i] = availableWeapons[randomIndex];
                 availableWeapons.RemoveAt(randomIndex);
             }
