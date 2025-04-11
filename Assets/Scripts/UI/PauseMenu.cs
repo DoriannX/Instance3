@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using NUnit.Framework;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PauseMenu : MonoBehaviour
     private void Start()
     {
         Time.timeScale = 1f;
+        Assert.IsNotNull(pauseMenu, "Pause menu is not assigned in the inspector.");
     }
 
     public void PauseUI(InputAction.CallbackContext context)
@@ -18,23 +20,28 @@ public class PauseMenu : MonoBehaviour
             if (pauseMenu.activeSelf)
             {
                 ResumeGame();
+                ToggleTimePause(false);
             }
             else
             {
                 PauseGame();
+                ToggleTimePause(true);
             } 
         }        
     }
 
+    private void ToggleTimePause(bool isPaused)
+    {
+        Time.timeScale = isPaused ? 0f : 1f;
+    }
+
     public void ResumeGame()
     {
-        Time.timeScale = 1f;
         pauseMenu.SetActive(false);
     }
 
     private void PauseGame()
     {
-        Time.timeScale = 0f;
         pauseMenu.SetActive(true);
     }
 
