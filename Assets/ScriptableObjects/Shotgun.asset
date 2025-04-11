@@ -19,4 +19,4 @@ MonoBehaviour:
   cooldown: 0.5
   bulletSpread: 10
   ammoConsumme: 5
-  bulletPrefab: {fileID: 7349190956011176986, guid: e645000e88bae824a87d1a72ce6b3dcd, type: 3}
+  ammoShoot: 3

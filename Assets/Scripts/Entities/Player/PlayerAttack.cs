@@ -3,7 +3,6 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     [Header("Weapons References")]
-    private Transform playerTransform;
     private MeleeWeapon meleeWeapon;
     private RangeWeapon rangeWeapon;
 
@@ -19,7 +18,6 @@ public class PlayerAttack : MonoBehaviour
     {
         meleeWeapon = GetComponentInChildren<MeleeWeapon>(true);
         rangeWeapon = GetComponentInChildren<RangeWeapon>(true);
-        playerTransform = GetComponent<Transform>();
     }    
 
     private void Update()

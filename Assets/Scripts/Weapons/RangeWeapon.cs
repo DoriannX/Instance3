@@ -9,6 +9,8 @@ public class RangeWeapon : Weapon
     [Header("Range Weapon Stats")]
     private int ammoConsumme;
     private float bulletSpread;
+    private int ammoShoot;
+
     protected override void SetupWeapon()
     {
         base.SetupWeapon();    
@@ -17,12 +19,12 @@ public class RangeWeapon : Weapon
 
     public void RangeAttack()
     {
-        for (int i = 0; i < ammoConsumme; i++)
+        for (int i = 0; i < ammoShoot; i++)
         {
             Bullet bullet = bulletSpawner.SpawnBullet();
             bullet.transform.position = bulletSpawner.transform.position;
 
-            float spreadAngle = (ammoConsumme > 1) ? (i - (ammoConsumme - 1) / 2f) * bulletSpread : 0f;
+            float spreadAngle = (ammoShoot > 1) ? (i - (ammoShoot - 1) / 2f) * bulletSpread : 0f;
 
             bullet.transform.rotation = weaponTransform.rotation * Quaternion.Euler(0, spreadAngle, 0);
             bullet.gameObject.SetActive(true);
@@ -38,8 +40,10 @@ public class RangeWeapon : Weapon
 
         bulletSpread = rangeWeaponData.bulletSpread;
         ammoConsumme = rangeWeaponData.ammoConsumme;
+        ammoShoot = rangeWeaponData.ammoShoot;
     }
 
     public int AmmoConsumme => ammoConsumme;
     public float BulletSpread => bulletSpread;
+    public int AmmoShoot => ammoShoot;
 }

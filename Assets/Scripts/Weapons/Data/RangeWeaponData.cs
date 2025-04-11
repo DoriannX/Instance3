@@ -5,4 +5,5 @@ public class RangeWeaponData : WeaponData
 {  
     public int bulletSpread = 2;
     public int ammoConsumme;
+    public int ammoShoot;
 }
