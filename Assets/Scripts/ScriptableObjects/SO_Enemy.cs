@@ -4,7 +4,7 @@ using UnityEngine;
 public class SO_Enemy : ScriptableObject
 {
     public int Hp;
-    public string Name;
+    public string EnemyName;
     public float PatrolSpd;
     public float ChaseSpd;
     public GameObject Enemy;

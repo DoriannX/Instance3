@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8f36a106174d474db5f9aa2592fee1f, type: 3}
-  m_Name: SO_Poulpoins
+  m_Name: SO_Poulpoins 2
   m_EditorClassIdentifier: 
   Hp: 50
-  EnemyName: Poulpoin
+  EnemyName: Test2
   PatrolSpd: 10
   ChaseSpd: 20
-  Enemy: {fileID: 622346891579285735, guid: 73aea627442c2604a85187d44ba59338, type: 3}
+  Enemy: {fileID: 622346891579285735, guid: e9d50fe9103e3234d959f533d93353db, type: 3}

@@ -4,16 +4,20 @@ using UnityEngine;
 public class Corridor : MonoBehaviour
 {
     //corridor's entrance
+    [Header("CorridorLength")]
     [SerializeField] private GameObject corridorStart; 
     [SerializeField] private GameObject corridorEnd;
 
     //corridor's doorframe and hall
+    [Header("ChieldReference")]
     [SerializeField] private GameObject corridorLeft;
     [SerializeField] private GameObject corridorMiddle;
     [SerializeField] private GameObject corridorRight;
 
     //if the corridor is big or small ( true = big )
+    [Header("CorridorSize")]
     [SerializeField] private bool corridorIsBig;
+
     public void CorridorTransform(Transform startPos, Transform endPos)
     {
 

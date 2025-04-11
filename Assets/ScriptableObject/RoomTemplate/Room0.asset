@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomID: 0
   roomName: MainRoom
-  Nbenemy: 05000000
+  Nbenemy: 02000000060000000300000005000000
   EnemyType:
   - {fileID: 11400000, guid: eba61c09b5b1ee846bdd256aa377c21f, type: 2}
+  - {fileID: 11400000, guid: 0896ec67b824fd64bbef4398fe0bf13d, type: 2}
+  - {fileID: 11400000, guid: 429e1fa2ecb5dfd49a895eee4ad99f9e, type: 2}
+  - {fileID: 11400000, guid: e28c94535e07d31449b35334535d50cd, type: 2}
   RoomPrefab: {fileID: 8932695175090433084, guid: 4a77ec64b4ab43e48af41610fc7254ee, type: 3}
