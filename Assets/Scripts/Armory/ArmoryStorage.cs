@@ -58,6 +58,7 @@ namespace Armory
                 throw new ArgumentOutOfRangeException(nameof(nbWeapons), "Number of weapons cannot be negative");
             
             this.nbWeapons = nbWeapons;
+            weaponsInStock = new Weapon[nbWeapons];
             FillStock();
         }
         
