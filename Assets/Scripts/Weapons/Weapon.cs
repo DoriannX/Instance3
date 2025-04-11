@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
@@ -7,6 +8,7 @@ public abstract class Weapon : MonoBehaviour
     protected int damage;
     private MeshFilter weaponMesh;
     protected Transform weaponTransform;
+    protected Action<int> onWeaponUsed;
 
     private void Awake()
     {
@@ -20,7 +22,7 @@ public abstract class Weapon : MonoBehaviour
         weaponTransform = transform;
     }
 
-    //protected abstract void Attack();
+    public abstract void Attack();
 
     public virtual void LoadData(WeaponData data)
     {
@@ -41,4 +43,10 @@ public abstract class Weapon : MonoBehaviour
 
     public float Cooldown => cooldown;
     public int Damage => damage;
+
+    public Action<int> OnWeaponUsed
+    {
+        get => onWeaponUsed;
+        set => onWeaponUsed = value;
+    }
 }

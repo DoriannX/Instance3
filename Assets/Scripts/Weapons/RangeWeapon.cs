@@ -17,7 +17,19 @@ public class RangeWeapon : Weapon
         bulletSpawner = GetComponentInChildren<BulletSpawner>(true);
     }
 
-    public void RangeAttack()
+    public override void LoadData(WeaponData data)
+    {
+        base.LoadData(data);
+
+        if (data is not RangeWeaponData rangeWeaponData)
+            throw new InvalidCastException("WeaponData is not a rangeWeaponData");
+
+        bulletSpread = rangeWeaponData.bulletSpread;
+        ammoConsumme = rangeWeaponData.ammoConsumme;
+        ammoShoot = rangeWeaponData.ammoShoot;
+    }
+
+    public override void Attack()
     {
         for (int i = 0; i < ammoShoot; i++)
         {
@@ -29,18 +41,8 @@ public class RangeWeapon : Weapon
             bullet.transform.rotation = weaponTransform.rotation * Quaternion.Euler(0, spreadAngle, 0);
             bullet.gameObject.SetActive(true);
         }
-    }
 
-    public override void LoadData(WeaponData data)
-    {
-        base.LoadData(data);
-
-        if (data is not RangeWeaponData rangeWeaponData)
-            throw new InvalidCastException("WeaponData is not a rangeWeaponData");
-
-        bulletSpread = rangeWeaponData.bulletSpread;
-        ammoConsumme = rangeWeaponData.ammoConsumme;
-        ammoShoot = rangeWeaponData.ammoShoot;
+        onWeaponUsed?.Invoke(ammoConsumme);
     }
 
     public int AmmoConsumme => ammoConsumme;

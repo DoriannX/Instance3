@@ -8,17 +8,33 @@ public class PlayerAttack : MonoBehaviour
 
     [Header("Weapons Settings")]
     [SerializeField] private int ammoAmount;
-    private float meleeCooldownTimer = 0f;
-    private float rangeCooldownTimer = 0f;
-
-
-    //private Weapon currentWeapon;
+    private float cooldownTimer = 0f;
+    private Weapon currentWeapon;
 
     private void Start()
     {
         meleeWeapon = GetComponentInChildren<MeleeWeapon>(true);
         rangeWeapon = GetComponentInChildren<RangeWeapon>(true);
-    }    
+
+        rangeWeapon.OnWeaponUsed += ConsummeAmmo;
+
+        if (meleeWeapon != null && !rangeWeapon.gameObject.activeSelf)
+        {
+            currentWeapon = meleeWeapon;
+        }
+        else if (rangeWeapon != null && !meleeWeapon.gameObject.activeSelf)
+        {
+            currentWeapon = rangeWeapon;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (rangeWeapon != null)
+        {
+            rangeWeapon.OnWeaponUsed -= ConsummeAmmo;
+        }
+    }
 
     private void Update()
     {
@@ -32,38 +48,38 @@ public class PlayerAttack : MonoBehaviour
 
     private void Attack()
     {
-        if (meleeWeapon.gameObject.activeSelf && meleeCooldownTimer <= 0f)
-        {
-            meleeWeapon.MeleeAttack();
-            meleeCooldownTimer = meleeWeapon.Cooldown;
-        }
+        if(cooldownTimer > 0) 
+            return;
 
-        if (rangeWeapon.gameObject.activeSelf && rangeCooldownTimer <= 0f)
-        {            
-            if (ammoAmount > 0)
+        if (currentWeapon is RangeWeapon)
+        {
+            if(ammoAmount > rangeWeapon.AmmoConsumme)
             {
-                rangeWeapon.RangeAttack();
-                ammoAmount -= rangeWeapon.AmmoConsumme;
-                rangeCooldownTimer = rangeWeapon.Cooldown;
+                currentWeapon.Attack();
             }
             else
-            {
-                Debug.Log("No ammo left");
+            {              
                 return;
             }
-        }        
+        }
+        else if (currentWeapon is MeleeWeapon)
+        {
+            currentWeapon.Attack();
+        }
+
+        cooldownTimer = currentWeapon.Cooldown;      
+    }
+
+    private void ConsummeAmmo(int ammo)
+    {
+        ammoAmount -= ammo;
     }
 
     private void Cooldown()
     {
-        if (meleeCooldownTimer > 0f)
+        if(cooldownTimer > 0f)
         {
-            meleeCooldownTimer -= Time.deltaTime;
-        }
-
-        if (rangeCooldownTimer > 0f)
-        {
-            rangeCooldownTimer -= Time.deltaTime;
+            cooldownTimer -= Time.deltaTime;
         }
     }
 }
