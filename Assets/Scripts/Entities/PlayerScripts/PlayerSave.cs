@@ -1,8 +1,5 @@
-using PlayerTest.Tests;
+using Tests;
 using UnityEngine;
-
-namespace PlayerTest
-{
     /// <summary>
     /// Handles saving and loading of player statistics
     /// </summary>
@@ -79,4 +76,3 @@ namespace PlayerTest
             player = mockPlayer;
         }
     }
-}
