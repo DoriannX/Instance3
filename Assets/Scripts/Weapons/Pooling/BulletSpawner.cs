@@ -1,25 +1,26 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Pooling
 {
-    public class PoolSpawner : MonoBehaviour
+    public class BulletSpawner : MonoBehaviour
     {
-        [FormerlySerializedAs("_bulletPrefab")]
-        [Header("References")]
-        [SerializeField] private GameObject bulletPrefab;
-
         public Pool<Bullet> pool { get; private set; }
+        [Header("References")]
 
-        private void Awake()
+        [SerializeField] private GameObject bulletPrefab;
+        private Transform transformSpawner;
+
+        private void Start()
         {
-            pool = new Pool<Bullet>(() => Instantiate(bulletPrefab).GetComponent<Bullet>(),
+            transformSpawner = GetComponent<Transform>();
+
+            pool = new Pool<Bullet>(() => Instantiate(bulletPrefab, transformSpawner).GetComponent<Bullet>(),
                 pooledObject => { pooledObject.gameObject.SetActive(true); },
                 ResetBullet,
                 50,
                 10);
-        }
-                
+        }              
+
         private void ResetBullet(Bullet bullet)
         {
             bullet.gameObject.SetActive(false);
@@ -27,10 +28,14 @@ namespace Pooling
             bulletTransform.position = Vector3.zero;
             bulletTransform.rotation = Quaternion.identity;
         }
-        
+
+        public Bullet SpawnBullet()
+        {
+           return pool.Get();
+        }
+
         private void OnDestroy()
         {
-            // Clean up pool
             pool = null;
         }
     }

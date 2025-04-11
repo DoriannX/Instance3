@@ -1,9 +1,53 @@
+using System;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    [Header("Weapon Stats")]
-    public string weaponName;
-    public int damage;
-    public float cooldown;      
+    [SerializeField] protected WeaponData weaponData;
+    protected float cooldown;
+    protected int damage;
+    private MeshFilter weaponMesh;    
+    protected Action<int> onWeaponUsed;
+
+    private void Awake()
+    {
+        SetupWeapon();
+    }
+
+    private void Start()
+    {
+        LoadData(weaponData);
+    }
+
+    protected virtual void SetupWeapon()
+    {
+        weaponMesh = GetComponent<MeshFilter>();
+    }
+
+    public abstract void Attack(Transform playerTransform);
+
+    public virtual void LoadData(WeaponData data)
+    {
+        if (data == null)
+            throw new System.ArgumentNullException(nameof(data));
+
+        weaponData = data;
+
+        cooldown = Mathf.Clamp(data.cooldown, 0.1f, 10f);
+        damage = Mathf.Clamp(data.damage, 1, 100);
+
+        if (weaponMesh != null)
+        {
+            weaponMesh.mesh = data.mesh;
+        }
+    }
+
+    public float Cooldown => cooldown;
+    public int Damage => damage;
+
+    public Action<int> OnWeaponUsed
+    {
+        get => onWeaponUsed;
+        set => onWeaponUsed = value;
+    }
 }

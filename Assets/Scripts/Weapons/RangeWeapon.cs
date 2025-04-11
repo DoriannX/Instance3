@@ -1,7 +1,51 @@
+using System;
+using Pooling;
 using UnityEngine;
 
 public class RangeWeapon : Weapon
 {
+    protected BulletSpawner bulletSpawner;
+
     [Header("Range Weapon Stats")]
-    public int ammoAmount;
+    private int ammoConsume;
+    private float bulletSpread;
+    private int ammoShoot;
+
+    protected override void SetupWeapon()
+    {
+        base.SetupWeapon();    
+        bulletSpawner = GetComponentInChildren<BulletSpawner>(true);
+    }
+
+    public override void LoadData(WeaponData data)
+    {
+        base.LoadData(data);
+
+        if (data is not RangeWeaponData rangeWeaponData)
+            throw new InvalidCastException("WeaponData is not a rangeWeaponData");
+
+        bulletSpread = Mathf.Clamp(rangeWeaponData.bulletSpread, 1, 360);
+        ammoConsume = Mathf.Clamp(rangeWeaponData.ammoConsume, 1, 30);
+        ammoShoot = Mathf.Clamp(rangeWeaponData.ammoShoot, 1, 10);
+    }
+
+    public override void Attack(Transform playerTransform)
+    {
+        for (int i = 0; i < ammoShoot; i++)
+        {
+            Bullet bullet = bulletSpawner.SpawnBullet();
+            bullet.transform.position = bulletSpawner.transform.position;
+
+            float spreadAngle = (ammoShoot > 1) ? (i - (ammoShoot - 1) / 2f) * bulletSpread : 0f;
+
+            bullet.transform.rotation = playerTransform.rotation * Quaternion.Euler(0, spreadAngle, 0);
+            bullet.gameObject.SetActive(true);
+        }
+
+        onWeaponUsed?.Invoke(ammoConsume);
+    }
+
+    public int AmmoConsume => ammoConsume;
+    public float BulletSpread => bulletSpread;
+    public int AmmoShoot => ammoShoot;
 }

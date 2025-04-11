@@ -20,8 +20,9 @@ public class Player : Entity
     // private PlayerAttack attack;
     // private UI ui;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         // Base Entity setup.
         healthComponent = GetComponent<EntityHealth>();
 
