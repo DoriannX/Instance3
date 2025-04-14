@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,6 +9,10 @@ namespace Item
         [SerializeField, Min(0.1f)] protected float travelTime = 1f;
         [field: SerializeField] public bool GotPickedUp { get; private set; }
         [field: SerializeField] public bool HasArrived { get; private set; }
+
+        // New fields for pickup feedback
+        [SerializeField] protected AudioClip pickupSFX;
+        [SerializeField] protected GameObject pickupVFXPrefab;
 
         protected Player targetPlayer;
         protected Vector3 startPos;
@@ -39,6 +42,7 @@ namespace Item
 
             targetPlayer = player;
             startPos = transform.position;
+
             if (!GotPickedUp)
             {
                 StartCoroutine(GoToEntity());
@@ -54,7 +58,7 @@ namespace Item
                 elapsedTime += Time.deltaTime;
                 float t = elapsedTime / travelTime;
                 transform.position = Vector3.Lerp(startPos, targetPlayer.transform.position, t);
-                
+
                 if (HasArrived || targetPlayer == null)
                     break;
 
@@ -63,24 +67,26 @@ namespace Item
 
             if (targetPlayer != null && HasArrived)
             {
+                TriggerPickupFeedback();
                 ApplyEffect();
                 Destroy(gameObject);
             }
         }
 
-        public void OnTriggerEnter(Collider other)
+        // Triggers visual and audio feedback on pickup.
+        protected virtual void TriggerPickupFeedback()
         {
-            if(other == null || targetPlayer == null)
+            // Play the pickup sound at the item's position.
+            if (pickupSFX != null)
             {
-                return;
+                AudioSource.PlayClipAtPoint(pickupSFX, transform.position);
             }
-            if (!other.GetComponent<Player>())
+            
+            // Instantiate the VFX prefab.
+            if (pickupVFXPrefab != null)
             {
-                throw new InvalidCastException();
-            }
-            if (!other.isTrigger)
-            {
-                HasArrived = true;
+                GameObject vfx = Instantiate(pickupVFXPrefab, transform.position, Quaternion.identity);
+                Destroy(vfx, 1f);
             }
         }
 
