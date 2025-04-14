@@ -13,14 +13,13 @@ public class RangeWeapon : Weapon
 
     protected override void SetupWeapon()
     {
-        base.SetupWeapon();    
+        base.SetupWeapon();
         bulletSpawner = GetComponentInChildren<BulletSpawner>(true);
     }
 
     public override void LoadData(WeaponData data)
     {
         base.LoadData(data);
-
         if (data is not RangeWeaponData rangeWeaponData)
             throw new InvalidCastException("WeaponData is not a rangeWeaponData");
 
@@ -35,14 +34,14 @@ public class RangeWeapon : Weapon
         {
             Bullet bullet = bulletSpawner.SpawnBullet();
             bullet.transform.position = bulletSpawner.transform.position;
-
             float spreadAngle = (ammoShoot > 1) ? (i - (ammoShoot - 1) / 2f) * bulletSpread : 0f;
-
             bullet.transform.rotation = playerTransform.rotation * Quaternion.Euler(0, spreadAngle, 0);
             bullet.gameObject.SetActive(true);
         }
-
         onWeaponUsed?.Invoke(ammoConsume);
+
+        // Play the weapon's attack SFX.
+        PlayAttackSFX();
     }
 
     public int AmmoConsume => ammoConsume;
