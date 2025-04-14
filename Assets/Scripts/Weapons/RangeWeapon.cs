@@ -30,10 +30,12 @@ public class RangeWeapon : Weapon
 
     public override void Attack(Transform playerTransform)
     {
-        Ray ray = new Ray(playerTransform.position, playerTransform.forward);
+        Ray ray = new Ray(playerTransform.position - new Vector3(0, playerTransform.localScale.y * 0.5f, 0), playerTransform.forward);
+        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 0.1f);
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
-            bulletSpawner.transform.LookAt(hit.point);
+            bulletSpawner.transform.LookAt(hit.collider.transform);
+            Debug.DrawLine(ray.origin, hit.collider.transform.position, Color.green, 0.1f);
         }
         else
         {
