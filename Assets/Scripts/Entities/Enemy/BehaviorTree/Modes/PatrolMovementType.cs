@@ -1,4 +1,4 @@
-namespace Theo.Enemy
+namespace Entities.Enemy.BehaviorTree.Modes
 {
     public enum PatrolMovementType
     {

@@ -1,9 +1,8 @@
 using System;
-using BehaviorTree;
+using BehaviorTreeModules;
 using UnityEngine;
-using UnityEngine.AI;
 
-namespace Enemy.BehaviorTree
+namespace Entities.Enemy.BehaviorTree
 {
     public class CheckEnemyInFOVRange : Node
     {
@@ -35,11 +34,18 @@ namespace Enemy.BehaviorTree
             {
                 if (data is not Transform targetTransform)
                     throw new InvalidCastException("Data is not a Transform");
-                
-                if (IsInFOV(targetTransform) && IsVisible(targetTransform))
+
+                if (targetTransform)
                 {
-                    parent.parent.SetData(targetKey, targetTransform);
-                    return NodeState.SUCCESS;
+                    if (IsInFOV(targetTransform) && IsVisible(targetTransform))
+                    {
+                        parent.parent.SetData(targetKey, targetTransform);
+                        return NodeState.SUCCESS;
+                    }
+                }
+                else
+                {
+                    ClearData(targetKey);
                 }
             }
             

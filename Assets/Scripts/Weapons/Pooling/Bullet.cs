@@ -1,13 +1,14 @@
 using System;
 using Pooling;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Bullet : MonoBehaviour, IPooledObject<Bullet>
 {
     [SerializeField] private float speed = 10f;
     private Action<Bullet> releaseFunc;
     private Transform bulletTransform;
+    
+    private int damage;
 
     private void Awake()
     {
@@ -21,13 +22,28 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.TryGetComponent(out EntityHealth entityHealth))
+        {
+            entityHealth.TakeDamage(damage);
+        }
+        
         if (releaseFunc == null)
         {
             Debug.LogError($"[Bullet] Release function not set on bullet {gameObject.name}");
             return;
         }
-        Debug.Log("hit bullet");
         releaseFunc(this);
+    }
+    
+    public void SetDamage(int damage)
+    {
+        if (damage <= 0)
+        {
+            Debug.LogError($"[Bullet] Damage must be greater than 0. Current damage: {damage}");
+            return;
+        }
+        
+        this.damage = damage;
     }
 
     public void SetReleaseFunc(Action<Bullet> currentReleaseFunc)

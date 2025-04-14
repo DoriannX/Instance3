@@ -1,9 +1,9 @@
 using System;
-using BehaviorTree;
+using BehaviorTreeModules;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Enemy.BehaviorTree
+namespace Entities.Enemy.BehaviorTree
 {
     public class TaskGoToTarget : Node
     {

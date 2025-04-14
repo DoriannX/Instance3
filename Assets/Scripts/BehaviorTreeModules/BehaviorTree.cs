@@ -1,19 +1,19 @@
 using UnityEngine;
 
-namespace BehaviorTree
+namespace BehaviorTreeModules
 {
-    public abstract class Tree : MonoBehaviour
+    public abstract class BehaviorTree : MonoBehaviour
     {
-        private Node _root;
+        private Node root;
 
         protected void Start()
         {
-            _root = SetupTree();
+            root = SetupTree();
         }
 
         private void Update()
         {
-            _root?.Evaluate();
+            root?.Evaluate();
         }
 
         protected abstract Node SetupTree();

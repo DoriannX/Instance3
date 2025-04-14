@@ -1,9 +1,9 @@
-using BehaviorTree;
-using Theo.Enemy;
+using BehaviorTreeModules;
+using Entities.Enemy.BehaviorTree.Modes;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Enemy.BehaviorTree
+namespace Entities.Enemy.BehaviorTree
 {
     public class TaskPatrol : Node
     {

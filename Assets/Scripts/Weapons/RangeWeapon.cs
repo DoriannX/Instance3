@@ -35,6 +35,7 @@ public class RangeWeapon : Weapon
         {
             Bullet bullet = bulletSpawner.SpawnBullet();
             bullet.transform.position = bulletSpawner.transform.position;
+            bullet.SetDamage(damage);
 
             float spreadAngle = (ammoShoot > 1) ? (i - (ammoShoot - 1) / 2f) * bulletSpread : 0f;
 

@@ -7,4 +7,5 @@ public class WeaponData : ScriptableObject
     public Mesh mesh;
     public int damage;
     public float cooldown;
+    public float attackRange;
 }
