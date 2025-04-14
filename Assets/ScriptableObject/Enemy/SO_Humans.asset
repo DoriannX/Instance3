@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8f36a106174d474db5f9aa2592fee1f, type: 3}
   m_Name: SO_Humans
   m_EditorClassIdentifier: 
-  Hp: 50
-  EnemyName: Human
-  PatrolSpd: 10
-  ChaseSpd: 20
-  Enemy: {fileID: 622346891579285735, guid: f07c6945a7b4cb447b29d4e2d0f6f61d, type: 3}
+  hp: 1
+  enemyName: Human
+  patrolSpd: 0
+  chaseSpd: 0
+  enemy: {fileID: 622346891579285735, guid: f07c6945a7b4cb447b29d4e2d0f6f61d, type: 3}
