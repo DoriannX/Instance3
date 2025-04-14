@@ -537,6 +537,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RIG ELITE
       objectReference: {fileID: 0}
+    - target: {fileID: 8096581665420818717, guid: 14de9014c429ed242a485958996439d7, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
