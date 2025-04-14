@@ -1,4 +1,3 @@
-using System;
 using BehaviorTreeModules;
 using UnityEngine;
 
@@ -7,20 +6,16 @@ namespace Entities.Enemy.BehaviorTree
     public class TaskAttackEnemy : Node
     {
         private readonly float cooldownTime;
-        private readonly float damage;
         private readonly string targetKey;
         
-        /*private Transform previousTargetTransform;
-        private EntityManager previousTargetEntityManager;*/
         private readonly Weapon weapon;
         private readonly Transform selfTransform;
         
         private float lastAttackTime;
         
-        public TaskAttackEnemy(Transform transform, Weapon weapon, float cooldownTime, float damage, string targetKey)
+        public TaskAttackEnemy(Transform transform, Weapon weapon, float cooldownTime, string targetKey)
         {
             this.cooldownTime = cooldownTime;
-            this.damage = damage;
             this.targetKey = targetKey;
             selfTransform = transform;
             this.weapon = weapon;
@@ -43,14 +38,6 @@ namespace Entities.Enemy.BehaviorTree
             
             return NodeState.SUCCESS;
         }
-
-        /*private void Attack()
-        {
-            if (previousTargetEntityManager.TakeDamage(damage))
-                ClearData(targetKey);
-            
-            lastAttackTime = Time.time;
-        }*/
 
         private bool CheckAttackTime()
         {

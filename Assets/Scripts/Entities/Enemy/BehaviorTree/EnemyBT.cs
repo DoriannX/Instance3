@@ -56,7 +56,7 @@ namespace Entities.Enemy.BehaviorTree
                 new Sequence(new List<Node>
                 {
                     new CheckEnemyInAttackRange(transform, enemyLayer, attackMode, weaponData.attackRange, targetKey, maxEnemyDetection),
-                    new TaskAttackEnemy(transform, weapon, weaponData.cooldown, weaponData.damage, targetKey)
+                    new TaskAttackEnemy(transform, weapon, weaponData.cooldown, targetKey)
                 }),
                 new Sequence(new List<Node>
                 {
