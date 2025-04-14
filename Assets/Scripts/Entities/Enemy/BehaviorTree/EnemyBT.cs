@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using BehaviorTree;
+using BehaviorTreeModules;
 using Entities.Enemy.BehaviorTree.Modes;
 using UnityEngine;
 using UnityEngine.AI;
-using Tree = BehaviorTree.Tree;
 
 namespace Entities.Enemy.BehaviorTree
 {
-    public sealed class EnemyBT : Tree
+    public sealed class EnemyBT : global::BehaviorTreeModules.BehaviorTree
     {
         [Header("General")]
         [SerializeField] private NavMeshAgent navMeshAgent;
@@ -25,7 +24,6 @@ namespace Entities.Enemy.BehaviorTree
         
         [Header("Chase")]
         [SerializeField] private float chaseSpeed = 3.5f;
-        [SerializeField] private float chaseStopDistance = 1.5f;
         
         [Header("Patrol")]
         [SerializeField] private Transform[] patrolPoints;

@@ -17,4 +17,4 @@ MonoBehaviour:
   mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
   damage: 5
   cooldown: 1
-  attackRange: 1
+  attackRange: 2

@@ -1,5 +1,5 @@
 using System;
-using BehaviorTree;
+using BehaviorTreeModules;
 using UnityEngine;
 
 namespace Entities.Enemy.BehaviorTree
