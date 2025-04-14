@@ -1059,7 +1059,9 @@ MonoBehaviour:
   corridorLeft: {fileID: 6843582364748782869}
   corridorMiddle: {fileID: 6626390794342491651}
   corridorRight: {fileID: 3982850447002257814}
-  corridorSize: 0
+  corridorIsBig: 0
+  corridorSizeBig: {x: 0.66, y: 0.66, z: 0.66}
+  corridorSizeSmall: {x: 0.5, y: 0.5, z: 0.5}
 --- !u!1 &6231990511029313338
 GameObject:
   m_ObjectHideFlags: 0
