@@ -1,15 +1,16 @@
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class Rooms : MonoBehaviour
 {
-    [SerializeField] private SO_Room Room;
+    [SerializeField] private SO_Room room;
     [Header("EnemySpawn")]
-    [SerializeField] private GameObject SpawnPointEnemy;
-    [SerializeField] private int SpawnTracker;
+    [SerializeField] private GameObject spawnPointEnemy;
+    [SerializeField] private int spawnTracker;
     [Header("RoomExitPoints")]
-    [SerializeField] private List<GameObject> RoomTranstions;
+    [SerializeField] private List<GameObject> roomTranstions;
 
     public void Start()
     {
@@ -18,21 +19,15 @@ public class Rooms : MonoBehaviour
 
     public void RoomInitialization()
     {
-        if (Room.Nbenemy.Sum() > SpawnPointEnemy.transform.childCount)
-        {
-            Debug.Log("The number of spawnPoint isn't enough you need :" + Room.Nbenemy.Sum() + $" spawn point in {Room.name}");
-            return;
-        }
+        Assert.Greater(room.nbEnemy.Sum(),spawnPointEnemy.transform.childCount, "The number of spawnPoint isn't enough you need :" + room.nbEnemy.Sum() + $" spawn point in {room.name}");
 
-        for(int i = 0; i < Mathf.Min(Room.Nbenemy.Count,Room.EnemyType.Count); i++)
+        for(int i = 0; i < Mathf.Min(room.nbEnemy.Count,room.enemyType.Count); i++)
         {
-            int currentSpawnTracker = SpawnTracker;
-            //Debug.Log($"loop number : {currentSpawnTracker}");
-            for( int j = 0; j < Room.Nbenemy[i]; j++)
+            int currentSpawnTracker = spawnTracker;
+            for( int j = 0; j < room.nbEnemy[i]; j++)
             {
-                //Debug.Log($"{j}th {Room.EnemyType[i].EnemyName} / at spawn number : {SpawnTracker}");
-                GameObject SpawnedEnemy = Instantiate(Room.EnemyType[i].Enemy, SpawnPointEnemy.transform.GetChild(SpawnTracker).transform);
-                SpawnTracker++;
+                GameObject SpawnedEnemy = Instantiate(room.enemyType[i].enemy, spawnPointEnemy.transform.GetChild(spawnTracker).transform);
+                spawnTracker++;
             }
         }
     }

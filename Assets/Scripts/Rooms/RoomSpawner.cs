@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class RoomSpawner : MonoBehaviour
 {
-    [SerializeField] private SO_RoomGenerator RoomSpwn;
+    [SerializeField] private SO_RoomGenerator roomSpawn;
 
     public void Awake()
     {
-        Instantiate(RoomSpwn);
+        Instantiate(roomSpawn);
     }
 }

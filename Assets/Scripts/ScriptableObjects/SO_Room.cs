@@ -6,7 +6,7 @@ public class SO_Room : ScriptableObject
 {
     public int roomID;
     public string roomName;
-    public List<int> Nbenemy;
-    public List<SO_Enemy> EnemyType;
-    public GameObject RoomPrefab;
+    public List<int> nbEnemy;
+    public List<SO_Enemy> enemyType;
+    public GameObject roomPrefab;
 }

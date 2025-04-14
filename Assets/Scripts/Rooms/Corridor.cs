@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.Rendering;
 
 [ExecuteInEditMode]
 public class Corridor : MonoBehaviour
@@ -17,6 +19,17 @@ public class Corridor : MonoBehaviour
     //if the corridor is big or small ( true = big )
     [Header("CorridorSize")]
     [SerializeField] private bool corridorIsBig;
+    [SerializeField] private Vector3 corridorSizeBig = new Vector3(0.66f,0.66f,0.66f);
+    [SerializeField] private Vector3 corridorSizeSmall = new Vector3(0.5f, 0.5f, 0.5f);
+
+    public void Awake()
+    {
+        Assert.IsNotNull(corridorStart);
+        Assert.IsNotNull(corridorEnd);
+        Assert.IsNotNull(corridorLeft);
+        Assert.IsNotNull(corridorMiddle);
+        Assert.IsNotNull(corridorRight);
+    }
 
     public void CorridorTransform(Transform startPos, Transform endPos)
     {
@@ -28,13 +41,8 @@ public class Corridor : MonoBehaviour
         var dir = endPos.transform.position - startPos.transform.position;
         var rot = Quaternion.LookRotation(dir, Vector3.up);
 
-        if (Mathf.Abs(rot.eulerAngles.z) < 30 || Mathf.Abs(rot.eulerAngles.z) > 150)
-        {
-            //coude pour le couloir
-        }
-        Debug.Log(rot);
-        corridorMiddle.transform.rotation = rot;
         corridorLeft.transform.rotation = rot;
+        corridorMiddle.transform.rotation = rot;
         corridorRight.transform.rotation = rot;
         
     }
@@ -43,11 +51,11 @@ public class Corridor : MonoBehaviour
     {
         if (corridorIsBig)
         {
-            transform.localScale = new Vector3(0.66f, 0.66f, 0.66f);
+            transform.localScale = corridorSizeBig;
         }
         else
         {
-            transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            transform.localScale = corridorSizeSmall;
         }
 
         corridorRight.transform.position = corridorStart.transform.position;
