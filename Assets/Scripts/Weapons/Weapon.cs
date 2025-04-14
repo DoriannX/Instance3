@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
     [SerializeField] protected WeaponData weaponData;
-    protected float cooldown;
+     protected float cooldown;
     protected int damage;
     private MeshFilter weaponMesh;    
     protected Action<int> onWeaponUsed;

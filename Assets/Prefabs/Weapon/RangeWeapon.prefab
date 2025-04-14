@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3868064150173528719}
   - component: {fileID: 5687250591610940729}
   - component: {fileID: 1768843198777161808}
-  - component: {fileID: 6436467181767254714}
   - component: {fileID: 8140927079002982144}
   m_Layer: 9
   m_Name: RangeWeapon
@@ -89,27 +88,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6436467181767254714
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2148945306901618524}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 1024
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8140927079002982144
 MonoBehaviour:
   m_ObjectHideFlags: 0
