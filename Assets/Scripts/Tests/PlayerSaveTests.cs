@@ -2,7 +2,7 @@ using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace PlayerTest.Tests
+namespace Tests
 {
     public class PlayerSaveTests
     {

@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 public class Bullet : MonoBehaviour, IPooledObject<Bullet>
 {
-    [FormerlySerializedAs("_speed")] [SerializeField] private float speed = 10f;
+    [SerializeField] private float speed = 10f;
     private Action<Bullet> releaseFunc;
     private Transform bulletTransform;
 
