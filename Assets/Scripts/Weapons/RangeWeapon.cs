@@ -6,14 +6,13 @@ public class RangeWeapon : Weapon
 {
     protected BulletSpawner bulletSpawner;
 
-    [Header("Range Weapon Stats")]
-    private int ammoConsume;
+    [Header("Range Weapon Stats")] private int ammoConsume;
     private float bulletSpread;
     private int ammoShoot;
 
     protected override void SetupWeapon()
     {
-        base.SetupWeapon();    
+        base.SetupWeapon();
         bulletSpawner = GetComponentInChildren<BulletSpawner>(true);
     }
 
@@ -31,6 +30,16 @@ public class RangeWeapon : Weapon
 
     public override void Attack(Transform playerTransform)
     {
+        Ray ray = new Ray(playerTransform.position, playerTransform.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+        {
+            bulletSpawner.transform.LookAt(hit.point);
+        }
+        else
+        {
+            bulletSpawner.transform.rotation = playerTransform.rotation;
+        }
+
         for (int i = 0; i < ammoShoot; i++)
         {
             Bullet bullet = bulletSpawner.SpawnBullet();
@@ -38,7 +47,7 @@ public class RangeWeapon : Weapon
 
             float spreadAngle = (ammoShoot > 1) ? (i - (ammoShoot - 1) / 2f) * bulletSpread : 0f;
 
-            bullet.transform.rotation = playerTransform.rotation * Quaternion.Euler(0, spreadAngle, 0);
+            bullet.transform.rotation = bulletSpawner.transform.rotation * Quaternion.Euler(0, spreadAngle, 0);
             bullet.gameObject.SetActive(true);
         }
 
