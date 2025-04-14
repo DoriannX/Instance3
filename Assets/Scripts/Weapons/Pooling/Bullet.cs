@@ -37,6 +37,12 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
     
     public void SetDamage(int damage)
     {
+        if (damage <= 0)
+        {
+            Debug.LogError($"[Bullet] Damage must be greater than 0. Current damage: {damage}");
+            return;
+        }
+        
         this.damage = damage;
     }
 

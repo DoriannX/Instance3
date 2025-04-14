@@ -4,10 +4,11 @@ using BehaviorTreeModules;
 using Entities.Enemy.BehaviorTree.Modes;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Assertions;
 
 namespace Entities.Enemy.BehaviorTree
 {
-    public sealed class EnemyBT : global::BehaviorTreeModules.BehaviorTree
+    public sealed class EnemyBT : BehaviorTreeModules.BehaviorTree
     {
         [Header("General")]
         [SerializeField] private NavMeshAgent navMeshAgent;
@@ -38,17 +39,10 @@ namespace Entities.Enemy.BehaviorTree
 
         protected override Node SetupTree()
         {
-            if (!navMeshAgent)
-                throw new MissingComponentException("NavMeshAgent is not assigned in the inspector.");
-            
-            if (patrolPoints.Length == 0)
-                throw new MissingComponentException("Patrol points are not assigned in the inspector.");
-
-            if (!weapon)
-                throw new MissingComponentException("Weapon is not assigned in the inspector.");
-            
-            if (!weaponData)
-                throw new MissingComponentException("WeaponData is not assigned in the inspector.");
+            Assert.IsNotNull(navMeshAgent, "NavMeshAgent is not assigned in the inspector.");
+            Assert.IsTrue(patrolPoints.Length > 0, "Patrol points are not assigned in the inspector.");
+            Assert.IsNotNull(weapon, "Weapon is not assigned in the inspector.");
+            Assert.IsNotNull(weaponData, "WeaponData is not assigned in the inspector.");
             
             SetWeaponData(weaponData);
 

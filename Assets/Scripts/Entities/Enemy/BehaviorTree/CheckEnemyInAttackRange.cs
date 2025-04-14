@@ -47,6 +47,8 @@ namespace Entities.Enemy.BehaviorTree
                 case AttackMode.Range:
                     nbEnemy = Physics.OverlapSphereNonAlloc(transform.position, radius, colliders, layerAttack);
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException("invalid attack mode");
             }
             
             if (nbEnemy == 0)
