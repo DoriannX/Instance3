@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class Rooms : MonoBehaviour
 {
-    [SerializeField] private SO_Room room;
+    public SO_Room room;
     [Header("EnemySpawn")]
     [SerializeField] private GameObject spawnPointEnemy;
     [SerializeField] private int spawnTracker;
     [Header("RoomExitPoints")]
-    [SerializeField] private List<GameObject> roomTranstions;
+    public List<GameObject> connectedRooms;
+    [SerializeField] private List<GameObject> corridors;
 
     public void Start()
     {
@@ -19,7 +20,7 @@ public class Rooms : MonoBehaviour
 
     public void RoomInitialization()
     {
-        Assert.Greater(room.nbEnemy.Sum(),spawnPointEnemy.transform.childCount, "The number of spawnPoint isn't enough you need :" + room.nbEnemy.Sum() + $" spawn point in {room.name}");
+        Assert.GreaterOrEqual(room.nbEnemy.Sum(),spawnPointEnemy.transform.childCount, "The number of spawnPoint isn't enough you need :" + room.nbEnemy.Sum() + $" spawn point in {room.name}");
 
         for(int i = 0; i < Mathf.Min(room.nbEnemy.Count,room.enemyType.Count); i++)
         {
@@ -30,5 +31,14 @@ public class Rooms : MonoBehaviour
                 spawnTracker++;
             }
         }
+    }
+
+    public GameObject CreateCorridor(int exitIndex)
+    {
+        room.corridorPrefab.GetComponent<Corridor>().corridorStart = corridors[exitIndex];
+        room.corridorPrefab.GetComponent<Corridor>().corridorEnd = connectedRooms[0].GetComponent<Rooms>().corridors[exitIndex];
+        GameObject corridor = Instantiate(room.corridorPrefab);
+
+        return corridor;
     }
 }

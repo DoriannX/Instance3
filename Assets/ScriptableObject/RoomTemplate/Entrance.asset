@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8eac1d4fac5f7148aae332b27f3bbd8, type: 3}
-  m_Name: Room0
+  m_Name: Entrance
   m_EditorClassIdentifier: 
   roomID: 0
-  roomName: MainRoom
+  roomName: Entrance
   nbEnemy: 
   enemyType: []
   exits: []
   roomPrefab: {fileID: 8932695175090433084, guid: 4a77ec64b4ab43e48af41610fc7254ee, type: 3}
   corridorPrefab: {fileID: 4951540757279758029, guid: 4eac50a1252d03b4d8ee7f58d7e0e369, type: 3}
-  isSmallRoom: 0
+  isSmallRoom: 1

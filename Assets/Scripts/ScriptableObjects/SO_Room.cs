@@ -8,5 +8,8 @@ public class SO_Room : ScriptableObject
     public string roomName;
     public List<int> nbEnemy;
     public List<SO_Enemy> enemyType;
+    public List<GameObject> exits;
     public GameObject roomPrefab;
+    public GameObject corridorPrefab;
+    public bool isSmallRoom;
 }
