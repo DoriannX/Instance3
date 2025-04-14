@@ -21,11 +21,19 @@ public class MeleeWeapon : Weapon
 
     public override void Attack(Transform playerTransform)
     {
-        Collider[] hitColliders = Physics.OverlapBox(playerTransform.position + playerTransform.forward * attackRange, (Vector3.one * attackRange), playerTransform.rotation, enemyLayer);
+        Collider[] hitColliders = Physics.OverlapBox(playerTransform.position + playerTransform.forward * attackRange, Vector3.one * attackRange, playerTransform.rotation, enemyLayer);
 
-        if (hitColliders.Length > 0)
+        if (hitColliders.Length <= 0)
+            return;
+
+        foreach (Collider hitCollider in hitColliders)
         {
-            Debug.Log("Hit enemies");
+            if (hitCollider.TryGetComponent(out EntityHealth entityHealth))
+            {
+                entityHealth.TakeDamage(damage);
+                onWeaponUsed?.Invoke(0); 
+                Debug.Log("attack ");
+            }
         }
     }
 

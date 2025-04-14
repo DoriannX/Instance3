@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 310b78f049f92dd4ebba4696f6de5801, type: 3}
-  m_Name: MetalBar
+  m_Script: {fileID: 11500000, guid: b8f36a106174d474db5f9aa2592fee1f, type: 3}
+  m_Name: SO_Poulpoins 1
   m_EditorClassIdentifier: 
-  weaponName: MetalBar
-  description: A metal of bar
-  mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
-  damage: 5
-  cooldown: 1
-  attackRange: 2
+  Hp: 50
+  EnemyName: Test1
+  PatrolSpd: 10
+  ChaseSpd: 20
+  Enemy: {fileID: 622346891579285735, guid: 1c4525270b4fb714b9547f45cfe0d9fd, type: 3}
