@@ -22,7 +22,7 @@ public class PlayerFeedbackManager : MonoBehaviour
 
         // Subscribe to health and dash events.
         if(entityHealth != null)
-            entityHealth.OnDamageTaken.AddListener(OnPlayerDamaged);
+            entityHealth.onDamageTaken.AddListener(OnPlayerDamaged);
         if(playerDash != null)
             playerDash.OnDash += OnPlayerDash;
     }
@@ -30,7 +30,7 @@ public class PlayerFeedbackManager : MonoBehaviour
     private void OnDestroy()
     {
         if(entityHealth != null)
-            entityHealth.OnDamageTaken.RemoveListener(OnPlayerDamaged);
+            entityHealth.onDamageTaken.RemoveListener(OnPlayerDamaged);
         if(playerDash != null)
             playerDash.OnDash -= OnPlayerDash;
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Item
 {
@@ -10,13 +11,16 @@ namespace Item
         [field: SerializeField] public bool GotPickedUp { get; private set; }
         [field: SerializeField] public bool HasArrived { get; private set; }
 
-        // New fields for pickup feedback
-        [SerializeField] protected AudioClip pickupSFX;
+        // Replaced direct audio clip with a pickup SFX name that SFXManager uses.
+        [SerializeField] protected string pickupSFXName = "Pickup"; // Designers assign this name in the Inspector.
         [SerializeField] protected GameObject pickupVFXPrefab;
 
         protected Player targetPlayer;
         protected Vector3 startPos;
         protected MeshRenderer meshRenderer;
+
+        // (Optionally, you can add an event here if you want other systems to subscribe)
+        // public UnityEvent OnItemPickedUp;
 
         protected virtual void Awake()
         {
@@ -25,6 +29,8 @@ namespace Item
             {
                 Debug.LogError($"Missing MeshRenderer on {gameObject.name}");
             }
+            // Optionally initialize events:
+            // if (OnItemPickedUp == null) OnItemPickedUp = new UnityEvent();
         }
 
         public void OnPickUp(Entity target)
@@ -73,13 +79,13 @@ namespace Item
             }
         }
 
-        // Triggers visual and audio feedback on pickup.
+        // Decoupled feedback using SFXManager for sound and direct instantiation for VFX.
         protected virtual void TriggerPickupFeedback()
         {
-            // Play the pickup sound at the item's position.
-            if (pickupSFX != null)
+            // Instead of using AudioSource.PlayClipAtPoint, use SFXManager.
+            if (!string.IsNullOrEmpty(pickupSFXName) && SFXManager.instance != null)
             {
-                AudioSource.PlayClipAtPoint(pickupSFX, transform.position);
+                SFXManager.instance.PlaySFX(pickupSFXName);
             }
             
             // Instantiate the VFX prefab.
@@ -88,6 +94,9 @@ namespace Item
                 GameObject vfx = Instantiate(pickupVFXPrefab, transform.position, Quaternion.identity);
                 Destroy(vfx, 1f);
             }
+            
+            // Optionally, broadcast the event so other systems can react:
+            // OnItemPickedUp?.Invoke();
         }
 
         public abstract void ApplyEffect();
