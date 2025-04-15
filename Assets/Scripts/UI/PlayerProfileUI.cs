@@ -31,7 +31,7 @@ public class PlayerProfileUI : MonoBehaviour
         playerNameText.text = player.name;
 
         // Subscribe to events.
-        player.OnChipsChanged += UpdateChipsUI;
+        player.onChipsChanged += UpdateChipsUI;
         player.OnWeaponChanged += UpdateWeaponUI;
         upgradeManager.OnUpgradeChanged += UpdateUpgradeUI;
 
@@ -50,7 +50,7 @@ public class PlayerProfileUI : MonoBehaviour
     {
         if (player != null)
         {
-            player.OnChipsChanged -= UpdateChipsUI;
+            player.onChipsChanged -= UpdateChipsUI;
             player.OnWeaponChanged -= UpdateWeaponUI;
         }
         if (upgradeManager != null)
