@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Item
 {
-    [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(SphereCollider))]
     public abstract class ItemDrop : MonoBehaviour
     {
         [SerializeField, Min(0.1f)] protected float travelTime = 1f;
@@ -13,16 +12,6 @@ namespace Item
 
         protected Player targetPlayer;
         protected Vector3 startPos;
-        protected MeshRenderer meshRenderer;
-
-        protected virtual void Awake()
-        {
-            meshRenderer = GetComponent<MeshRenderer>();
-            if (meshRenderer == null)
-            {
-                Debug.LogError($"Missing MeshRenderer on {gameObject.name}");
-            }
-        }
 
         public void OnPickUp(Entity target)
         {

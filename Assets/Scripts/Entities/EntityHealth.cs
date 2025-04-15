@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EntityHealth : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class EntityHealth : MonoBehaviour
     [field: SerializeField] public int Hp { get; private set; }
 
     private Entity entity;
+    
+    private readonly UnityEvent onDeath = new();
 
     private void Awake()
     {
@@ -40,6 +43,8 @@ public class EntityHealth : MonoBehaviour
 
     public void Die()
     {
+        onDeath?.Invoke();
+        
         Debug.Log($"{gameObject.name} has died.");
         Destroy(gameObject);
         // TODO: Further implementation for death (animations, notifications, etc.)
@@ -50,4 +55,6 @@ public class EntityHealth : MonoBehaviour
         maxHp = amount;
         Hp = maxHp;  // Optionally, also heal the entity to full health.
     }
+
+    public UnityEvent OnDeath => onDeath;
 }
