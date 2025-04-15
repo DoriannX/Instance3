@@ -1,11 +1,11 @@
 using UnityEngine;
+using System;
 
 public abstract class Entity : MonoBehaviour
 {
     // --- Core Attributes ---
     [SerializeField] protected float speed; // Movement speed
 
-    // Public accessor so other components (like PlayerMovement) can read and modify the speed.
     public float Speed
     {
         get { return speed; }
@@ -13,28 +13,32 @@ public abstract class Entity : MonoBehaviour
     }
 
     // --- Weapon References ---
-    /*
-    [SerializeField] protected Weapon currentWeapon;  // Currently equipped weapon
-    [SerializeField] protected RangeWeapon rangeWeapon; // Reference to a ranged weapon
-    [SerializeField] protected MeleeWeapon meleeWeapon; // Reference to a melee weapon
-    */
+    [Header("Weapon References")]
+    [SerializeField] protected Weapon currentWeapon;  // Currently active weapon
+    [SerializeField] protected MeleeWeapon meleeWeapon; // Melee weapon slot
+    [SerializeField] protected RangeWeapon rangeWeapon; // Ranged weapon slot
+
+    // Public getters for UI access.
+    public Weapon CurrentWeapon => currentWeapon;
+    public MeleeWeapon MeleeWeapon => meleeWeapon;
+    public RangeWeapon RangeWeapon => rangeWeapon;
+    
+    // Event to signal that the equipped weapon has changed.
+    public event Action<Weapon> OnWeaponChanged;
 
     // --- Health Component ---
     protected EntityHealth healthComponent;
 
     protected virtual void Awake()
     {
-        // Get the EntityHealth component attached to this GameObject.
         healthComponent = GetComponent<EntityHealth>();
     }
 
-    // --- Weapon Handling ---
-
     /// <summary>
-    /// Sets the current equipped weapon and updates the appropriate reference.
+    /// Sets the equipped weapon and updates the appropriate reference.
+    /// Fires OnWeaponChanged for UI updates.
     /// </summary>
     /// <param name="newWeapon">The new weapon to equip.</param>
-    /*
     public virtual void SetCurrentWeapon(Weapon newWeapon)
     {
         currentWeapon = newWeapon;
@@ -46,8 +50,7 @@ public abstract class Entity : MonoBehaviour
         {
             meleeWeapon = (MeleeWeapon)newWeapon;
         }
-
-        // Optionally trigger a UI update here.
+        // Notify listeners (like the UI) that the current weapon has changed.
+        OnWeaponChanged?.Invoke(newWeapon);
     }
-    */
 }

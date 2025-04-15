@@ -8,6 +8,8 @@ public abstract class Weapon : MonoBehaviour
     protected int damage;
     private MeshFilter weaponMesh;    
     protected Action<int> onWeaponUsed;
+    
+    public WeaponData Data => weaponData;
 
     private void Awake()
     {

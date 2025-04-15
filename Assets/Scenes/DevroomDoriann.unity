@@ -1151,7 +1151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHp: 0
-  hp: 0
+  <Hp>k__BackingField: 0
 --- !u!114 &745303343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1165,7 +1165,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  chips: 0
+  currentWeapon: {fileID: 0}
+  meleeWeapon: {fileID: 0}
+  rangeWeapon: {fileID: 0}
+  <Chips>k__BackingField: 0
   ammoMultiplier: 1
   cooldownMultiplier: 1
 --- !u!114 &745303344
