@@ -13,6 +13,9 @@ public class Player : Entity
     [SerializeField] private float ammoMultiplier = 1.0f;
     [SerializeField] private float cooldownMultiplier = 1.0f;
 
+    // Events for updating UI
+    public event System.Action<int> OnChipsChanged;
+
     // --- References ---
     private PlayerMovement movement;
     private PlayerDash dash;
@@ -54,9 +57,34 @@ public class Player : Entity
         movement.SetMovementInput(moveInput);
     }
 
+    /// <summary>
+    /// Adds chips to the player's total and notifies any subscribers.
+    /// </summary>
     public virtual void AddChips(int amount)
     {
         Chips += amount;
+        OnChipsChanged?.Invoke(Chips);
+    }
+
+    /// <summary>
+    /// Switches the weapon between melee and ranged (if both are available).
+    /// </summary>
+    public void SwitchWeapon()
+    {
+        // If current weapon is melee and we have a ranged weapon, swap to ranged.
+        if (currentWeapon is MeleeWeapon && rangeWeapon != null)
+        {
+            SetCurrentWeapon(rangeWeapon);
+        }
+        // Otherwise, if current weapon is ranged and we have a melee weapon, swap to melee.
+        else if (currentWeapon is RangeWeapon && meleeWeapon != null)
+        {
+            SetCurrentWeapon(meleeWeapon);
+        }
+        else
+        {
+            Debug.LogWarning("Weapon switch not possible: one or both weapon slots are empty.");
+        }
     }
 
     private void FixedUpdate()
@@ -66,7 +94,6 @@ public class Player : Entity
         {
             movement.HandleMovement(Speed);
         }
-
         movement.ApplyVelocity();
     }
 

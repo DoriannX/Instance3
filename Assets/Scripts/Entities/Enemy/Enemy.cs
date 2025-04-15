@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Enemy : Entity
 {
-
     [Header("Fragment Chip Drop")] 
     [SerializeField] private uint fragmentChipDropRangeMin;
     [SerializeField] private uint fragmentChipDropRangeMax;
