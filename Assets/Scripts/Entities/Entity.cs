@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(EntityHealth))]
 public abstract class Entity : MonoBehaviour
 {
     // --- Core Attributes ---

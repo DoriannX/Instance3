@@ -1,3 +1,4 @@
+using System.Linq;
 using BehaviorTreeModules;
 using Entities.Enemy.BehaviorTree.Modes;
 using UnityEngine;
@@ -37,8 +38,10 @@ namespace Entities.Enemy.BehaviorTree
         
         public override NodeState Evaluate()
         {
-            if (patrolPoints.Length == 0)
+            if (patrolPoints.Length == 0  || patrolPoints.Any( transform => transform == null))
+            {
                 return NodeState.FAILURE;
+            }
             
             if (currentPath != navMeshAgent.path)
             {

@@ -1,3 +1,4 @@
+using System;
 using BehaviorTreeModules;
 using UnityEngine;
 
@@ -32,6 +33,14 @@ namespace Entities.Enemy.BehaviorTree
             
             if (data == null)
                 return NodeState.FAILURE;
+            
+            if (data is not Transform target)
+                throw new InvalidCastException("Target is not a Transform");
+
+            Vector3 lookAtRotation = Quaternion.LookRotation(target.position - selfTransform.position).eulerAngles;
+            lookAtRotation.x = selfTransform.rotation.eulerAngles.x;
+            lookAtRotation.z = selfTransform.rotation.eulerAngles.z;
+            selfTransform.rotation = Quaternion.Euler(lookAtRotation);
             
             weapon?.Attack(selfTransform);
             lastAttackTime = Time.time;

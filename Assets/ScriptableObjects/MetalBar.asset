@@ -16,5 +16,5 @@ MonoBehaviour:
   description: A metal of bar
   mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
   damage: 5
-  cooldown: 1
+  cooldown: 0.25
   attackRange: 2
