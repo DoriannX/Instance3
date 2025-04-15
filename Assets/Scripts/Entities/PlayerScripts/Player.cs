@@ -1,9 +1,10 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerDash))]
 [RequireComponent(typeof(PlayerVulnerabilityManager))]
-// [RequireComponent(typeof(PlayerAttack))]
+[RequireComponent(typeof(PlayerAttack))]
 [RequireComponent(typeof(EntityHealth))]
 public class Player : Entity
 {
@@ -11,13 +12,16 @@ public class Player : Entity
     [field: SerializeField] public int Chips { get; private set; } = 0;
     [SerializeField] private float ammoMultiplier = 1.0f;
     [SerializeField] private float cooldownMultiplier = 1.0f;
+    public bool hasKey = false;
 
     // --- References ---
+    private Transform playerTransform;
+
     private PlayerMovement movement;
     private PlayerDash dash;
 
     private PlayerVulnerabilityManager vulnerabilityManager;
-    // private PlayerAttack attack;
+    private PlayerAttack attack;
     // private UI ui;
 
     protected override void Awake()
@@ -25,12 +29,13 @@ public class Player : Entity
         base.Awake();
         // Base Entity setup.
         healthComponent = GetComponent<EntityHealth>();
+        playerTransform = GetComponent<Transform>();
 
         // Player-specific component references
         movement = GetComponent<PlayerMovement>();
         vulnerabilityManager = GetComponent<PlayerVulnerabilityManager>();
         dash = GetComponent<PlayerDash>();
-        // attack = GetComponent<PlayerAttack>();
+        attack = GetComponent<PlayerAttack>();
         // ui = FindObjectOfType<UI>(); // Assuming UI is scene-based and singleton-style
     }
 
@@ -45,6 +50,7 @@ public class Player : Entity
 
         // Future attack handling would go here:
         // attack.HandleAttack();
+
     }
 
     public void StartDash()
@@ -103,4 +109,26 @@ private void UpdateUI()
         ui.Update(this);
 }
 */
+    public void Interact()
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(playerTransform.position, playerTransform.forward, out hit, 5f))
+        {
+            DoorSystem doorSystem = hit.collider.GetComponent<DoorSystem>();
+
+            if (doorSystem != null)
+            {       
+                if (hasKey)
+                {
+                    doorSystem.OpenDoor();
+                    hasKey = false;
+                }
+                else
+                {
+                    Debug.Log("You need a key to open this door.");
+                }
+            }
+        }
+    }
 }

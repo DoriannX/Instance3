@@ -30,4 +30,14 @@ public class InputManager : MonoBehaviour
 
         player.StartDash();
     }
+
+    public void Interact(InputAction.CallbackContext context)
+    {
+        if (!context.started)
+        {
+            return;
+        }
+               
+        player.Interact();
+    }
 }
