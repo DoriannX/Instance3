@@ -18,6 +18,7 @@ public class Player : Entity
     // --- References ---
     private PlayerMovement movement;
     private PlayerDash dash;
+    private PlayerInteract playerInteract;
 
     private PlayerVulnerabilityManager vulnerabilityManager;
     private PlayerAttack attack;
@@ -34,6 +35,7 @@ public class Player : Entity
         vulnerabilityManager = GetComponent<PlayerVulnerabilityManager>();
         dash = GetComponent<PlayerDash>();
         attack = GetComponent<PlayerAttack>();
+        playerInteract = GetComponent<PlayerInteract>();
         // ui = FindObjectOfType<UI>(); // Assuming UI is scene-based and singleton-style
     }
 
@@ -54,6 +56,11 @@ public class Player : Entity
     public void StartDash()
     {
         dash.StartDash();
+    }
+
+    public void Interact()
+    {
+        playerInteract.Interact();
     }
 
     public void SetMovementInput(Vector3 moveInput)
