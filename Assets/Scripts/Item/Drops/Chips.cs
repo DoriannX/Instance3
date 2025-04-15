@@ -1,12 +1,9 @@
 using System;
-using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Item.Drops
 {
     public class Chips : ItemDrop
     {
-        [FormerlySerializedAs("chipsAmnt")] [SerializeField]
         private uint chipsAmount;
 
         public override void ApplyEffect()
@@ -16,6 +13,11 @@ namespace Item.Drops
                 throw new InvalidCastException($"Wrong Entity: {targetPlayer}");
             }
             player.AddChips((int)chipsAmount);
+        }
+        
+        public void SetChipsAmount(uint amount)
+        {
+            chipsAmount = amount;
         }
     }
 }

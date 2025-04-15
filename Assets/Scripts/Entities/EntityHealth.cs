@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EntityHealth : MonoBehaviour
 {
@@ -41,6 +42,8 @@ public class EntityHealth : MonoBehaviour
 
     public void Die()
     {
+        onDeath?.Invoke();
+        
         Debug.Log($"{gameObject.name} has died.");
         onDeath?.Invoke();
         // TODO: Further implementation for death (animations, notifications, etc.)

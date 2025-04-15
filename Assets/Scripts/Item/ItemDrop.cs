@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Item
 {
-    [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(SphereCollider))]
     public abstract class ItemDrop : MonoBehaviour
     {
         [SerializeField, Min(0.1f)] protected float travelTime = 1f;
@@ -12,15 +11,16 @@ namespace Item
         [field: SerializeField] public bool HasArrived { get; private set; }
 
         protected Player targetPlayer;
-        protected Vector3 startPos;
-        protected MeshRenderer meshRenderer;
-
-        protected virtual void Awake()
+        protected bool isMovingToTarget = false;
+        protected float moveSpeed = 5f; // Force multiplier
+        protected Rigidbody rb;
+        
+        protected virtual void Start()
         {
-            meshRenderer = GetComponent<MeshRenderer>();
-            if (meshRenderer == null)
+            rb = GetComponent<Rigidbody>();
+            if (rb == null)
             {
-                Debug.LogError($"Missing MeshRenderer on {gameObject.name}");
+                rb = gameObject.AddComponent<Rigidbody>();
             }
         }
 
@@ -38,46 +38,49 @@ namespace Item
             }
 
             targetPlayer = player;
-            startPos = transform.position;
+            
             if (!GotPickedUp)
             {
-                StartCoroutine(GoToEntity());
+                isMovingToTarget = true;
             }
+
             GotPickedUp = true;
         }
-
-        protected IEnumerator GoToEntity()
+        
+        protected virtual void Update()
         {
-            float elapsedTime = 0;
-            while (elapsedTime < travelTime && targetPlayer != null)
+            if (isMovingToTarget && targetPlayer != null)
             {
-                elapsedTime += Time.deltaTime;
-                float t = elapsedTime / travelTime;
-                transform.position = Vector3.Lerp(startPos, targetPlayer.transform.position, t);
-                
-                if (HasArrived || targetPlayer == null)
-                    break;
+                MoveTowardsTarget();
 
-                yield return null;
+                if (HasArrived)
+                {
+                    ApplyEffect();
+                    Destroy(gameObject);
+                }
             }
+        }
 
-            if (targetPlayer != null && HasArrived)
-            {
-                ApplyEffect();
-                Destroy(gameObject);
-            }
+        protected void MoveTowardsTarget()
+        {
+            if (targetPlayer == null) return;
+
+            Vector3 direction = (targetPlayer.transform.position - transform.position).normalized;
+            rb.AddForce(direction * moveSpeed, ForceMode.Acceleration);
         }
 
         public void OnTriggerEnter(Collider other)
         {
-            if(other == null || targetPlayer == null)
+            if (other == null || targetPlayer == null)
             {
                 return;
             }
+
             if (!other.GetComponent<Player>())
             {
-                throw new InvalidCastException();
+                return;
             }
+
             if (!other.isTrigger)
             {
                 HasArrived = true;

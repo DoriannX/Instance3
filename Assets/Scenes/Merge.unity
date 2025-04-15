@@ -525,6 +525,26 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: groundDistance
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: fragmentChipPrefab
+      value: 
+      objectReference: {fileID: 7684936609199240483, guid: 04ccf61755d88654ca87fa0805c87fd7, type: 3}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 2048
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: fragmentChipDropRangeMax
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: fragmentChipDropRangeMin
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -884,6 +904,26 @@ PrefabInstance:
     - target: {fileID: 3864827485471327207, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: groundDistance
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: fragmentChipPrefab
+      value: 
+      objectReference: {fileID: 7684936609199240483, guid: 04ccf61755d88654ca87fa0805c87fd7, type: 3}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 2048
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: fragmentChipDropRangeMax
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: fragmentChipDropRangeMin
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2261,6 +2301,26 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: groundDistance
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: fragmentChipPrefab
+      value: 
+      objectReference: {fileID: 7684936609199240483, guid: 04ccf61755d88654ca87fa0805c87fd7, type: 3}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 2048
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: fragmentChipDropRangeMax
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: fragmentChipDropRangeMin
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3316,6 +3376,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restartSpeed: 0.5
+--- !u!114 &1762600628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762600570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b9681df0c41f5242b5cd6dc8e4238c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPickUpRad: 2
+--- !u!135 &1762600629
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762600570}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!64 &1765397945
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3743,6 +3837,26 @@ PrefabInstance:
     - target: {fileID: 3864827485471327207, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: groundDistance
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: fragmentChipPrefab
+      value: 
+      objectReference: {fileID: 7684936609199240483, guid: 04ccf61755d88654ca87fa0805c87fd7, type: 3}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 2048
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: fragmentChipDropRangeMax
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: fragmentChipDropRangeMin
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4592,6 +4706,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5313647932819149050, guid: 1f302ecb04ae4e924859ee8ef4aaf420, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1762600612}
+    - targetCorrespondingSourceObject: {fileID: 5313647932819149050, guid: 1f302ecb04ae4e924859ee8ef4aaf420, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1762600629}
+    - targetCorrespondingSourceObject: {fileID: 5313647932819149050, guid: 1f302ecb04ae4e924859ee8ef4aaf420, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1762600628}
     - targetCorrespondingSourceObject: {fileID: 8590696332462253792, guid: 1f302ecb04ae4e924859ee8ef4aaf420, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1002462039}
