@@ -13,7 +13,6 @@ public class ScreenBlinkEffect : MonoBehaviour
 
     private void Awake()
     {
-        // Implement singleton pattern.
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -26,6 +25,10 @@ public class ScreenBlinkEffect : MonoBehaviour
         if (blinkImage == null)
         {
             Debug.LogError("ScreenBlinkEffect: Blink Image not assigned in the Inspector!");
+        }
+        else
+        {
+            blinkImage.color = new Color(blinkImage.color.r, blinkImage.color.g, blinkImage.color.b, 0f);
         }
     }
 
@@ -40,9 +43,10 @@ public class ScreenBlinkEffect : MonoBehaviour
 
     private IEnumerator DoBlink()
     {
-        Color originalColor = blinkImage.color; // Expected to be fully transparent.
+        // Force the original color to be transparent.
+        Color originalColor = new Color(blinkImage.color.r, blinkImage.color.g, blinkImage.color.b, 0f);
         float timer = 0f;
-        
+    
         // Fade in quickly.
         while (timer < blinkInDuration)
         {
@@ -50,7 +54,7 @@ public class ScreenBlinkEffect : MonoBehaviour
             blinkImage.color = Color.Lerp(originalColor, blinkColor, timer / blinkInDuration);
             yield return null;
         }
-        
+    
         timer = 0f;
         // Fade out back to original.
         while (timer < blinkOutDuration)

@@ -1229,6 +1229,7 @@ GameObject:
   - component: {fileID: 745303348}
   - component: {fileID: 745303350}
   - component: {fileID: 745303349}
+  - component: {fileID: 745303351}
   m_Layer: 0
   m_Name: PlayerTemp
   m_TagString: Player
@@ -1378,8 +1379,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 100
   <Hp>k__BackingField: 0
-  hitSound: {fileID: 0}
-  flashDuration: 0.1
+  OnDamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &745303343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1607,6 +1609,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostPrefab: {fileID: 2196815567609450209, guid: 4f1b5c626b8f5dd49bab446f125bd84c, type: 3}
   ghostLifetime: 0.3
+--- !u!114 &745303351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 745303335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be19ef7e5cbf4b8a95ab7434783b8d4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &781962923
 GameObject:
   m_ObjectHideFlags: 0
