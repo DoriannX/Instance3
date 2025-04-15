@@ -19,6 +19,9 @@ public class Player : Entity
     // Events for updating UI
     public event System.Action<int> OnChipsChanged;
 
+    // Events for updating UI
+    public event System.Action<int> OnChipsChanged;
+
     // --- References ---
     private PlayerMovement movement;
     private PlayerDash dash;
@@ -41,12 +44,12 @@ public class Player : Entity
         // ui = FindObjectOfType<UI>(); // Assuming UI is scene-based and singleton-style
     }
 
-    private void Start()
+    private void Update()
     {
-        // UpdateUI();
+        vulnerabilityManager.CheckVulnerability();
     }
 
-    private void Update()
+    public void SetMousePos(Vector3 mousePos)
     {
         vulnerabilityManager.CheckVulnerability();
     }
