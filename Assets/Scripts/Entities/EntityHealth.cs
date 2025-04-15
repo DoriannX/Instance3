@@ -1,24 +1,25 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class EntityHealth : MonoBehaviour
 {
     [SerializeField] private int maxHp = 100;
     [field: SerializeField] public int Hp { get; private set; }
     
-    public UnityEvent<int> OnDamageTaken;
+    [FormerlySerializedAs("OnDamageTaken")] public UnityEvent<int> onDamageTaken;
 
     private void Awake()
     {
         Hp = maxHp;
-        OnDamageTaken ??= new UnityEvent<int>();
+        onDamageTaken ??= new UnityEvent<int>();
     }
 
     public void TakeDamage(int damage)
     {
         Hp -= damage;
         
-        OnDamageTaken.Invoke(damage);
+        onDamageTaken.Invoke(damage);
 
         if (Hp <= 0)
         {
