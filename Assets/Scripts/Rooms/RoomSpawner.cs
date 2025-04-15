@@ -8,7 +8,8 @@ public class RoomSpawner : MonoBehaviour
     [SerializeField] private List<SO_Room> roomsData;
 
     [SerializeField] private List<GameObject> roomsInLevel; //( [0] = entrée, [Last] = Armurerie) nb de room entre 2 et ?
-    [SerializeField] private List<GameObject> roomsSpawned; //( [0] = entrée, [Last] = Armurerie) nb de room entre 2 et ?
+    [SerializeField] private List<GameObject> roomsSpawned;
+    [SerializeField] private List<GameObject> corridorsSpawned;
 
     [SerializeField] private int maxRoomNumber = 10;
     [SerializeField] private int minRoomNumber = 3; // doesn't count the entrance and weaponry 
@@ -29,7 +30,6 @@ public class RoomSpawner : MonoBehaviour
         Assert.GreaterOrEqual(maxRoomNumber,minRoomNumber);
         LevelCreator();
     }
-
     private void LevelCreator()
     {
         if (roomsInLevel == null)
@@ -67,7 +67,7 @@ public class RoomSpawner : MonoBehaviour
         if (roomsSpawned.Count > 0)
         {
             rooms.connectedRooms.Add(roomsSpawned[^1]);
-            rooms.CreateCorridor(lastDirection[^1], (lastDirection[^1] + 2) % 4);
+            corridorsSpawned.Add( rooms.CreateCorridor(lastDirection[^1], (lastDirection[^1] + 2) % 4));
         }
         roomsSpawned.Add(SpawnedRoom);
         return SpawnedRoom;
@@ -209,6 +209,18 @@ public class RoomSpawner : MonoBehaviour
                 break;
         }
         return true;
+    }
+
+    public void ClearLevel() // to be called between level changes
+    {
+        foreach (GameObject corridor in corridorsSpawned)
+        {
+            Destroy(corridor);
+        }
+        foreach (GameObject room in roomsSpawned)
+        {
+            Destroy(room);
+        }
     }
 }
 
