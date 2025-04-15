@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ public class RoomSpawner : MonoBehaviour
 
     [SerializeField] private int currentLevel;
 
-    [SerializeField] private Vector3 roomPositiontracker;
+    [SerializeField] private Vector3 roomPositiontracker = new(0,0,0); //starting position of the level
 
     [SerializeField] private float roomSpawnOffset = 100;
     [SerializeField] private List<int> lastDirection; // so that any direction works for the first room
@@ -23,6 +24,9 @@ public class RoomSpawner : MonoBehaviour
 
     public void Awake()
     {
+        Assert.NotNull(roomsData);
+        Assert.NotNull(roomsInLevel);
+        Assert.GreaterOrEqual(maxRoomNumber,minRoomNumber);
         LevelCreator();
     }
 
@@ -84,7 +88,6 @@ public class RoomSpawner : MonoBehaviour
             int roomRng = Random.Range(2, roomsData.Count);
             roomsInLevel.Add(roomsData[roomRng].roomPrefab);
         }
-        Debug.Log(roomsInLevel[^1]);
         Vector3 pos = UsePositionTracker();
         return SpawnRoom(roomsInLevel[^1], pos);
     }
@@ -140,25 +143,20 @@ public class RoomSpawner : MonoBehaviour
     public int DirectionSelector()
     {
         int directionRNG = Random.Range(0, 4);
-        Debug.Log("directionRNG = " + directionRNG);
 
         if (lastDirection.Count > 4)
         {
-            Debug.Log(lastDirection.Count);
             while ((directionRNG + 2) % 4 == lastDirection[^1] || (directionRNG + 2) % 4 == lastDirection[^4])
             {
                 directionRNG = Random.Range(0, 4);
-                Debug.Log("directionRNG = " + directionRNG);
             }
             return directionRNG;
         }
         if (lastDirection.Count > 1)
         {
-            Debug.Log(lastDirection[lastDirection.Count - 1]);
             while ((directionRNG + 2) % 4 == lastDirection[^1])
             {
                 directionRNG = Random.Range(0, 4);
-                Debug.Log("directionRNG = " + directionRNG);
             }
             return directionRNG;
         }
