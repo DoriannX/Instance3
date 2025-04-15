@@ -5,13 +5,19 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerDash))]
 [RequireComponent(typeof(PlayerVulnerabilityManager))]
 [RequireComponent(typeof(PlayerOrientation))]
+[RequireComponent(typeof(PlayerAttack))]
 [RequireComponent(typeof(EntityHealth))]
+[RequireComponent(typeof(PlayerInteract))]
 public class Player : Entity
 {
     // --- Player-specific attributes ---
     [field: SerializeField] public int Chips { get; private set; } = 0;
     [SerializeField] private float ammoMultiplier = 1.0f;
     [SerializeField] private float cooldownMultiplier = 1.0f;
+    public bool hasKey = false;
+
+    // Events for updating UI
+    public event System.Action<int> OnChipsChanged;
 
     // Events for updating UI
     public event System.Action<int> OnChipsChanged;
@@ -19,9 +25,12 @@ public class Player : Entity
     // --- References ---
     private PlayerMovement movement;
     private PlayerDash dash;
+    private PlayerInteract playerInteract;
     private PlayerOrientation orientation;
 
     private PlayerVulnerabilityManager vulnerabilityManager;
+    private PlayerAttack attack;
+    // private UI ui;
 
     protected override void Awake()
     {
@@ -30,9 +39,17 @@ public class Player : Entity
         vulnerabilityManager = GetComponent<PlayerVulnerabilityManager>();
         dash = GetComponent<PlayerDash>();
         orientation = GetComponent<PlayerOrientation>();
+        attack = GetComponent<PlayerAttack>();
+        playerInteract = GetComponent<PlayerInteract>();
+        // ui = FindObjectOfType<UI>(); // Assuming UI is scene-based and singleton-style
     }
 
     private void Update()
+    {
+        vulnerabilityManager.CheckVulnerability();
+    }
+
+    public void SetMousePos(Vector3 mousePos)
     {
         vulnerabilityManager.CheckVulnerability();
     }
@@ -50,6 +67,11 @@ public class Player : Entity
     public void StartDash()
     {
         dash.StartDash();
+    }
+
+    public void Interact()
+    {
+        playerInteract.Interact();
     }
 
     public void SetMovementInput(Vector3 moveInput)
