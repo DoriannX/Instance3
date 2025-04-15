@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Rendering;
 
+#if UNITY_EDITOR
 [ExecuteInEditMode]
+#endif
 public class Corridor : MonoBehaviour
 {
     //corridor's entrance
@@ -19,8 +20,8 @@ public class Corridor : MonoBehaviour
     //if the corridor is big or small ( true = big )
     [Header("CorridorSize")]
     [SerializeField] private bool corridorIsBig;
-    [SerializeField] private Vector3 corridorSizeBig = new Vector3(0.66f,0.66f,0.66f);
-    [SerializeField] private Vector3 corridorSizeSmall = new Vector3(0.5f, 0.5f, 0.5f);
+    [SerializeField] private Vector3 corridorSizeBig = new(0.66f,0.66f,0.66f);
+    [SerializeField] private Vector3 corridorSizeSmall = new(0.5f, 0.5f, 0.5f);
 
     public void Awake()
     {

@@ -101,6 +101,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponData: {fileID: 11400000, guid: 58d03203e945edf4d9adaffee7667092, type: 2}
+  hitLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &5991062197174372415
 GameObject:
   m_ObjectHideFlags: 0

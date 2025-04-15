@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
@@ -123,3 +124,4 @@ namespace Tests
         public override void SetCooldownMultiplier(float value) => cooldownMultiplier = value;
     }
 }
+#endif

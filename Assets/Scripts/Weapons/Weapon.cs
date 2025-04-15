@@ -19,7 +19,7 @@ public abstract class Weapon : MonoBehaviour
         if (weaponData)
             LoadData(weaponData);
         else
-            Debug.LogWarning("WeaponData not assigned in inspector");
+            Debug.LogWarning($"WeaponData not assigned in inspector for {gameObject.name}");
     }
 
     protected virtual void SetupWeapon()
