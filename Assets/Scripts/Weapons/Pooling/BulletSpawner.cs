@@ -8,13 +8,16 @@ namespace Pooling
         [Header("References")]
 
         [SerializeField] private GameObject bulletPrefab;
-        private Transform transformSpawner;
+        private Transform bulletSpawnerTransform;
+
+        private void Awake()
+        {
+            bulletSpawnerTransform = transform;
+        }
 
         private void Start()
         {
-            transformSpawner = GetComponent<Transform>();
-
-            pool = new Pool<Bullet>(() => Instantiate(bulletPrefab, transformSpawner).GetComponent<Bullet>(),
+            pool = new Pool<Bullet>(() => Instantiate(bulletPrefab, bulletSpawnerTransform.position, Quaternion.identity).GetComponent<Bullet>(),
                 pooledObject => { pooledObject.gameObject.SetActive(true); },
                 ResetBullet,
                 50,
@@ -29,9 +32,14 @@ namespace Pooling
             bulletTransform.rotation = Quaternion.identity;
         }
 
-        public Bullet SpawnBullet()
+        public Bullet SpawnBullet(int damage, LayerMask hitLayer, Vector3 position, Quaternion rotation)
         {
-           return pool.Get();
+            Bullet bullet = pool.Get();
+            bullet.SetLayer(hitLayer);
+            bullet.SetDamage(damage);
+            bullet.transform.position = position;
+            bullet.transform.rotation = rotation;
+           return bullet;
         }
 
         private void OnDestroy()
