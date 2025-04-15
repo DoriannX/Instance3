@@ -24,7 +24,6 @@ public class Rooms : MonoBehaviour
 
         for(int i = 0; i < Mathf.Min(room.nbEnemy.Count,room.enemyType.Count); i++)
         {
-            int currentSpawnTracker = spawnTracker;
             for( int j = 0; j < room.nbEnemy[i]; j++)
             {
                 GameObject SpawnedEnemy = Instantiate(room.enemyType[i].enemy, spawnPointEnemy.transform.GetChild(spawnTracker).transform);
@@ -33,10 +32,10 @@ public class Rooms : MonoBehaviour
         }
     }
 
-    public GameObject CreateCorridor(int exitIndex)
+    public GameObject CreateCorridor(int exitIndex,int entryIndex)
     {
         room.corridorPrefab.GetComponent<Corridor>().corridorStart = corridors[exitIndex];
-        room.corridorPrefab.GetComponent<Corridor>().corridorEnd = connectedRooms[0].GetComponent<Rooms>().corridors[exitIndex];
+        room.corridorPrefab.GetComponent<Corridor>().corridorEnd = connectedRooms[0].GetComponent<Rooms>().corridors[entryIndex];
         GameObject corridor = Instantiate(room.corridorPrefab);
 
         return corridor;

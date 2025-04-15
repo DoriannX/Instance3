@@ -295,12 +295,13 @@ MonoBehaviour:
   roomsInLevel: []
   roomsSpawned: []
   maxRoomNumber: 10
-  minRoomNumber: 3
+  minRoomNumber: 5
   nbRoomInLevel: 0
   currentLevel: 0
   roomPositiontracker: {x: 0, y: 0, z: 0}
   roomSpawnOffset: 100
-  lastDirection: 0
+  lastDirection: 
+  positionTaken: []
 --- !u!4 &1533548168
 Transform:
   m_ObjectHideFlags: 0

@@ -19,14 +19,14 @@ public class Corridor : MonoBehaviour
     //if the corridor is big or small ( true = big )
     [Header("CorridorSize")]
     public bool corridorIsBig;
-    [SerializeField] private Vector3 corridorSizeBig = new Vector3(0.66f,0.66f,0.66f);
-    [SerializeField] private Vector3 corridorSizeSmall = new Vector3(0.5f, 0.5f, 0.5f);
+    [SerializeField] private Vector3 corridorSizeBig = new(0.66f,0.66f,0.66f);
+    [SerializeField] private Vector3 corridorSizeSmall = new(0.5f, 0.5f, 0.5f);
 
     public void Awake()
     {
         corridorRight.transform.position = corridorStart.transform.position;
         corridorLeft.transform.position = corridorEnd.transform.position;
-        corridorLeft.transform.position = new Vector3(corridorLeft.transform.position.x, corridorRight.transform.position.y, corridorLeft.transform.position.z);
+        corridorLeft.transform.position = new(corridorLeft.transform.position.x, corridorRight.transform.position.y, corridorLeft.transform.position.z);
         CorridorTransform(corridorLeft.transform, corridorRight.transform);
     }
 
@@ -38,8 +38,8 @@ public class Corridor : MonoBehaviour
         Assert.IsNotNull(corridorMiddle);
         Assert.IsNotNull(corridorRight);
 
-        corridorMiddle.transform.localScale = new Vector3(1, 1, Vector3.Distance(endPos.position,startPos.position) * 1/transform.localScale.z);
-        corridorMiddle.transform.position = new Vector3((startPos.transform.position.x + endPos.transform.position.x)/2, (startPos.transform.position.y + endPos.transform.position.y) / 2, (startPos.transform.position.z + endPos.transform.position.z) / 2);
+        corridorMiddle.transform.localScale = new(1, 1, Vector3.Distance(endPos.position,startPos.position) * 1/transform.localScale.z);
+        corridorMiddle.transform.position = new((startPos.transform.position.x + endPos.transform.position.x)/2, (startPos.transform.position.y + endPos.transform.position.y) / 2, (startPos.transform.position.z + endPos.transform.position.z) / 2);
 
         
         var dir = endPos.transform.position - startPos.transform.position;
