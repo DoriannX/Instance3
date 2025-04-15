@@ -8,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerAttack))]
 [RequireComponent(typeof(EntityHealth))]
 [RequireComponent(typeof(PlayerInteract))]
+[RequireComponent(typeof(InputManager))]
 public class Player : Entity
 {
     // --- Player-specific attributes ---
@@ -15,9 +16,6 @@ public class Player : Entity
     [SerializeField] private float ammoMultiplier = 1.0f;
     [SerializeField] private float cooldownMultiplier = 1.0f;
     public bool hasKey = false;
-
-    // Events for updating UI
-    public event System.Action<int> OnChipsChanged;
 
     // Events for updating UI
     public event System.Action<int> OnChipsChanged;
@@ -52,10 +50,6 @@ public class Player : Entity
     public void SetMousePos(Vector3 mousePos)
     {
         vulnerabilityManager.CheckVulnerability();
-    }
-
-    public void SetMousePos(Vector3 mousePos)
-    {
         orientation.SetMousePos(mousePos);
     }
 
