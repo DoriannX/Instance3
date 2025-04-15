@@ -1,9 +1,11 @@
+#if UNITY_EDITOR
 using System;
 using System.Collections;
 using Item;
 using Item.Drops;
 using NUnit.Framework;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Tests
 {
@@ -27,8 +29,8 @@ namespace Tests
         [TearDown]
         public void Teardown()
         {
-            UnityEngine.Object.DestroyImmediate(player.gameObject);
-            UnityEngine.Object.DestroyImmediate(gameObject);
+            Object.DestroyImmediate(player.gameObject);
+            Object.DestroyImmediate(gameObject);
         }
     }
 
@@ -134,7 +136,7 @@ namespace Tests
             var collider = entityGameObject.AddComponent<BoxCollider>();
             Assert.Throws<InvalidCastException>(() => bandagesItem.OnTriggerEnter(collider));
             yield return new WaitForEndOfFrame();
-            UnityEngine.Object.DestroyImmediate(entityGameObject);
+            Object.DestroyImmediate(entityGameObject);
         }
     }
 
@@ -182,7 +184,7 @@ namespace Tests
             // Assert
             Assert.That(chipsItem.HasArrived, Is.False);
             
-            UnityEngine.Object.DestroyImmediate(triggerCollider.gameObject);
+            Object.DestroyImmediate(triggerCollider.gameObject);
         }
     }
 
@@ -224,8 +226,9 @@ namespace Tests
         [TearDown]
         public void Teardown()
         {
-            UnityEngine.Object.DestroyImmediate(itemObject);
-            UnityEngine.Object.DestroyImmediate(playerObject);
+            Object.DestroyImmediate(itemObject);
+            Object.DestroyImmediate(playerObject);
         }
     }
 }
+#endif

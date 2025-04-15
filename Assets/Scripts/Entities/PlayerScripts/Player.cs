@@ -1,8 +1,10 @@
+using Entities.PlayerScripts;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerDash))]
 [RequireComponent(typeof(PlayerVulnerabilityManager))]
+[RequireComponent(typeof(PlayerOrientation))]
 [RequireComponent(typeof(EntityHealth))]
 public class Player : Entity
 {
@@ -17,6 +19,8 @@ public class Player : Entity
     // --- References ---
     private PlayerMovement movement;
     private PlayerDash dash;
+    private PlayerOrientation orientation;
+
     private PlayerVulnerabilityManager vulnerabilityManager;
 
     protected override void Awake()
@@ -25,12 +29,22 @@ public class Player : Entity
         movement = GetComponent<PlayerMovement>();
         vulnerabilityManager = GetComponent<PlayerVulnerabilityManager>();
         dash = GetComponent<PlayerDash>();
+        orientation = GetComponent<PlayerOrientation>();
     }
 
     private void Update()
     {
         vulnerabilityManager.CheckVulnerability();
-        // Future attack handling would go here.
+    }
+
+    public void SetMousePos(Vector3 mousePos)
+    {
+        orientation.SetMousePos(mousePos);
+    }
+
+    public void SetRightStickInput(Vector3 rightStickInput)
+    {
+        orientation.SetRightStickInput(rightStickInput);
     }
 
     public void StartDash()
@@ -89,12 +103,10 @@ public class Player : Entity
     public virtual void SetAmmoMultiplier(float multiplier)
     {
         ammoMultiplier = multiplier;
-        // Optionally add UI update event
     }
 
     public virtual void SetCooldownMultiplier(float multiplier)
     {
         cooldownMultiplier = multiplier;
-        // Optionally add UI update event
     }
 }
