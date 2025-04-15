@@ -8,4 +8,5 @@ public class WeaponData : ScriptableObject
     public int damage;
     public float cooldown;
     public float attackRange;
+    public Sprite icon;
 }

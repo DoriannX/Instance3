@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
     [SerializeField] private float speed = 10f;
     private Action<Bullet> releaseFunc;
     private Transform bulletTransform;
+    private LayerMask hitLayerMask;
     
     private int damage;
 
@@ -20,8 +21,18 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
         bulletTransform.position += bulletTransform.forward * (speed * Time.deltaTime);
     }
 
+    public void SetLayer(LayerMask layerMask)
+    {
+        hitLayerMask = layerMask;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
+        if ((hitLayerMask.value & (1 << other.gameObject.layer)) == 0)
+        {
+            return;
+        }
+        
         if (other.TryGetComponent(out EntityHealth entityHealth))
         {
             entityHealth.TakeDamage(damage);
@@ -32,6 +43,8 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
             Debug.LogError($"[Bullet] Release function not set on bullet {gameObject.name}");
             return;
         }
+        Debug.Log(other.name);
+        Debug.Log("hit bullet");
         releaseFunc(this);
     }
     

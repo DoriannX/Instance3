@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EntityHealth : MonoBehaviour
 {
@@ -7,6 +9,7 @@ public class EntityHealth : MonoBehaviour
     [field: SerializeField] public int Hp { get; private set; }
 
     private Entity entity;
+    public event Action onDeath;
 
     private void Awake()
     {
@@ -19,7 +22,6 @@ public class EntityHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         Hp -= damage;
-        // TODO: Optionally notify UI or play hurt animations.
         if (Hp <= 0)
         {
             Die();
@@ -40,8 +42,10 @@ public class EntityHealth : MonoBehaviour
 
     public void Die()
     {
+        onDeath?.Invoke();
+        
         Debug.Log($"{gameObject.name} has died.");
-        Destroy(gameObject);
+        onDeath?.Invoke();
         // TODO: Further implementation for death (animations, notifications, etc.)
     }
     

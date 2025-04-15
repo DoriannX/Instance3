@@ -1,4 +1,3 @@
-using Tests;
 using UnityEngine;
     /// <summary>
     /// Handles saving and loading of player statistics
@@ -71,7 +70,7 @@ using UnityEngine;
             return ammo > 0 && cooldown > 0; // Add appropriate validation logic
         }
 
-        public void SetPlayer(MockPlayer mockPlayer)
+        public void SetPlayer(Player mockPlayer)
         {
             player = mockPlayer;
         }

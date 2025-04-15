@@ -4,10 +4,12 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
     [SerializeField] protected WeaponData weaponData;
-    protected float cooldown;
+     protected float cooldown;
     protected int damage;
     private MeshFilter weaponMesh;    
     protected Action<int> onWeaponUsed;
+    
+    public WeaponData Data => weaponData;
 
     private void Awake()
     {
@@ -19,7 +21,7 @@ public abstract class Weapon : MonoBehaviour
         if (weaponData)
             LoadData(weaponData);
         else
-            Debug.LogWarning("WeaponData not assigned in inspector");
+            Debug.LogWarning($"WeaponData not assigned in inspector for {gameObject.name}");
     }
 
     protected virtual void SetupWeapon()
