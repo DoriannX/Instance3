@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerVulnerabilityManager))]
 [RequireComponent(typeof(PlayerAttack))]
 [RequireComponent(typeof(EntityHealth))]
+[RequireComponent(typeof(PlayerInteract))]
 public class Player : Entity
 {
     // --- Player-specific attributes ---
@@ -15,8 +16,6 @@ public class Player : Entity
     public bool hasKey = false;
 
     // --- References ---
-    private Transform playerTransform;
-
     private PlayerMovement movement;
     private PlayerDash dash;
 
@@ -29,7 +28,6 @@ public class Player : Entity
         base.Awake();
         // Base Entity setup.
         healthComponent = GetComponent<EntityHealth>();
-        playerTransform = GetComponent<Transform>();
 
         // Player-specific component references
         movement = GetComponent<PlayerMovement>();
@@ -109,26 +107,4 @@ private void UpdateUI()
         ui.Update(this);
 }
 */
-    public void Interact()
-    {
-        RaycastHit hit;
-
-        if (Physics.Raycast(playerTransform.position, playerTransform.forward, out hit, 5f))
-        {
-            DoorSystem doorSystem = hit.collider.GetComponent<DoorSystem>();
-
-            if (doorSystem != null)
-            {       
-                if (hasKey)
-                {
-                    doorSystem.OpenDoor();
-                    hasKey = false;
-                }
-                else
-                {
-                    Debug.Log("You need a key to open this door.");
-                }
-            }
-        }
-    }
 }

@@ -1071,6 +1071,7 @@ GameObject:
   - component: {fileID: 1719013818}
   - component: {fileID: 1719013817}
   - component: {fileID: 1719013827}
+  - component: {fileID: 1719013830}
   - component: {fileID: 1719013826}
   - component: {fileID: 1719013825}
   - component: {fileID: 1719013824}
@@ -1430,6 +1431,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ammoAmount: 0
+--- !u!114 &1719013830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1719013816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afdcc50cc8688c43b08a14e65bc30f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1969409556
 GameObject:
   m_ObjectHideFlags: 0

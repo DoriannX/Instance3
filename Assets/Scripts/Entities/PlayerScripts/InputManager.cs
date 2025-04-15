@@ -5,12 +5,16 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour
 {
     private Player player;
+    private PlayerInteract playerInteract;
 
     private void Awake()
     {
         // If not assigned in inspector
         if (player == null)
             player = GetComponent<Player>();
+
+        if (playerInteract == null)
+            playerInteract = GetComponent<PlayerInteract>();
     }
 
     public void OnMovePerformed(InputAction.CallbackContext context)
@@ -38,6 +42,6 @@ public class InputManager : MonoBehaviour
             return;
         }
                
-        player.Interact();
+        playerInteract.Interact();
     }
 }
