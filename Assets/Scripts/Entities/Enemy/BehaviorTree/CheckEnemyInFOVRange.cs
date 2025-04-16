@@ -58,6 +58,8 @@ namespace Entities.Enemy.BehaviorTree
             {
                 Transform targetTransform = colliders[i].transform;
                 
+                Debug.Log($"self to player angle {Vector3.Angle(transform.forward, targetTransform.position - transform.position)}");
+                
                 if (!IsInFOV(targetTransform))
                     continue;
 

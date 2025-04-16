@@ -132,10 +132,12 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 640
+  audioRange: 25
+  audioThreshold: 10
   weaponData: {fileID: 11400000, guid: 58d03203e945edf4d9adaffee7667092, type: 2}
   weapon: {fileID: 1299943628239758444}
   fovDetectionRadius: 10
-  fovAngle: 90
+  fovAngle: 120
   maxEnemyDetection: 10
   chaseSpeed: 3.5
   patrolPoints:
@@ -230,7 +232,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  enemyType: {fileID: 0}
+  currentWeapon: {fileID: 0}
+  meleeWeapon: {fileID: 0}
+  rangeWeapon: {fileID: 0}
+  fragmentChipDropRangeMin: 0
+  fragmentChipDropRangeMax: 0
+  fragmentChipPrefab: {fileID: 0}
+  groundDistance: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1001 &7129253031410377580
 PrefabInstance:
   m_ObjectHideFlags: 0

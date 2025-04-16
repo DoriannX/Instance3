@@ -14,6 +14,10 @@ namespace Entities.Enemy.BehaviorTree
         [SerializeField] private NavMeshAgent navMeshAgent;
         [SerializeField] private LayerMask enemyLayer;
         
+        [Header("Audio")]
+        [SerializeField] private float audioRange;
+        [SerializeField] private float audioThreshold;
+        
         [Header("Attack")]
         [SerializeField] private WeaponData weaponData;
         [SerializeField] private Weapon weapon;
@@ -62,6 +66,11 @@ namespace Entities.Enemy.BehaviorTree
                 {
                     new CheckEnemyInFOVRange(transform, enemyLayer, fovDetectionRadius, fovAngle, maxEnemyDetection, targetKey),
                     new TaskGoToTarget(navMeshAgent, chaseSpeed, weaponData.attackRange, targetKey)
+                }),
+                new Sequence(new List<Node>
+                {
+                    new CheckEnemyInAudioRange(transform, audioRange, audioThreshold, targetKey, maxEnemyDetection, enemyLayer),
+                    new TaskLookAt(transform, navMeshAgent, targetKey) 
                 }),
                 new TaskPatrol(patrolPoints, patrolMovementType, navMeshAgent, patrolSpeed, patrolWaitTime, patrolStopDistance),
             });
