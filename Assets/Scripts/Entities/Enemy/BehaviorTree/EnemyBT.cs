@@ -14,12 +14,14 @@ namespace Entities.Enemy.BehaviorTree
         [SerializeField] private NavMeshAgent navMeshAgent;
         [SerializeField] private LayerMask enemyLayer;
         
+        /* -
         [Header("Fight Back")]
         [SerializeField] private float fightBackDelay = 0.5f;
         
         [Header("Audio")]
         [SerializeField] private float audioRange;
         [SerializeField] private float audioThreshold;
+        */
         
         [Header("Attack")]
         [SerializeField] private WeaponData weaponData;
@@ -41,7 +43,7 @@ namespace Entities.Enemy.BehaviorTree
         [SerializeField] private float patrolStopDistance = 0.5f;
         
         private readonly string targetKey = "Target";
-        private readonly string attackedKey = "IsAttacked";
+        //private readonly string attackedKey = "IsAttacked";
         
         private AttackMode attackMode;
 
@@ -54,8 +56,6 @@ namespace Entities.Enemy.BehaviorTree
             
             SetWeaponData(weaponData);
             
-            BindEvents();
-
             return CreateTree();
         }
 
@@ -63,11 +63,6 @@ namespace Entities.Enemy.BehaviorTree
         {
             return new Selector(new List<Node>
             {
-                new Sequence(new List<Node> // sequence for the fight back
-                {
-                    new CheckIsAttacked(fightBackDelay, attackedKey, targetKey),
-                    new TaskLookAt(transform, navMeshAgent, targetKey) 
-                }),
                 new Sequence(new List<Node> // sequence for the attack
                 {
                     new CheckEnemyInAttackRange(transform, enemyLayer, attackMode, weaponData.attackRange, targetKey, maxEnemyDetection),
@@ -75,13 +70,8 @@ namespace Entities.Enemy.BehaviorTree
                 }),
                 new Sequence(new List<Node> // sequence for the chase
                 {
-                    new CheckEnemyInFOVRange(transform, enemyLayer, fovDetectionRadius, fovAngle, maxEnemyDetection, targetKey),
+                    new CheckEnemyInRoom(targetKey),
                     new TaskGoToTarget(navMeshAgent, chaseSpeed, weaponData.attackRange, targetKey)
-                }),
-                new Sequence(new List<Node> // sequence for the listening
-                {
-                    new CheckEnemyInAudioRange(transform, audioRange, audioThreshold, targetKey, maxEnemyDetection, enemyLayer),
-                    new TaskLookAt(transform, navMeshAgent, targetKey) 
                 }),
                 new TaskPatrol(patrolPoints, patrolMovementType, navMeshAgent, patrolSpeed, patrolWaitTime, patrolStopDistance),
             });
@@ -104,6 +94,12 @@ namespace Entities.Enemy.BehaviorTree
             weapon.LoadData(weaponData);
         }
 
+        public void SetTargetInRoom(Transform target)
+        {
+            root.SetData(targetKey, target);
+        }
+
+        /* -
         private void BindEvents()
         {
             if (TryGetComponent(out EntityHealth entityHealth))
@@ -115,6 +111,6 @@ namespace Entities.Enemy.BehaviorTree
         private void OnHit(Transform origin)
         {
             root.SetData(attackedKey, (Time.time, origin));
-        }
+        }*/
     }
 }
