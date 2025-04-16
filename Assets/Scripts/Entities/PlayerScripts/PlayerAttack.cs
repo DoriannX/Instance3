@@ -13,7 +13,7 @@ public class PlayerAttack : MonoBehaviour
     private float cooldownTimer = 0f;
     private Weapon currentWeapon;
     
-    public event Action<int> OnAmmoChanged;
+    public event Action<int> onAmmoChanged;
 
     private void Start()
     {
@@ -85,7 +85,7 @@ public class PlayerAttack : MonoBehaviour
     private void ConsumeAmmo(int ammo)
     {
         ammoAmount = Mathf.Max(ammoAmount - ammo, 0);
-        OnAmmoChanged?.Invoke(ammoAmount);
+        onAmmoChanged?.Invoke(ammoAmount);
     }
 
     private void Cooldown()

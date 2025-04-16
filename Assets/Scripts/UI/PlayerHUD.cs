@@ -54,7 +54,7 @@ public class PlayerHUD : MonoBehaviour
         if (player != null)
             player.onChipsChanged += UpdateChips;
         if (playerAttack != null)
-            playerAttack.OnAmmoChanged += UpdateAmmo;
+            playerAttack.onAmmoChanged += UpdateAmmo;
         
         // Subscribe to the weapon change event provided by the base Entity class.
         player.OnWeaponChanged += UpdateWeapons;
@@ -69,7 +69,7 @@ public class PlayerHUD : MonoBehaviour
         if (player != null)
             player.OnWeaponChanged -= UpdateWeapons;
         if (playerAttack != null)
-            playerAttack.OnAmmoChanged -= UpdateAmmo;
+            playerAttack.onAmmoChanged -= UpdateAmmo;
     }
     
     private void UpdateHealthBar(int currentHealth, int maxHealth)
