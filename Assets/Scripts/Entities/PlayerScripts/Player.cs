@@ -1,3 +1,4 @@
+using System;
 using Entities.PlayerScripts;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ public class Player : Entity
     public bool hasKey = false;
 
     // Events for updating UI
-    public event System.Action<int> OnChipsChanged;
+    public event Action<int> onChipsChanged;
 
     // --- References ---
     private PlayerMovement movement;
@@ -46,13 +47,7 @@ public class Player : Entity
     {
         vulnerabilityManager.CheckVulnerability();
     }
-
-    public void SetMousePos(Vector3 mousePos)
-    {
-        vulnerabilityManager.CheckVulnerability();
-        orientation.SetMousePos(mousePos);
-    }
-
+    
     public void SetRightStickInput(Vector3 rightStickInput)
     {
         orientation.SetRightStickInput(rightStickInput);
@@ -79,7 +74,7 @@ public class Player : Entity
     public virtual void AddChips(int amount)
     {
         Chips += amount;
-        OnChipsChanged?.Invoke(Chips);
+        onChipsChanged?.Invoke(Chips);
     }
 
     /// <summary>

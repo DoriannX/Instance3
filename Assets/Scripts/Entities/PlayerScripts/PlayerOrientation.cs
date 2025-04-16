@@ -8,7 +8,6 @@ namespace Entities.PlayerScripts
         private Camera playerCamera;
         [SerializeField] private LayerMask groundLayer;
 
-        private Vector3 mousePosition;
         private Vector3 rightStickInput;
         private Transform playerTransform;
         
@@ -62,11 +61,6 @@ namespace Entities.PlayerScripts
             {
                 transform.rotation = Quaternion.LookRotation(lookDirection);
             }
-        }
-
-        public void SetMousePos(Vector3 mousePos)
-        {
-            mousePosition = mousePos;
         }
         
         public void SetRightStickInput(Vector3 input)
