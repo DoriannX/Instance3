@@ -24,6 +24,8 @@ GameObject:
   - component: {fileID: 6517236152661141458}
   - component: {fileID: 7560691233069475623}
   - component: {fileID: 8705009390413970185}
+  - component: {fileID: 2087171118665491846}
+  - component: {fileID: 8293560375701013952}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -39,7 +41,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5313647932819149050}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 3.04, z: 0}
   m_LocalScale: {x: 1, y: 1.8, z: 1}
   m_ConstrainProportionsScale: 0
@@ -144,7 +146,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
@@ -162,9 +164,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  currentWeapon: {fileID: 0}
+  meleeWeapon: {fileID: 0}
+  rangeWeapon: {fileID: 0}
   <Chips>k__BackingField: 0
   ammoMultiplier: 1
   cooldownMultiplier: 1
+  hasKey: 0
 --- !u!114 &1744893070723770944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,7 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHp: 500
-  <Hp>k__BackingField: 100
+  <Hp>k__BackingField: 500
 --- !u!114 &1235209126310405545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,6 +450,54 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &2087171118665491846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5313647932819149050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afdcc50cc8688c43b08a14e65bc30f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8293560375701013952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5313647932819149050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32277de5d0234ac39d1f212b354dc6a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedUpgrade:
+    upgradeName: 
+    level: 0
+    maxLevel: 5
+    baseCost: 10
+    speedIncrement: 0.4
+  healthUpgrade:
+    upgradeName: 
+    level: 0
+    maxLevel: 5
+    baseCost: 10
+    healthIncrement: 20
+  ammoUpgrade:
+    upgradeName: 
+    level: 0
+    maxLevel: 5
+    baseCost: 10
+    ammoIncrement: 10
+  cooldownUpgrade:
+    upgradeName: 
+    level: 0
+    maxLevel: 5
+    baseCost: 10
+    cooldownReduction: 0.1
 --- !u!1001 &1760088402592467821
 PrefabInstance:
   m_ObjectHideFlags: 0

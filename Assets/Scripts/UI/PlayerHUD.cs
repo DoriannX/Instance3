@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
 
 public class PlayerHUD : MonoBehaviour
 {
@@ -11,24 +10,25 @@ public class PlayerHUD : MonoBehaviour
     [SerializeField] private Image weaponSlot1;
     [SerializeField] private Image weaponSlot2;
     [SerializeField] private TMP_Text ammoText;
+    
+    [Header("Player Reference")]
+    [SerializeField] private Player player; // Assign the Player in the Inspector.
 
-    private Player player;
     private EntityHealth healthComp;
     private PlayerAttack playerAttack;
 
     private void Awake()
     {
-        // Get a reference to the player
-        player = FindFirstObjectByType<Player>();
         if (player == null)
         {
-            Debug.LogError("Player not found for HUD!");
+            Debug.LogError("Player reference is missing in PlayerHUD. Please assign a Player in the Inspector.");
             return;
         }
+        
         healthComp = player.GetComponent<EntityHealth>();
         playerAttack = player.GetComponent<PlayerAttack>();
 
-        // Initialize HUD elements
+        // Initialize HUD elements.
         if (healthBar != null && healthComp != null)
         {
             healthBar.maxValue = healthComp.GetMaxHealth();
@@ -38,7 +38,7 @@ public class PlayerHUD : MonoBehaviour
         {
             chipsText.text = player.Chips.ToString();
         }
-        // Initially hide weapon icons (they will be updated once weapons are assigned)
+        // Initially hide weapon icons; they will update once weapons are assigned.
         if (weaponSlot1 != null) weaponSlot1.enabled = false;
         if (weaponSlot2 != null) weaponSlot2.enabled = false;
         if (ammoText != null)
@@ -56,7 +56,7 @@ public class PlayerHUD : MonoBehaviour
         if (playerAttack != null)
             playerAttack.OnAmmoChanged += UpdateAmmo;
         
-        // Entity (base of Player) already provides an OnWeaponChanged event.
+        // Subscribe to the weapon change event provided by the base Entity class.
         player.OnWeaponChanged += UpdateWeapons;
     }
 
@@ -74,9 +74,11 @@ public class PlayerHUD : MonoBehaviour
     
     private void UpdateHealthBar(int currentHealth, int maxHealth)
     {
-        if (healthBar == null) return;
-        healthBar.maxValue = maxHealth;
-        healthBar.value = currentHealth;
+        if (healthBar != null)
+        {
+            healthBar.maxValue = maxHealth;
+            healthBar.value = currentHealth;
+        }
     }
     
     private void UpdateChips(int chips)
@@ -107,7 +109,7 @@ public class PlayerHUD : MonoBehaviour
             weaponSlot1.enabled = false;
         }
 
-        // Determine the secondary weapon – if the current weapon is melee, show the ranged, and vice versa.
+        // Determine the secondary weapon – if current is melee, show ranged; if current is ranged, show melee.
         Weapon secondary = newWeapon switch
         {
             MeleeWeapon when player.RangeWeapon != null => player.RangeWeapon,
@@ -117,9 +119,11 @@ public class PlayerHUD : MonoBehaviour
 
         if (secondary != null && secondary.Data != null)
         {
-            if (weaponSlot2 == null) return;
-            weaponSlot2.sprite = secondary.Data.icon;
-            weaponSlot2.enabled = true;
+            if (weaponSlot2 != null)
+            {
+                weaponSlot2.sprite = secondary.Data.icon;
+                weaponSlot2.enabled = true;
+            }
         }
         else if (weaponSlot2 != null)
         {
