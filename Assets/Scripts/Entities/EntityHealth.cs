@@ -7,9 +7,12 @@ public class EntityHealth : MonoBehaviour
     // --- Health Attributes ---
     [SerializeField] private int maxHp = 30;
     [field: SerializeField] public int Hp { get; private set; }
+    
+    public int GetMaxHealth() => maxHp;
 
     private Entity entity;
     public event Action onDeath;
+    public event Action<int, int> OnHealthChanged;
 
     private void Awake()
     {
@@ -21,7 +24,8 @@ public class EntityHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        Hp -= damage;
+        Hp = Mathf.Max(Hp - damage, 0);
+        OnHealthChanged?.Invoke(Hp, maxHp);
         if (Hp <= 0)
         {
             Die();
@@ -31,13 +35,13 @@ public class EntityHealth : MonoBehaviour
     public void Heal(int amount)
     {
         Hp = Mathf.Min(Hp + amount, maxHp);
-        // TODO: Optionally update health-related UI.
+        OnHealthChanged?.Invoke(Hp, maxHp);
     }
 
     public void IncreaseMaxHp(int amount)
     {
         maxHp += amount;
-        Hp += amount;  // Optionally, also heal the entity for the increased amount.
+        Hp += amount;
     }
 
     public void Die()

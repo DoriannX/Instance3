@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
@@ -11,6 +12,8 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private int ammoAmount;
     private float cooldownTimer = 0f;
     private Weapon currentWeapon;
+    
+    public event Action<int> OnAmmoChanged;
 
     private void Start()
     {
@@ -80,8 +83,9 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void ConsumeAmmo(int ammo)
-    {    
-        ammoAmount =Mathf.Max(ammoAmount - ammo, 0);
+    {
+        ammoAmount = Mathf.Max(ammoAmount - ammo, 0);
+        OnAmmoChanged?.Invoke(ammoAmount);
     }
 
     private void Cooldown()
