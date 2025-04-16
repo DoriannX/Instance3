@@ -7,7 +7,12 @@ public class MeleeWeapon : Weapon
     [SerializeField] private LayerMask enemyLayer;
     private float attackRange;
 
-    //private Transform playerTransform; //For DrawGizmos
+    private Transform selfTransform;
+    
+    protected override void Awake()
+    {
+        selfTransform = GetComponent<Transform>();
+    }
        
     public override void LoadData(WeaponData data)
     {
@@ -36,7 +41,7 @@ public class MeleeWeapon : Weapon
         {
             if (hitCollider.TryGetComponent(out EntityHealth entityHealth))
             {
-                entityHealth.TakeDamage(damage);
+                entityHealth.TakeDamage(damage, transform);
                 onWeaponUsed?.Invoke(0); 
                 Debug.Log("attack ");
                 

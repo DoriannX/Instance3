@@ -10,6 +10,7 @@ public class EntityHealth : MonoBehaviour
 
     private Entity entity;
     public event Action onDeath;
+    public event Action<Transform> onHit;
 
     private void Awake()
     {
@@ -19,9 +20,12 @@ public class EntityHealth : MonoBehaviour
         entity = GetComponent<Entity>();
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Transform origin = null)
     {
         Hp -= damage;
+        
+        onHit?.Invoke(origin);
+        
         if (Hp <= 0)
         {
             Die();

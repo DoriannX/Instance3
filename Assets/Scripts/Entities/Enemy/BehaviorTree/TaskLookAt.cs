@@ -36,6 +36,8 @@ namespace Entities.Enemy.BehaviorTree
             
             Vector3 direction = (targetTransform.position - selfTransform.position).normalized;
             
+            Debug.Log("<color=red>TaskLookAt</color>");
+            
             navMeshAgent.SetDestination(selfTransform.position + direction * getCloserDistance);
             navMeshAgent.speed = speed;
             navMeshAgent.stoppingDistance = 0;

@@ -11,7 +11,7 @@ public abstract class Weapon : MonoBehaviour
     
     public WeaponData Data => weaponData;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         SetupWeapon();
     }

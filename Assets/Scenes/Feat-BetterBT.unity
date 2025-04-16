@@ -3838,6 +3838,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 3864827485471327207, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8780742913638901692, guid: ef5e44a34515e4ad0bd28508c089698c, type: 3}
       propertyPath: groundDistance
       value: 3
