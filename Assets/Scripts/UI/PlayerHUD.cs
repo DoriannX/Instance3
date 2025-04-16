@@ -31,7 +31,7 @@ public class PlayerHUD : MonoBehaviour
         // Initialize HUD elements.
         if (healthBar != null && healthComp != null)
         {
-            healthBar.maxValue = healthComp.GetMaxHealth();
+            healthBar.maxValue = healthComp.MaxHealth;
             healthBar.value = healthComp.Hp;
         }
         if (chipsText != null)
@@ -50,7 +50,7 @@ public class PlayerHUD : MonoBehaviour
     private void OnEnable()
     {
         if (healthComp != null)
-            healthComp.OnHealthChanged += UpdateHealthBar;
+            healthComp.onHealthChanged += UpdateHealthBar;
         if (player != null)
             player.onChipsChanged += UpdateChips;
         if (playerAttack != null)
@@ -63,7 +63,7 @@ public class PlayerHUD : MonoBehaviour
     private void OnDisable()
     {
         if (healthComp != null)
-            healthComp.OnHealthChanged -= UpdateHealthBar;
+            healthComp.onHealthChanged -= UpdateHealthBar;
         if (player != null)
             player.onChipsChanged -= UpdateChips;
         if (player != null)
