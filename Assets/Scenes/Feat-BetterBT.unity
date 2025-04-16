@@ -4395,6 +4395,8 @@ GameObject:
   - component: {fileID: 3469287838098900637}
   - component: {fileID: 1711813855176766039}
   - component: {fileID: 3469287838098900638}
+  - component: {fileID: 3469287838098900640}
+  - component: {fileID: 3469287838098900639}
   m_Layer: 0
   m_Name: Mainroom (1)
   m_TagString: Untagged
@@ -4433,6 +4435,8 @@ GameObject:
   - component: {fileID: 3469287837744134124}
   - component: {fileID: 1711813854822040358}
   - component: {fileID: 3469287837744134125}
+  - component: {fileID: 3469287837744134127}
+  - component: {fileID: 3469287837744134126}
   m_Layer: 0
   m_Name: restroom
   m_TagString: Untagged
@@ -5493,6 +5497,39 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -6966701884023471857, guid: 68ad8c970228bf6449d3703c0ff30879, type: 3}
+--- !u!65 &3469287837744134126
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132147827942131}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 15.500004, y: 6, z: 14.000005}
+  m_Center: {x: 0.25000006, y: 2.75, z: 0}
+--- !u!114 &3469287837744134127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132147827942131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6275db0915a74d80af0b136fe2fe7f91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!33 &3469287837761406273
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -5539,6 +5576,39 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2065238366312241306, guid: 14587ea590c343db189b4ebc3a116c38, type: 3}
+--- !u!114 &3469287838098900639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132147506779010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6275db0915a74d80af0b136fe2fe7f91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &3469287838098900640
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132147506779010}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10.250003, y: 6.5000052, z: 13.000003}
+  m_Center: {x: 0.12500003, y: 2.7500026, z: 0}
 --- !u!33 &3469287838273762290
 MeshFilter:
   m_ObjectHideFlags: 0
