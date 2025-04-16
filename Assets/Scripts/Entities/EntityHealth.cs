@@ -5,8 +5,10 @@ using UnityEngine.Events;
 public class EntityHealth : MonoBehaviour
 {
     // --- Health Attributes ---
-    [SerializeField] private int maxHp = 30;
+    [field : SerializeField] public int maxHp { get; private set; } = 30 ;
     [field: SerializeField] public int Hp { get; private set; }
+
+    public event Action updateHealthBar;
 
     private Entity entity;
     public event Action onDeath;
@@ -22,6 +24,9 @@ public class EntityHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         Hp -= damage;
+
+        updateHealthBar?.Invoke();
+
         if (Hp <= 0)
         {
             Die();
@@ -31,13 +36,14 @@ public class EntityHealth : MonoBehaviour
     public void Heal(int amount)
     {
         Hp = Mathf.Min(Hp + amount, maxHp);
-        // TODO: Optionally update health-related UI.
+        updateHealthBar?.Invoke();
     }
 
     public void IncreaseMaxHp(int amount)
     {
         maxHp += amount;
         Hp += amount;  // Optionally, also heal the entity for the increased amount.
+        updateHealthBar?.Invoke();
     }
 
     public void Die()
@@ -53,5 +59,6 @@ public class EntityHealth : MonoBehaviour
     {
         maxHp = amount;
         Hp = maxHp;  // Optionally, also heal the entity to full health.
+        updateHealthBar?.Invoke();
     }
 }

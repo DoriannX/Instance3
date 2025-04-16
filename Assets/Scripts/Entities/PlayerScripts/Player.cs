@@ -9,6 +9,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerAttack))]
 [RequireComponent(typeof(EntityHealth))]
 [RequireComponent(typeof(PlayerInteract))]
+[RequireComponent(typeof(InputManager))]
 public class Player : Entity
 {
     // --- Player-specific attributes ---
@@ -46,7 +47,7 @@ public class Player : Entity
     {
         vulnerabilityManager.CheckVulnerability();
     }
-
+    
     public void SetRightStickInput(Vector3 rightStickInput)
     {
         orientation.SetRightStickInput(rightStickInput);
