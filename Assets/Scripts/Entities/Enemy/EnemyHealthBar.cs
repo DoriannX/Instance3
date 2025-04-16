@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 public class EnemyHealthBar : MonoBehaviour
@@ -18,10 +19,14 @@ public class EnemyHealthBar : MonoBehaviour
     private void Awake()
     {
         entityHealth = GetComponent<EntityHealth>();
+               
+        Assert.IsNotNull(easeHealthBar, "Ease Health Bar is not assigned in the inspector.");                
+        Assert.IsNotNull(healthBar, "Health Bar is not assigned in the inspector.");        
     }
 
     private void Start()
     {
+        entityHealth.updateHealthBar += UpdateHealthBar;
         healthBar.fillAmount = (float)entityHealth.Hp/entityHealth.maxHp;
         easeHealthBar.fillAmount = (float)entityHealth.Hp/entityHealth.maxHp;
     }
