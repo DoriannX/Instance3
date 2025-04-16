@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class RoomSpawner : MonoBehaviour
 {
-
     [SerializeField] private List<SO_Room> roomsData;
 
-    [SerializeField] private List<GameObject> roomsInLevel; //( [0] = entrée, [Last] = Armurerie) nb de room entre 2 et ?
+    [SerializeField]
+    private List<GameObject> roomsInLevel; //( [0] = entrï¿½e, [Last] = Armurerie) nb de room entre 2 et ?
+
     [SerializeField] private List<GameObject> roomsSpawned;
     [SerializeField] private List<GameObject> corridorsSpawned;
 
@@ -17,7 +18,7 @@ public class RoomSpawner : MonoBehaviour
 
     [SerializeField] private int currentLevel;
 
-    [SerializeField] private Vector3 roomPositiontracker = new(0,0,0); //starting position of the level
+    [SerializeField] private Vector3 roomPositiontracker = new(0, 0, 0); //starting position of the level
 
     [SerializeField] private float roomSpawnOffset = 100;
     [SerializeField] private List<int> lastDirection; // so that any direction works for the first room
@@ -27,9 +28,10 @@ public class RoomSpawner : MonoBehaviour
     {
         Assert.NotNull(roomsData);
         Assert.NotNull(roomsInLevel);
-        Assert.GreaterOrEqual(maxRoomNumber,minRoomNumber);
+        Assert.GreaterOrEqual(maxRoomNumber, minRoomNumber);
         LevelCreator();
     }
+
     private void LevelCreator()
     {
         if (roomsInLevel == null)
@@ -48,7 +50,9 @@ public class RoomSpawner : MonoBehaviour
         lastDirection.TrimExcess();
         lastDirection = new List<int>();
 
-        nbRoomInLevel = Random.Range(2 + minRoomNumber, maxRoomNumber); // amount of room to be created ( since entrance and exit are always present, the list contains at least two elements
+        nbRoomInLevel =
+            Random.Range(2 + minRoomNumber,
+                maxRoomNumber); // amount of room to be created ( since entrance and exit are always present, the list contains at least two elements
 
         RandomRooms(0); // spawn entry room in level
 
@@ -67,8 +71,9 @@ public class RoomSpawner : MonoBehaviour
         if (roomsSpawned.Count > 0)
         {
             rooms.connectedRooms.Add(roomsSpawned[^1]);
-            corridorsSpawned.Add( rooms.CreateCorridor(lastDirection[^1], (lastDirection[^1] + 2) % 4));
+            corridorsSpawned.Add(rooms.CreateCorridor(lastDirection[^1], (lastDirection[^1] + 2) % 4));
         }
+
         roomsSpawned.Add(SpawnedRoom);
         return SpawnedRoom;
     }
@@ -88,55 +93,32 @@ public class RoomSpawner : MonoBehaviour
             int roomRng = Random.Range(2, roomsData.Count);
             roomsInLevel.Add(roomsData[roomRng].roomPrefab);
         }
+
         Vector3 pos = UsePositionTracker();
         return SpawnRoom(roomsInLevel[^1], pos);
     }
 
     public Vector3 UsePositionTracker()
     {
-        switch (DirectionSelector()) // if direction is left the room will spawn to the right and it's entry be on the left side of the room
+        int direction = DirectionSelector();
+        if (!IsPositionFree(direction))
         {
-            case 0: // Left
-                if (!IsPositionFree(0))
-                {
-                    UsePositionTracker();
-                    break;
-                }
-                roomPositiontracker += new Vector3(roomSpawnOffset, 0, 0);
-                lastDirection.Add(0);
-                break;
-
-            case 1: // Up
-                if (!IsPositionFree(1))
-                {
-                    UsePositionTracker();
-                    break;
-                }
-                roomPositiontracker += new Vector3(0, 0, -roomSpawnOffset);
-                lastDirection.Add(1);
-                break;
-
-            case 2: // Right
-                if (!IsPositionFree(2))
-                {
-                    UsePositionTracker();
-                    break;
-                }
-                roomPositiontracker += new Vector3(-roomSpawnOffset, 0, 0);
-                lastDirection.Add(2);
-                break;
-
-            case 3: // Down
-                if (!IsPositionFree(3))
-                {
-                    UsePositionTracker();
-                    break;
-                }
-                roomPositiontracker += new Vector3(0, 0, roomSpawnOffset);
-                lastDirection.Add(3);
-                break;
+            return UsePositionTracker(); // Recursive call to try another direction
         }
+
+        Vector3 offset = direction switch
+        {
+            0 => new Vector3(roomSpawnOffset, 0, 0), // Left
+            1 => new Vector3(0, 0, -roomSpawnOffset), // Up
+            2 => new Vector3(-roomSpawnOffset, 0, 0), // Right
+            3 => new Vector3(0, 0, roomSpawnOffset), // Down
+            _ => Vector3.zero
+        };
+
+        roomPositiontracker += offset;
+        lastDirection.Add(direction);
         positionTaken.Add(roomPositiontracker);
+
         return roomPositiontracker;
     }
 
@@ -150,14 +132,17 @@ public class RoomSpawner : MonoBehaviour
             {
                 directionRNG = Random.Range(0, 4);
             }
+
             return directionRNG;
         }
+
         if (lastDirection.Count > 1)
         {
             while ((directionRNG + 2) % 4 == lastDirection[^1])
             {
                 directionRNG = Random.Range(0, 4);
             }
+
             return directionRNG;
         }
 
@@ -166,48 +151,23 @@ public class RoomSpawner : MonoBehaviour
 
     public bool IsPositionFree(int i)
     {
-        switch (i)
+        Vector3 offset = i switch
         {
-            case 0: // Left
-                foreach (GameObject room in roomsSpawned)
-                {
-                    if (roomPositiontracker + new Vector3(roomSpawnOffset, 0, 0) == room.transform.position)
-                    {
-                        return false;
-                    }
-                }
-                break;
+            0 => new Vector3(roomSpawnOffset, 0, 0), // Left
+            1 => new Vector3(0, 0, -roomSpawnOffset), // Up
+            2 => new Vector3(-roomSpawnOffset, 0, 0), // Right
+            3 => new Vector3(0, 0, roomSpawnOffset), // Down
+            _ => Vector3.zero
+        };
 
-            case 1: // Up
-                foreach (GameObject room in roomsSpawned)
-                {
-                    if (roomPositiontracker + new Vector3(0, 0, -roomSpawnOffset) == room.transform.position)
-                    {
-                        return false;
-                    }
-                }
-                break;
-
-            case 2: // Right
-                foreach (GameObject room in roomsSpawned)
-                {
-                    if (roomPositiontracker + new Vector3(-roomSpawnOffset, 0, 0) == room.transform.position)
-                    {
-                        return false;
-                    }
-                }
-                break;
-
-            case 3: // Down
-                foreach (GameObject room in roomsSpawned)
-                {
-                    if (roomPositiontracker + new Vector3(0, 0, roomSpawnOffset) == room.transform.position)
-                    {
-                        return false;
-                    }
-                }
-                break;
+        foreach (GameObject room in roomsSpawned)
+        {
+            if (roomPositiontracker + offset == room.transform.position)
+            {
+                return false;
+            }
         }
+
         return true;
     }
 
@@ -217,10 +177,10 @@ public class RoomSpawner : MonoBehaviour
         {
             Destroy(corridor);
         }
+
         foreach (GameObject room in roomsSpawned)
         {
             Destroy(room);
         }
     }
 }
-
