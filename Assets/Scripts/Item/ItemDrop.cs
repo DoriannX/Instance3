@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace Item
         protected Vector3 startPos;
         protected MeshRenderer meshRenderer;
 
-        // Static event (global to all ItemDrop instances)
+        // Static event (global to all ItemDrop instances) for item pickup feedback.
         public static event System.Action<ItemDrop> onItemPickedUp;
 
         protected virtual void Awake()
@@ -48,6 +49,27 @@ namespace Item
             }
             GotPickedUp = true;
         }
+        
+        // Use collision detection to determine arrival.
+        public void OnTriggerEnter(Collider other)
+        {
+            if (other == null || targetPlayer == null)
+            {
+                return;
+            }
+
+            // Ensure the collider belongs to a Player.
+            if (other.GetComponent<Player>() == null)
+            {
+                throw new InvalidCastException("Collider does not belong to a Player.");
+            }
+
+            // When a non-trigger collider collides, mark the item as arrived.
+            if (!other.isTrigger)
+            {
+                HasArrived = true;
+            }
+        }
 
         protected IEnumerator GoToEntity()
         {
@@ -59,14 +81,14 @@ namespace Item
                 transform.position = Vector3.Lerp(startPos, targetPlayer.transform.position, t);
 
                 if (HasArrived || targetPlayer == null)
+                {
                     break;
-
+                }
                 yield return null;
             }
 
             if (targetPlayer != null && HasArrived)
             {
-                // Raise the global event when an item is picked up.
                 onItemPickedUp?.Invoke(this);
                 ApplyEffect();
                 Destroy(gameObject);
