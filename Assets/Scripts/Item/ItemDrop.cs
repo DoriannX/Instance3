@@ -11,16 +11,21 @@ namespace Item
         [field: SerializeField] public bool GotPickedUp { get; private set; }
         [field: SerializeField] public bool HasArrived { get; private set; }
 
-        // Replaced direct audio clip with a pickup SFX name that SFXManager uses.
-        [SerializeField] protected string pickupSFXName = "Pickup"; // Designers assign this name in the Inspector.
-        [SerializeField] protected GameObject pickupVFXPrefab;
+        // Pickup settings provided by designers.
+        [SerializeField] protected string pickupSfxName = "Pickup"; // Use camelCase for variables.
+        [SerializeField] protected GameObject pickupVfxPrefab;
+
+        // Public properties for feedback data using PascalCase.
+        public string PickupSfxName => pickupSfxName;
+        public GameObject PickupVfxPrefab => pickupVfxPrefab;
 
         protected Player targetPlayer;
         protected Vector3 startPos;
         protected MeshRenderer meshRenderer;
 
-        // (Optionally, you can add an event here if you want other systems to subscribe)
-        // public UnityEvent OnItemPickedUp;
+        // Static event (global to all ItemDrop instances) for item pickup feedback.
+        // Note: per lead dev preference, events are named in camelCase.
+        public static event System.Action<ItemDrop> onItemPickedUp;
 
         protected virtual void Awake()
         {
@@ -29,8 +34,6 @@ namespace Item
             {
                 Debug.LogError($"Missing MeshRenderer on {gameObject.name}");
             }
-            // Optionally initialize events:
-            // if (OnItemPickedUp == null) OnItemPickedUp = new UnityEvent();
         }
 
         public void OnPickUp(Entity target)
@@ -41,7 +44,7 @@ namespace Item
                 return;
             }
 
-            if (target is not Player player)
+            if (!(target is Player player))
             {
                 return;
             }
@@ -58,7 +61,7 @@ namespace Item
 
         protected IEnumerator GoToEntity()
         {
-            float elapsedTime = 0;
+            float elapsedTime = 0f;
             while (elapsedTime < travelTime && targetPlayer != null)
             {
                 elapsedTime += Time.deltaTime;
@@ -73,30 +76,11 @@ namespace Item
 
             if (targetPlayer != null && HasArrived)
             {
-                TriggerPickupFeedback();
+                // Instead of directly handling feedback here, raise a global event.
+                onItemPickedUp?.Invoke(this);
                 ApplyEffect();
                 Destroy(gameObject);
             }
-        }
-
-        // Decoupled feedback using SFXManager for sound and direct instantiation for VFX.
-        protected virtual void TriggerPickupFeedback()
-        {
-            // Instead of using AudioSource.PlayClipAtPoint, use SFXManager.
-            if (!string.IsNullOrEmpty(pickupSFXName) && SFXManager.instance != null)
-            {
-                SFXManager.instance.PlaySFX(pickupSFXName);
-            }
-            
-            // Instantiate the VFX prefab.
-            if (pickupVFXPrefab != null)
-            {
-                GameObject vfx = Instantiate(pickupVFXPrefab, transform.position, Quaternion.identity);
-                Destroy(vfx, 1f);
-            }
-            
-            // Optionally, broadcast the event so other systems can react:
-            // OnItemPickedUp?.Invoke();
         }
 
         public abstract void ApplyEffect();
