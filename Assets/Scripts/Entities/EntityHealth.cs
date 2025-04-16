@@ -5,10 +5,11 @@ using UnityEngine.Events;
 public class EntityHealth : MonoBehaviour
 {
     // --- Health Attributes ---
-    [SerializeField] private int maxHp = 30;
+    [field : SerializeField] public int maxHp { get; private set; } = 30 ;
     [field: SerializeField] public int Hp { get; private set; }
 
     private Entity entity;
+    private EnemyHealthBar enemyHealthBar;
     public event Action onDeath;
 
     private void Awake()
@@ -17,11 +18,16 @@ public class EntityHealth : MonoBehaviour
         Hp = maxHp;
         // Reference the Entity component on the same GameObject.
         entity = GetComponent<Entity>();
+        enemyHealthBar = GetComponent<EnemyHealthBar>();
     }
 
     public void TakeDamage(int damage)
     {
         Hp -= damage;
+        if (enemyHealthBar != null)
+        {
+            enemyHealthBar.UpdateHealthBar();
+        }
         if (Hp <= 0)
         {
             Die();
