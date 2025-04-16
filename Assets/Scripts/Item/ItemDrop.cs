@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Item
 {
@@ -11,20 +10,11 @@ namespace Item
         [field: SerializeField] public bool GotPickedUp { get; private set; }
         [field: SerializeField] public bool HasArrived { get; private set; }
 
-        // Pickup settings provided by designers.
-        [SerializeField] protected string pickupSfxName = "Pickup"; // Use camelCase for variables.
-        [SerializeField] protected GameObject pickupVfxPrefab;
-
-        // Public properties for feedback data using PascalCase.
-        public string PickupSfxName => pickupSfxName;
-        public GameObject PickupVfxPrefab => pickupVfxPrefab;
-
         protected Player targetPlayer;
         protected Vector3 startPos;
         protected MeshRenderer meshRenderer;
 
-        // Static event (global to all ItemDrop instances) for item pickup feedback.
-        // Note: per lead dev preference, events are named in camelCase.
+        // Static event (global to all ItemDrop instances)
         public static event System.Action<ItemDrop> onItemPickedUp;
 
         protected virtual void Awake()
@@ -76,7 +66,7 @@ namespace Item
 
             if (targetPlayer != null && HasArrived)
             {
-                // Instead of directly handling feedback here, raise a global event.
+                // Raise the global event when an item is picked up.
                 onItemPickedUp?.Invoke(this);
                 ApplyEffect();
                 Destroy(gameObject);

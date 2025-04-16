@@ -1,13 +1,14 @@
+using Item.Drops;
 using UnityEngine;
 
 public class ItemPickupFeedbackManager : MonoBehaviour
 {
-    // Class names follow PascalCase per convention.
     public static ItemPickupFeedbackManager Instance { get; private set; }
+    
+    [SerializeField] private GameObject genericPickupVfx;
 
     private void Awake()
     {
-        // Set up a singleton for easy access (if allowed for global managers)
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -29,22 +30,33 @@ public class ItemPickupFeedbackManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles the feedback for an item pickup: plays the sound and instantiates VFX.
+    /// Handles the feedback for an item pickup. It plays an SFX and instantiates a VFX,
+    /// choosing different feedback based on the item type.
     /// </summary>
     /// <param name="item">The item that was picked up.</param>
     private void HandleItemPickupFeedback(Item.ItemDrop item)
     {
-        // Use SFXManager (which is assumed to be set up) to play the pickup SFX.
-        if (!string.IsNullOrEmpty(item.PickupSfxName) && SFXManager.instance != null)
+        // Determine pickup SFX name based on the type of item.
+        string pickupSfxName = item switch
         {
-            SFXManager.instance.PlaySFX(item.PickupSfxName);
+            Chips => "ChipsPickup",
+            Bandages => "BandagesPickup",
+            Ammo => "AmmoPickup",
+            _ => "Pickup"
+        };
+
+        if (SFXManager.instance != null)
+        {
+            SFXManager.instance.PlaySFX(pickupSfxName);
         }
 
-        // Instantiate the pickup VFX (if any) at the item's position.
-        if (item.PickupVfxPrefab != null)
-        {
-            GameObject vfx = Instantiate(item.PickupVfxPrefab, item.transform.position, Quaternion.identity);
-            Destroy(vfx, 1f); // Destroy the VFX after 1 second.
-        }
+        // Determine VFX prefab – here we use a generic one.
+        GameObject vfxPrefab = genericPickupVfx;
+
+        if (vfxPrefab == null) return;
+        
+        GameObject vfx = Instantiate(vfxPrefab, item.transform.position, Quaternion.identity);
+        
+        Destroy(vfx, 1f);
     }
 }
