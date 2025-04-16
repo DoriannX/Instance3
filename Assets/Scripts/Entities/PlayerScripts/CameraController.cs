@@ -18,6 +18,11 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        if (target == null)
+        {
+            Debug.LogWarning("Target is dead in CameraController.");
+            return;
+        }
         bool isTargetMoving = Mathf.Abs((targetPosition - target.position).magnitude) > 0.01f;
         targetPosition = target.position;
 

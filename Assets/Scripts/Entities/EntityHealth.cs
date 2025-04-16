@@ -1,13 +1,17 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 public class EntityHealth : MonoBehaviour
 {
-    [SerializeField] private int maxHp = 100;
+    // --- Health Attributes ---
+    [field : SerializeField] public int maxHp { get; private set; } = 30 ;
     [field: SerializeField] public int Hp { get; private set; }
-    
-    [FormerlySerializedAs("OnDamageTaken")] public UnityEvent<int> onDamageTaken;
+
+    public event Action updateHealthBar;
+
+    private Entity entity;
+    public event Action onDeath;
 
     private void Awake()
     {
@@ -18,8 +22,8 @@ public class EntityHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         Hp -= damage;
-        
-        onDamageTaken.Invoke(damage);
+
+        updateHealthBar?.Invoke();
 
         if (Hp <= 0)
         {
@@ -30,23 +34,28 @@ public class EntityHealth : MonoBehaviour
     public void Heal(int amount)
     {
         Hp = Mathf.Min(Hp + amount, maxHp);
+        updateHealthBar?.Invoke();
     }
 
     public void IncreaseMaxHp(int amount)
     {
         maxHp += amount;
         Hp += amount;
+        updateHealthBar?.Invoke();
     }
 
     public void Die()
     {
+        onDeath?.Invoke();
+        
         Debug.Log($"{gameObject.name} has died.");
-        Destroy(gameObject);
+        onDeath?.Invoke();
     }
 
     public void SetMaxHp(int amount)
     {
         maxHp = amount;
-        Hp = maxHp;
+        Hp = maxHp;  // Optionally, also heal the entity to full health.
+        updateHealthBar?.Invoke();
     }
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Player))]
+[RequireComponent(typeof(PlayerInput))]
 public class InputManager : MonoBehaviour
 {
     private Player player;
@@ -20,6 +21,15 @@ public class InputManager : MonoBehaviour
         moveInput.Set(input.x, 0, input.y);
         player.SetMovementInput(moveInput);
     }
+    
+    public void OnLookControllerPerformed(InputAction.CallbackContext context)
+    {
+        Vector2 input = context.ReadValue<Vector2>();
+        Vector3 lookInput = Vector3.zero;
+        lookInput.Set(input.x, 0, input.y);
+        Debug.Log(input);
+        player.SetRightStickInput(lookInput);
+    }
 
     public void OnDashPerformed(InputAction.CallbackContext context)
     {
@@ -29,5 +39,15 @@ public class InputManager : MonoBehaviour
         }
 
         player.StartDash();
+    }
+
+    public void Interact(InputAction.CallbackContext context)
+    {
+        if (!context.started)
+        {
+            return;
+        }
+               
+        player.Interact();
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Item
 {
-    [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(SphereCollider))]
     public abstract class ItemDrop : MonoBehaviour
     {
         [SerializeField, Min(0.1f)] protected float travelTime = 1f;
@@ -17,13 +16,16 @@ namespace Item
 
         // Static event (global to all ItemDrop instances) for item pickup feedback.
         public static event System.Action<ItemDrop> onItemPickedUp;
-
+        protected bool isMovingToTarget = false;
+        protected float moveSpeed = 5f; // Force multiplier
+        protected Rigidbody rb;
+        
         protected virtual void Awake()
         {
-            meshRenderer = GetComponent<MeshRenderer>();
-            if (meshRenderer == null)
+            rb = GetComponent<Rigidbody>();
+            if (rb == null)
             {
-                Debug.LogError($"Missing MeshRenderer on {gameObject.name}");
+                rb = gameObject.AddComponent<Rigidbody>();
             }
         }
 
@@ -42,15 +44,44 @@ namespace Item
 
             targetPlayer = player;
             startPos = transform.position;
-
             if (!GotPickedUp)
             {
-                StartCoroutine(GoToEntity());
+                isMovingToTarget = true;
             }
+
             GotPickedUp = true;
         }
         
-        // Use collision detection to determine arrival.
+        protected virtual void Update()
+        {
+            if (isMovingToTarget && targetPlayer != null)
+            {
+                MoveTowardsTarget();
+
+                if (HasArrived)
+                {
+                    onItemPickedUp?.Invoke(this);
+                    ApplyEffect();
+                    Destroy(gameObject);
+                }
+            }
+        }
+
+            if (targetPlayer != null && HasArrived)
+            {
+                ApplyEffect();
+                Destroy(gameObject);
+            }
+        }
+
+        protected void MoveTowardsTarget()
+        {
+            if (targetPlayer == null) return;
+
+            Vector3 direction = (targetPlayer.transform.position - transform.position).normalized;
+            rb.AddForce(direction * moveSpeed, ForceMode.Acceleration);
+        }
+
         public void OnTriggerEnter(Collider other)
         {
             if (other == null || targetPlayer == null)
@@ -58,40 +89,14 @@ namespace Item
                 return;
             }
 
-            // Ensure the collider belongs to a Player.
-            if (other.GetComponent<Player>() == null)
+            if (!other.GetComponent<Player>())
             {
-                throw new InvalidCastException("Collider does not belong to a Player.");
+                return;
             }
 
-            // When a non-trigger collider collides, mark the item as arrived.
             if (!other.isTrigger)
             {
                 HasArrived = true;
-            }
-        }
-
-        protected IEnumerator GoToEntity()
-        {
-            float elapsedTime = 0f;
-            while (elapsedTime < travelTime && targetPlayer != null)
-            {
-                elapsedTime += Time.deltaTime;
-                float t = elapsedTime / travelTime;
-                transform.position = Vector3.Lerp(startPos, targetPlayer.transform.position, t);
-
-                if (HasArrived || targetPlayer == null)
-                {
-                    break;
-                }
-                yield return null;
-            }
-
-            if (targetPlayer != null && HasArrived)
-            {
-                onItemPickedUp?.Invoke(this);
-                ApplyEffect();
-                Destroy(gameObject);
             }
         }
 

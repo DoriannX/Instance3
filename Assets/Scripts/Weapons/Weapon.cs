@@ -10,6 +10,8 @@ public abstract class Weapon : MonoBehaviour
     private MeshFilter weaponMesh;
     protected Action<int> onWeaponUsed;
     protected AudioSource audioSource;
+    
+    public WeaponData Data => weaponData;
 
     private void Awake()
     {
@@ -24,7 +26,10 @@ public abstract class Weapon : MonoBehaviour
 
     private void Start()
     {
-        LoadData(weaponData);
+        if (weaponData)
+            LoadData(weaponData);
+        else
+            Debug.LogWarning($"WeaponData not assigned in inspector for {gameObject.name}");
     }
 
     protected virtual void SetupWeapon()
