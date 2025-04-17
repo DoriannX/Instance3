@@ -26,7 +26,7 @@ public class EnemyHealthBar : MonoBehaviour
 
     private void Start()
     {
-        entityHealth.updateHealthBar += UpdateHealthBar;
+        entityHealth.onHealthChanged += UpdateHealthBar;
         healthBar.fillAmount = (float)entityHealth.Hp/entityHealth.maxHp;
         easeHealthBar.fillAmount = (float)entityHealth.Hp/entityHealth.maxHp;
     }
@@ -58,7 +58,7 @@ public class EnemyHealthBar : MonoBehaviour
         }
     }
 
-    public void UpdateHealthBar()
+    public void UpdateHealthBar(int previousLife, int newLife)
     {
         if (!healthBar.gameObject.activeSelf)
             healthBar.gameObject.SetActive(true);
