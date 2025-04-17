@@ -1,4 +1,5 @@
 using UnityEngine;
+using Armory;
 
 public class PlayerInteract : MonoBehaviour
 {
@@ -8,28 +9,32 @@ public class PlayerInteract : MonoBehaviour
     private void Awake()
     {
         player = GetComponent<Player>();
-        playerTransform = GetComponent<Transform>();
+        playerTransform = transform;
     }
 
     public void Interact()
     {
-        RaycastHit hit;
+        if (!Physics.Raycast(playerTransform.position, playerTransform.forward, out var hit, 5f))
+            return;
 
-        if (Physics.Raycast(playerTransform.position, playerTransform.forward, out hit, 5f))
+        // --- ArmoryTerminal takes priority ---
+        if (hit.collider.TryGetComponent<ArmoryTerminal>(out var terminal))
         {
-            DoorSystem doorSystem = hit.collider.GetComponent<DoorSystem>();
+            terminal.TryOpen();
+            return;
+        }
 
-            if (doorSystem != null)
+        // --- Door logic unchanged ---
+        if (hit.collider.TryGetComponent<DoorSystem>(out var door))
+        {
+            if (player.hasKey)
             {
-                if (player.hasKey)
-                {
-                    doorSystem.OpenDoor();
-                    player.hasKey = false;
-                }
-                else
-                {
-                    Debug.Log("You need a key to open this door.");
-                }
+                door.OpenDoor();
+                player.hasKey = false;
+            }
+            else
+            {
+                Debug.Log("You need a key to open this door.");
             }
         }
     }
