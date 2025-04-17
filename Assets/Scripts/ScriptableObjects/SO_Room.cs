@@ -9,4 +9,5 @@ public class SO_Room : ScriptableObject
     public List<int> nbEnemy;
     public List<SO_Enemy> enemyType;
     public GameObject roomPrefab;
+    public float zoomCameraData;
 }
