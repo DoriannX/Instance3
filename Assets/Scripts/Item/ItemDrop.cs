@@ -67,13 +67,6 @@ namespace Item
             }
         }
 
-            if (targetPlayer != null && HasArrived)
-            {
-                ApplyEffect();
-                Destroy(gameObject);
-            }
-        }
-
         protected void MoveTowardsTarget()
         {
             if (targetPlayer == null) return;
