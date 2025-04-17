@@ -132,11 +132,9 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 640
-  fightBackDelay: 1
-  audioRange: 25
-  audioThreshold: 10
   weaponData: {fileID: 11400000, guid: 58d03203e945edf4d9adaffee7667092, type: 2}
   weapon: {fileID: 1299943628239758444}
+  cooldownBeforeAttack: 10
   fovDetectionRadius: 10
   fovAngle: 120
   maxEnemyDetection: 10

@@ -26,6 +26,7 @@ namespace Entities.Enemy.BehaviorTree
         [Header("Attack")]
         [SerializeField] private WeaponData weaponData;
         [SerializeField] private Weapon weapon;
+        [SerializeField] private float cooldownBeforeAttack = 0.5f;
         
         [Header("FOV Detection")]
         [SerializeField] private float fovDetectionRadius = 10f;
@@ -43,9 +44,11 @@ namespace Entities.Enemy.BehaviorTree
         [SerializeField] private float patrolStopDistance = 0.5f;
         
         private readonly string targetKey = "Target";
+        private readonly string enableAttackKey = "EnableAttack";
         //private readonly string attackedKey = "IsAttacked";
         
         private AttackMode attackMode;
+        private Transform selfTransform;
 
         protected override Node SetupTree()
         {
@@ -53,6 +56,8 @@ namespace Entities.Enemy.BehaviorTree
             Assert.IsTrue(patrolPoints.Length > 0, "Patrol points are not assigned in the inspector.");
             Assert.IsNotNull(weapon, "Weapon is not assigned in the inspector.");
             Assert.IsNotNull(weaponData, "WeaponData is not assigned in the inspector.");
+            
+            selfTransform = transform;
             
             SetWeaponData(weaponData);
             
@@ -63,10 +68,15 @@ namespace Entities.Enemy.BehaviorTree
         {
             return new Selector(new List<Node>
             {
+                new Sequence(new List<Node> 
+                {
+                    new WaitToAttack(cooldownBeforeAttack, enableAttackKey, navMeshAgent, targetKey, selfTransform),
+                    new TaskAttackEnemy(selfTransform, weapon, weaponData.cooldown, targetKey, enableAttackKey)
+                }),
                 new Sequence(new List<Node> // sequence for the attack
                 {
-                    new CheckEnemyInAttackRange(transform, enemyLayer, attackMode, weaponData.attackRange, targetKey, maxEnemyDetection),
-                    new TaskAttackEnemy(transform, weapon, weaponData.cooldown, targetKey)
+                    new CheckEnemyInAttackRange(selfTransform, enemyLayer, attackMode, weaponData.attackRange, targetKey, maxEnemyDetection),
+                    new TaskEnableAttack(enableAttackKey)
                 }),
                 new Sequence(new List<Node> // sequence for the chase
                 {
@@ -84,19 +94,20 @@ namespace Entities.Enemy.BehaviorTree
 
             weaponData = data;
 
-            if (weaponData is RangeWeaponData)
-                attackMode = AttackMode.Range;
-            else if (weaponData is MeleeWeaponData)
-                attackMode = AttackMode.Melee;
-            else
-                throw new ArgumentException("Invalid weapon data type.");
-            
+            attackMode = weaponData switch
+            {
+                RangeWeaponData => AttackMode.Range,
+                MeleeWeaponData => AttackMode.Melee,
+                _ => throw new ArgumentException("Invalid weapon data type.")
+            };
+
             weapon.LoadData(weaponData);
         }
 
         public void SetTargetInRoom(Transform target)
         {
             root.SetData(targetKey, target);
+            root.SetData(enableAttackKey, target != null);
         }
 
         /* -
