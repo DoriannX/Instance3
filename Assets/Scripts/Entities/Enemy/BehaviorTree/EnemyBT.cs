@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BehaviorTreeModules;
 using Entities.Enemy.BehaviorTree.Modes;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions;
+using Random = UnityEngine.Random;
 
 namespace Entities.Enemy.BehaviorTree
 {
@@ -103,11 +105,32 @@ namespace Entities.Enemy.BehaviorTree
 
             weapon.LoadData(weaponData);
         }
+        
+        public void SetWeapon(Weapon weapon)
+        {
+            if (!weapon)
+                throw new ArgumentNullException(nameof(weapon), "Weapon is null.");
+
+            this.weapon = weapon;
+        }
 
         public void SetTargetInRoom(Transform target)
         {
             root.SetData(targetKey, target);
             root.SetData(enableAttackKey, target != null);
+        }
+        
+        public void SetPatrolPoints(Transform[] patrolPoints)
+        {
+            if (patrolPoints == null || patrolPoints.Length == 0)
+                throw new ArgumentNullException(nameof(patrolPoints), "Patrol points are null or empty.");
+
+            this.patrolPoints = patrolPoints.OrderBy(_ => Random.value).ToArray();
+        }
+        
+        public void SetPatrolMovementType(PatrolMovementType patrolMovementType)
+        {
+            this.patrolMovementType = patrolMovementType;
         }
 
         /* -
