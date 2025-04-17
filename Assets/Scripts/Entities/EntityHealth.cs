@@ -44,9 +44,8 @@ public class EntityHealth : MonoBehaviour
         onDeath?.Invoke();
         Debug.Log($"{gameObject.name} has died.");
         onDeath?.Invoke();
-        // TODO: Further implementation for death (animations, notifications, etc.)
     }
-    
+
     public void SetMaxHp(int amount)
     {
         maxHp = amount;
