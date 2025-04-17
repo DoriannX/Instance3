@@ -117,6 +117,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponData: {fileID: 11400000, guid: ab16820772263774ca1f239648b4e564, type: 2}
+  attackSFX: {fileID: 0}
+  hitableLayer:
+    serializedVersion: 2
+    m_Bits: 1088
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
