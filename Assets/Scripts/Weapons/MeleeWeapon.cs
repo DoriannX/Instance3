@@ -4,6 +4,7 @@ using UnityEngine;
 public class MeleeWeapon : Weapon
 {
     [Header("Melee Weapon Stats")]
+    [SerializeField] private LayerMask hitableLayer;
     [SerializeField] private LayerMask enemyLayer;
     private float attackRange;
 
@@ -27,7 +28,7 @@ public class MeleeWeapon : Weapon
         // Draw debug box visualization
         DrawDebugBox(boxCenter, boxSize, playerTransform.rotation, Color.red, 0.2f);
         
-        Collider[] hitColliders = Physics.OverlapBox(boxCenter, boxSize * 0.5f, playerTransform.rotation, enemyLayer);
+        Collider[] hitColliders = Physics.OverlapBox(boxCenter, boxSize * 0.5f, playerTransform.rotation, hitableLayer);
     
         if (hitColliders.Length <= 0)
             return;
@@ -45,6 +46,12 @@ public class MeleeWeapon : Weapon
                 {
                     DrawDebugBox(hitCollider.bounds.center, hitCollider.bounds.size, hitCollider.transform.rotation, Color.green, 0.2f);
                 }
+            }
+            if (hitCollider.TryGetComponent(out Bullet bullet))
+            {
+                bullet.ParryBullet();
+                bullet.SetLayer(enemyLayer);
+                onWeaponUsed?.Invoke(0);
             }
         }
     }

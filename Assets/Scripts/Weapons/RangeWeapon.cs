@@ -128,7 +128,7 @@ public class RangeWeapon : Weapon
             Quaternion bulletRotation = bulletSpawner.transform.rotation * Quaternion.Euler(0, spreadAngle, 0);
             Vector3 bulletSpawnPos = bulletSpawner.transform.position;
 
-            Bullet bullet = bulletSpawner.SpawnBullet(damage, hitLayerMask, bulletSpawnPos, bulletRotation);
+            Bullet bullet = bulletSpawner.SpawnBullet(damage, hitLayerMask, bulletSpawnPos, bulletRotation, transform);
 
 
             bullet.gameObject.SetActive(true);
