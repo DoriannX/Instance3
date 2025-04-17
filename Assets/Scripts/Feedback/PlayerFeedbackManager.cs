@@ -29,9 +29,9 @@ public class PlayerFeedbackManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        if(entityHealth != null)
-            entityHealth.onHealthChanged += OnPlayerDamaged;
-        if(playerDash != null)
+        if (entityHealth != null)
+            entityHealth.onHealthChanged -= OnPlayerDamaged;
+        if (playerDash != null)
             playerDash.OnDash -= OnPlayerDash;
     }
 
