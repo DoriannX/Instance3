@@ -8,7 +8,6 @@ public class EntityHealth : MonoBehaviour
     [field : SerializeField] public int maxHp { get; private set; } = 30 ;
     [field: SerializeField] public int Hp { get; private set; }
 
-    private Entity entity;
     public event Action onDeath;
     public event Action<int, int> onHealthChanged;
 
@@ -17,8 +16,6 @@ public class EntityHealth : MonoBehaviour
         // Set starting health and max health.
         Hp = maxHp;
         MaxHealth = maxHp;
-        // Reference the Entity component on the same GameObject.
-        entity = GetComponent<Entity>();
     }
 
     public void TakeDamage(int damage)
@@ -49,9 +46,8 @@ public class EntityHealth : MonoBehaviour
         onDeath?.Invoke();
         Debug.Log($"{gameObject.name} has died.");
         onDeath?.Invoke();
-        // TODO: Further implementation for death (animations, notifications, etc.)
     }
-    
+
     public void SetMaxHp(int amount)
     {
         maxHp = amount;

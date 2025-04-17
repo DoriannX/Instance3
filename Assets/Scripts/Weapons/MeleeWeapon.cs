@@ -7,15 +7,12 @@ public class MeleeWeapon : Weapon
     [SerializeField] private LayerMask enemyLayer;
     private float attackRange;
 
-    //private Transform playerTransform; //For DrawGizmos
-       
+    public Transform playerTransform; // Used for gizmo drawing.
     public override void LoadData(WeaponData data)
     {
         base.LoadData(data);
-
         if (data is not MeleeWeaponData meleeWeaponData)
             throw new InvalidCastException("WeaponData is not a meleeWeaponData");
-
         attackRange = Mathf.Clamp(meleeWeaponData.attackRange, 0.1f, 100f);
     }
 
@@ -47,6 +44,8 @@ public class MeleeWeapon : Weapon
                 }
             }
         }
+        // Play the weapon's attack SFX.
+        PlayAttackSFX();
     }
     
     private void DrawDebugBox(Vector3 center, Vector3 size, Quaternion rotation, Color color, float duration = 0.2f)

@@ -11,11 +11,16 @@ namespace Item
         [field: SerializeField] public bool HasArrived { get; private set; }
 
         protected Player targetPlayer;
+        protected Vector3 startPos;
+        protected MeshRenderer meshRenderer;
+
+        // Static event (global to all ItemDrop instances) for item pickup feedback.
+        public static event System.Action<ItemDrop> onItemPickedUp;
         protected bool isMovingToTarget = false;
         protected float moveSpeed = 5f; // Force multiplier
         protected Rigidbody rb;
         
-        protected virtual void Start()
+        protected virtual void Awake()
         {
             rb = GetComponent<Rigidbody>();
             if (rb == null)
@@ -32,13 +37,13 @@ namespace Item
                 return;
             }
 
-            if (target is not Player player)
+            if (!(target is Player player))
             {
                 return;
             }
 
             targetPlayer = player;
-            
+            startPos = transform.position;
             if (!GotPickedUp)
             {
                 isMovingToTarget = true;
@@ -55,9 +60,17 @@ namespace Item
 
                 if (HasArrived)
                 {
+                    onItemPickedUp?.Invoke(this);
                     ApplyEffect();
                     Destroy(gameObject);
                 }
+            }
+        }
+
+            if (targetPlayer != null && HasArrived)
+            {
+                ApplyEffect();
+                Destroy(gameObject);
             }
         }
 
