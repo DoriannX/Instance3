@@ -1,6 +1,6 @@
 using System;
+using Entities;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class EntityHealth : MonoBehaviour
 {
@@ -9,15 +9,22 @@ public class EntityHealth : MonoBehaviour
     [field: SerializeField] public int Hp { get; private set; }
     public event Action onDeath;
     public event Action<int, int> onHealthChanged;
+    private InvincibilityManager invincibilityManager;
 
     private void Awake()
     {
         // Set starting health and max health.
         Hp = maxHp;
+        invincibilityManager = GetComponent<InvincibilityManager>();
     }
 
     public void TakeDamage(int damage)
     {
+        if (invincibilityManager != null && invincibilityManager.isInvulnerable)
+        {
+            Debug.Log($"{gameObject.name} is invulnerable and took no damage.");
+            return; 
+        }
         Hp = Mathf.Max(Hp - damage, 0);
         onHealthChanged?.Invoke(Hp, maxHp);
         if (Hp <= 0)
