@@ -4,23 +4,16 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
     [SerializeField] protected WeaponData weaponData;
-    [SerializeField] private AudioClip attackSFX; // SFX assigned per weapon by designers.
     protected float cooldown;
     protected int damage;
+    protected string attackSFX;
     private MeshFilter weaponMesh;
     protected Action<int> onWeaponUsed;
-    protected AudioSource audioSource;
     
     public WeaponData Data => weaponData;
 
     protected virtual void Awake()
     {
-        // Ensure an AudioSource is available on this weapon.
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
         SetupWeapon();
     }
 
@@ -47,6 +40,7 @@ public abstract class Weapon : MonoBehaviour
         weaponData = data;
         cooldown = Mathf.Clamp(data.cooldown, 0.1f, 10f);
         damage = Mathf.Clamp(data.damage, 1, 100);
+        attackSFX = data.attackSFX;
         if (weaponMesh != null)
         {
             weaponMesh.mesh = data.mesh;
@@ -55,14 +49,7 @@ public abstract class Weapon : MonoBehaviour
 
     /// <summary>
     /// Plays the assigned attack SFX.
-    /// </summary>
-    protected void PlayAttackSFX()
-    {
-        if (attackSFX != null && audioSource != null)
-        {
-            audioSource.PlayOneShot(attackSFX);
-        }
-    }
+    /// </summary>   
 
     public float Cooldown => cooldown;
     public int Damage => damage;

@@ -13,11 +13,13 @@ public class RangeWeapon : Weapon
     private float bulletSpread;
     private int ammoShoot;
 
+    private ParticleSystem muzzleFlash;
 
     protected override void SetupWeapon()
     {
         base.SetupWeapon();
         bulletSpawner = GetComponentInChildren<BulletSpawner>(true);
+        muzzleFlash = GetComponent<ParticleSystem>();
     }
 
     public override void LoadData(WeaponData data)
@@ -135,7 +137,8 @@ public class RangeWeapon : Weapon
         onWeaponUsed?.Invoke(ammoConsume);
 
         // Play the weapon's attack SFX.
-        PlayAttackSFX();
+        SFXManager.instance.PlaySFX(attackSFX);
+        muzzleFlash.Play();
     }
 
     public int AmmoConsume => ammoConsume;

@@ -951,7 +951,6 @@ GameObject:
   - component: {fileID: 7968931702877072914}
   - component: {fileID: 3534255143174771367}
   - component: {fileID: 499243990582240178}
-  - component: {fileID: 8802569244829394271}
   - component: {fileID: 9191186812190912837}
   m_Layer: 9
   m_Name: Player
@@ -1256,7 +1255,19 @@ MonoBehaviour:
     m_ActionId: 678fb7dd-d3ff-48d3-9028-16747407ad09
     m_ActionName: 'Player/RightStickInput[/Gamepad/rightStick]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: PauseUI
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: c8aaa1ab-6fc5-4a02-8e7b-1247ea343ac7
     m_ActionName: 'UI/Pause[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
@@ -1435,18 +1446,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostPrefab: {fileID: 5674102266328318690, guid: ab3ae9ded2170d947a623a4d3806d179, type: 3}
   ghostLifetime: 0.3
---- !u!114 &8802569244829394271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5313647932819149050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58a1c11bcd1e4e51957bfe613a8b7e20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &9191186812190912837
 MonoBehaviour:
   m_ObjectHideFlags: 0

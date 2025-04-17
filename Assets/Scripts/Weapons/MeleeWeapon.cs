@@ -7,6 +7,7 @@ public class MeleeWeapon : Weapon
     [SerializeField] private LayerMask hitableLayer;
     [SerializeField] private LayerMask enemyLayer;
     private float attackRange;
+
     public override void LoadData(WeaponData data)
     {
         base.LoadData(data);
@@ -53,7 +54,7 @@ public class MeleeWeapon : Weapon
             }
         }
         // Play the weapon's attack SFX.
-        PlayAttackSFX();
+        SFXManager.instance.PlaySFX(attackSFX);
     }
     
     private void DrawDebugBox(Vector3 center, Vector3 size, Quaternion rotation, Color color, float duration = 0.2f)
