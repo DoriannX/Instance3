@@ -90,6 +90,10 @@ public class Player : Entity
         playerAttack.SwitchWeapon();
     }
 
+    public void TakeWeapon(Weapon takenWeapon)
+    {
+        playerAttack.TakeWeapon(takenWeapon);
+    }
     private void FixedUpdate()
     {
         dash.HandleDash();

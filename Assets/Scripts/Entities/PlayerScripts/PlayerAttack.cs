@@ -90,12 +90,31 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    public void TakeWeapon(Weapon takenWeapon)
+    {
+        if(takenWeapon is MeleeWeapon newMelee)
+        {
+            meleeWeapon = newMelee;
+            currentWeapon = meleeWeapon;
+        }
+        else if(takenWeapon is RangeWeapon newRange)
+        {
+            rangeWeapon = newRange;
+            currentWeapon = rangeWeapon;
+        }   
+    }
+
     public void SwitchWeapon()
     {        
-        GameObject objectToDisable = (currentWeapon == rangeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
-        GameObject objectToEnable = (currentWeapon == meleeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
-        objectToDisable.SetActive(false);
-        objectToEnable.SetActive(true);
-        currentWeapon = (currentWeapon == meleeWeapon) ? rangeWeapon : meleeWeapon;               
+      if (meleeWeapon == null || rangeWeapon == null)
+      {
+          return;
+      }
+      
+      GameObject objectToDisable = (currentWeapon == rangeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
+      GameObject objectToEnable = (currentWeapon == meleeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
+      objectToDisable.SetActive(false);
+      objectToEnable.SetActive(true);
+      currentWeapon = (currentWeapon == meleeWeapon) ? rangeWeapon : meleeWeapon;            
     }
 }
