@@ -45,6 +45,7 @@ namespace Entities.Enemy.BehaviorTree
         [SerializeField] private float patrolWaitTime = 2f;
         [SerializeField] private float patrolStopDistance = 0.5f;
         
+        private readonly string roomDataKey = "RoomData";
         private readonly string targetKey = "Target";
         private readonly string enableAttackKey = "EnableAttack";
         //private readonly string attackedKey = "IsAttacked";
@@ -82,7 +83,7 @@ namespace Entities.Enemy.BehaviorTree
                 }),
                 new Sequence(new List<Node> // sequence for the chase
                 {
-                    new CheckEnemyInRoom(targetKey),
+                    new CheckEnemyInRoom(targetKey, roomDataKey),
                     new TaskGoToTarget(navMeshAgent, chaseSpeed, weaponData.attackRange, targetKey)
                 }),
                 new TaskPatrol(patrolPoints, patrolMovementType, navMeshAgent, patrolSpeed, patrolWaitTime, patrolStopDistance),
@@ -116,7 +117,7 @@ namespace Entities.Enemy.BehaviorTree
 
         public void SetTargetInRoom(Transform target)
         {
-            root.SetData(targetKey, target);
+            root.SetData(roomDataKey, target);
             root.SetData(enableAttackKey, target != null);
         }
         
