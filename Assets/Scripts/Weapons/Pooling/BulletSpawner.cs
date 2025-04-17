@@ -30,15 +30,17 @@ namespace Pooling
             Transform bulletTransform = bullet.transform;
             bulletTransform.position = Vector3.zero;
             bulletTransform.rotation = Quaternion.identity;
+            bullet.SetIsParried(false);
         }
 
-        public Bullet SpawnBullet(int damage, LayerMask hitLayer, Vector3 position, Quaternion rotation)
+        public Bullet SpawnBullet(int damage, LayerMask hitLayer, Vector3 position, Quaternion rotation, Transform ShooterTranform)
         {
             Bullet bullet = pool.Get();
             bullet.SetLayer(hitLayer);
             bullet.SetDamage(damage);
             bullet.transform.position = position;
             bullet.transform.rotation = rotation;
+            bullet.SetShooterOrigin(ShooterTranform);
            return bullet;
         }
 

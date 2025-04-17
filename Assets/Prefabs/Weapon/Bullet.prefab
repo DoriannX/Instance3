@@ -123,3 +123,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxLifeTime: 5
   speed: 15
+  parryWindow: 0.1

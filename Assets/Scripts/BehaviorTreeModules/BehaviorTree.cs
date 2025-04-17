@@ -4,7 +4,7 @@ namespace BehaviorTreeModules
 {
     public abstract class BehaviorTree : MonoBehaviour
     {
-        private Node root;
+        protected Node root;
 
         protected void Start()
         {

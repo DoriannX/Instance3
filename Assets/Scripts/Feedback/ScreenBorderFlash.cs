@@ -27,36 +27,45 @@ public class ScreenBorderFlash : MonoBehaviour
         {
             Debug.LogError("ScreenBorderFlash: Border Image is not assigned in the Inspector!");
         }
+        
+        // Ensure the border image starts fully transparent.
+        var c = borderImage.color;
+        c.a = 0f;
+        borderImage.color = c;
     }
 
     // Call this method (e.g., from the player's damage system) to trigger the border flash.
     public void FlashBorder()
     {
-        if(borderImage != null)
-            StartCoroutine(DoFlash());
+        if (borderImage == null) return;
+        StopAllCoroutines();        // cancels any in‑flight DoFlash
+        StartCoroutine(DoFlash());
     }
 
     private IEnumerator DoFlash()
     {
-        Color initialColor = borderImage.color;
+        // 1) Fade in from transparent (0) to flashColor.a
         float timer = 0f;
-
-        // Fade in to the flashColor.
         while (timer < flashInDuration)
         {
             timer += Time.deltaTime;
-            borderImage.color = Color.Lerp(initialColor, flashColor, timer / flashInDuration);
+            float alpha = Mathf.Lerp(0f, flashColor.a, timer / flashInDuration);
+            borderImage.color = new Color(flashColor.r, flashColor.g, flashColor.b, alpha);
             yield return null;
         }
 
+        // 2) Fade back out to fully transparent
         timer = 0f;
-        // Fade out back to the initial color (assumed to be transparent).
         while (timer < flashOutDuration)
         {
             timer += Time.deltaTime;
-            borderImage.color = Color.Lerp(flashColor, initialColor, timer / flashOutDuration);
+            float alpha = Mathf.Lerp(flashColor.a, 0f, timer / flashOutDuration);
+            borderImage.color = new Color(flashColor.r, flashColor.g, flashColor.b, alpha);
             yield return null;
         }
-        borderImage.color = initialColor;
+
+        // 3) Guarantee a final reset
+        borderImage.color = new Color(flashColor.r, flashColor.g, flashColor.b, 0f);
     }
+
 } 
