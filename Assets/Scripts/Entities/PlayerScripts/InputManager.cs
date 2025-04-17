@@ -50,4 +50,34 @@ public class InputManager : MonoBehaviour
                
         player.Interact();
     }
+
+    public void OnAttackPerformed(InputAction.CallbackContext context)
+    {
+        if (!context.started)
+        {
+            return;
+        }
+
+        player.Attack();
+    }
+
+    public void Previous(InputAction.CallbackContext context)
+    {
+        if (!context.started)
+        {
+            return;
+        }
+
+        player.SwitchWeapon();
+    }
+
+    public void Next(InputAction.CallbackContext context)
+    {
+        if (!context.started)
+        {
+            return;
+        }
+
+        player.SwitchWeapon();
+    }
 }
