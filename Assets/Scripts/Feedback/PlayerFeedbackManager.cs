@@ -22,7 +22,7 @@ public class PlayerFeedbackManager : MonoBehaviour
 
         // Subscribe to health and dash events.
         if(entityHealth != null)
-            entityHealth.onDamageTaken.AddListener(OnPlayerDamaged);
+            entityHealth.onHealthChanged += OnPlayerDamaged;
         if(playerDash != null)
             playerDash.OnDash += OnPlayerDash;
     }
@@ -30,7 +30,7 @@ public class PlayerFeedbackManager : MonoBehaviour
     private void OnDestroy()
     {
         if(entityHealth != null)
-            entityHealth.onDamageTaken.RemoveListener(OnPlayerDamaged);
+            entityHealth.onHealthChanged += OnPlayerDamaged;
         if(playerDash != null)
             playerDash.OnDash -= OnPlayerDash;
     }
@@ -39,7 +39,7 @@ public class PlayerFeedbackManager : MonoBehaviour
     /// Called when the player takes damage.
     /// </summary>
     /// <param name="damage">Damage amount.</param>
-    private void OnPlayerDamaged(int damage)
+    private void OnPlayerDamaged(int lastHp, int newHp)
     {
         sfxManager?.PlaySFX("Hit");
         
