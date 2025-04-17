@@ -19,7 +19,6 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
     private int damage;
     private float lifeTime = 5f;
     [SerializeField] private float maxLifeTime = 5f;
-    [SerializeField] private float speed = 10f;
 
     private void Awake()
     {

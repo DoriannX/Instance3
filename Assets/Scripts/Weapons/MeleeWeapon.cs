@@ -7,13 +7,6 @@ public class MeleeWeapon : Weapon
     [SerializeField] private LayerMask hitableLayer;
     [SerializeField] private LayerMask enemyLayer;
     private float attackRange;
-
-    private Transform selfTransform;
-    
-    protected override void Awake()
-    {
-        selfTransform = GetComponent<Transform>();
-    }
     public override void LoadData(WeaponData data)
     {
         base.LoadData(data);
