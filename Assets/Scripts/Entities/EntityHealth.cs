@@ -1,27 +1,34 @@
 using System;
+using Entities;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class EntityHealth : MonoBehaviour
 {
     // --- Health Attributes ---
-    [SerializeField] private int maxHp = 30;
+    [field : SerializeField] public int maxHp { get; private set; } = 30 ;
     [field: SerializeField] public int Hp { get; private set; }
-
-    private Entity entity;
     public event Action onDeath;
+    public event Action<Transform> onHit;
+    public event Action<int, int> onHealthChanged;
+    private InvincibilityManager invincibilityManager;
 
     private void Awake()
     {
-        // Set starting health to maximum.
+        // Set starting health and max health.
         Hp = maxHp;
-        // Reference the Entity component on the same GameObject.
-        entity = GetComponent<Entity>();
+        invincibilityManager = GetComponent<InvincibilityManager>();
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Transform origin = null)
     {
-        Hp -= damage;
+        if (invincibilityManager != null && invincibilityManager.isInvulnerable)
+        {
+            Debug.Log($"{gameObject.name} is invulnerable and took no damage.");
+            return; 
+        }
+        Hp = Mathf.Max(Hp - damage, 0);
+        onHealthChanged?.Invoke(Hp, maxHp);
+        onHit?.Invoke(origin);
         if (Hp <= 0)
         {
             Die();
@@ -31,27 +38,27 @@ public class EntityHealth : MonoBehaviour
     public void Heal(int amount)
     {
         Hp = Mathf.Min(Hp + amount, maxHp);
-        // TODO: Optionally update health-related UI.
+        onHealthChanged?.Invoke(Hp, maxHp);
     }
 
     public void IncreaseMaxHp(int amount)
     {
         maxHp += amount;
-        Hp += amount;  // Optionally, also heal the entity for the increased amount.
+        Hp += amount;
+        onHealthChanged?.Invoke(Hp, maxHp);
     }
 
     public void Die()
     {
         onDeath?.Invoke();
-        
         Debug.Log($"{gameObject.name} has died.");
         onDeath?.Invoke();
-        // TODO: Further implementation for death (animations, notifications, etc.)
     }
-    
+
     public void SetMaxHp(int amount)
     {
         maxHp = amount;
-        Hp = maxHp;  // Optionally, also heal the entity to full health.
+        Hp = maxHp;
+        onHealthChanged?.Invoke(Hp, maxHp);
     }
 }

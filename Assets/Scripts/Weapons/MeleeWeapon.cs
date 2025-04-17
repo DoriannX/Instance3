@@ -8,15 +8,20 @@ public class MeleeWeapon : Weapon
     [SerializeField] private LayerMask enemyLayer;
     private float attackRange;
 
-    //private Transform playerTransform; //For DrawGizmos
-       
+    private Transform selfTransform;
+    
+    protected override void Awake()
+    {
+        selfTransform = GetComponent<Transform>();
+    }
     public override void LoadData(WeaponData data)
     {
         base.LoadData(data);
-
         if (data is not MeleeWeaponData meleeWeaponData)
+        {
+            Debug.Log(data.GetType());
             throw new InvalidCastException("WeaponData is not a meleeWeaponData");
-
+        }
         attackRange = Mathf.Clamp(meleeWeaponData.attackRange, 0.1f, 100f);
     }
 
@@ -37,7 +42,7 @@ public class MeleeWeapon : Weapon
         {
             if (hitCollider.TryGetComponent(out EntityHealth entityHealth))
             {
-                entityHealth.TakeDamage(damage);
+                entityHealth.TakeDamage(damage, transform);
                 onWeaponUsed?.Invoke(0); 
                 Debug.Log("attack ");
                 
@@ -54,6 +59,8 @@ public class MeleeWeapon : Weapon
                 onWeaponUsed?.Invoke(0);
             }
         }
+        // Play the weapon's attack SFX.
+        PlayAttackSFX();
     }
     
     private void DrawDebugBox(Vector3 center, Vector3 size, Quaternion rotation, Color color, float duration = 0.2f)

@@ -157,6 +157,7 @@ MonoBehaviour:
   travelTime: 1
   <GotPickedUp>k__BackingField: 0
   <HasArrived>k__BackingField: 0
+  moveSpeed: 50
 --- !u!65 &-9142668614300697913
 BoxCollider:
   m_ObjectHideFlags: 0

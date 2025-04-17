@@ -8,16 +8,19 @@ namespace Entities.Enemy.BehaviorTree
     {
         private readonly float cooldownTime;
         private readonly string targetKey;
+        private readonly string enableAttackKey;
         
         private readonly Weapon weapon;
         private readonly Transform selfTransform;
         
         private float lastAttackTime;
         
-        public TaskAttackEnemy(Transform transform, Weapon weapon, float cooldownTime, string targetKey)
+        public TaskAttackEnemy(Transform transform, Weapon weapon, float cooldownTime, string targetKey, string enableAttackKey)
         {
             this.cooldownTime = cooldownTime;
             this.targetKey = targetKey;
+            this.enableAttackKey = enableAttackKey;
+            
             selfTransform = transform;
             this.weapon = weapon;
             
@@ -44,6 +47,7 @@ namespace Entities.Enemy.BehaviorTree
             
             weapon?.Attack(selfTransform);
             lastAttackTime = Time.time;
+            parent.parent.SetData(enableAttackKey, false);
             
             return NodeState.SUCCESS;
         }
