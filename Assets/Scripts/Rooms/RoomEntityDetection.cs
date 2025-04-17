@@ -23,7 +23,7 @@ public class RoomEntityDetection : MonoBehaviour
             if (!enemiesInRoom.Contains(enemy))
                 enemiesInRoom.Add(enemy);
         }
-        else if (other.TryGetComponent(out Player player))
+        else if (!other.isTrigger && other.TryGetComponent(out Player player))
         {
             AlertEnemies(player.transform);
         }
@@ -31,7 +31,7 @@ public class RoomEntityDetection : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out Player _))
+        if (!other.isTrigger && other.TryGetComponent(out Player _))
         {
             AlertEnemies(null);
         }
