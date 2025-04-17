@@ -13,7 +13,6 @@ public class MeleeWeapon : Weapon
     {
         selfTransform = GetComponent<Transform>();
     }
-       
     public override void LoadData(WeaponData data)
     {
         base.LoadData(data);

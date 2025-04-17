@@ -138,7 +138,7 @@ MonoBehaviour:
   fovDetectionRadius: 10
   fovAngle: 120
   maxEnemyDetection: 10
-  chaseSpeed: 3.5
+  chaseSpeed: 7
   patrolPoints:
   - {fileID: 0}
   - {fileID: 0}
@@ -152,7 +152,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   patrolMovementType: 0
-  patrolSpeed: 2
+  patrolSpeed: 5
   patrolWaitTime: 1
   patrolStopDistance: 0.5
 --- !u!195 &6884083875173368568
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df28b230e4746f590c6922bb95ea81c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 30
+  <maxHp>k__BackingField: 30
   <Hp>k__BackingField: 0
 --- !u!114 &8780742913638901692
 MonoBehaviour:
@@ -310,17 +310,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6b328bae213edd4381937718d236f72, type: 3}
---- !u!114 &1299943628239758444 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8140927079002982144, guid: f6b328bae213edd4381937718d236f72, type: 3}
-  m_PrefabInstance: {fileID: 7129253031410377580}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c9051a59140e14dbc9dcc09f1ac201, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &6295519931686687203 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3868064150173528719, guid: f6b328bae213edd4381937718d236f72, type: 3}
