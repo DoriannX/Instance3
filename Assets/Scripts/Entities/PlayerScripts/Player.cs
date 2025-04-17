@@ -10,6 +10,7 @@ using UnityEngine;
 [RequireComponent(typeof(EntityHealth))]
 [RequireComponent(typeof(PlayerInteract))]
 [RequireComponent(typeof(InputManager))]
+[RequireComponent(typeof(PlayerUpgrade))]
 public class Player : Entity
 {
     // --- Player-specific attributes ---
