@@ -5,6 +5,7 @@ public class CameraZoomEnterRoom : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private float smooth = 0.1f;
+    [SerializeField] private LayerMask playerLayer;
     private Rooms rooms;
 
     private bool isZooming = false;
@@ -30,7 +31,7 @@ public class CameraZoomEnterRoom : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (other.gameObject.layer == playerLayer)
         {
             isZooming = true;
         }
