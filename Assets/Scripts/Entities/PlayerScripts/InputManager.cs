@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Player))]
+[RequireComponent(typeof(PlayerInput))]
 public class InputManager : MonoBehaviour
 {
     private Player player;
@@ -48,5 +49,35 @@ public class InputManager : MonoBehaviour
         }
                
         player.Interact();
+    }
+
+    public void OnAttackPerformed(InputAction.CallbackContext context)
+    {
+        if (!context.started)
+        {
+            return;
+        }
+
+        player.Attack();
+    }
+
+    public void Previous(InputAction.CallbackContext context)
+    {
+        if (!context.started)
+        {
+            return;
+        }
+
+        player.SwitchWeapon();
+    }
+
+    public void Next(InputAction.CallbackContext context)
+    {
+        if (!context.started)
+        {
+            return;
+        }
+
+        player.SwitchWeapon();
     }
 }

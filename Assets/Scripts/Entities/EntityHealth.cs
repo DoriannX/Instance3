@@ -5,12 +5,9 @@ using UnityEngine.Events;
 public class EntityHealth : MonoBehaviour
 {
     // --- Health Attributes ---
-    [SerializeField] private int maxHp = 30;
+    [field : SerializeField] public int maxHp { get; private set; } = 30 ;
     [field: SerializeField] public int Hp { get; private set; }
-    
-    // Expose max health as a property with a private set.
-    public int MaxHealth { get; private set; }
-    
+
     private Entity entity;
     public event Action onDeath;
     public event Action<int, int> onHealthChanged;
@@ -43,8 +40,8 @@ public class EntityHealth : MonoBehaviour
     public void IncreaseMaxHp(int amount)
     {
         maxHp += amount;
-        MaxHealth = maxHp;
         Hp += amount;
+        onHealthChanged?.Invoke(Hp, maxHp);
     }
 
     public void Die()
@@ -58,7 +55,7 @@ public class EntityHealth : MonoBehaviour
     public void SetMaxHp(int amount)
     {
         maxHp = amount;
-        MaxHealth = amount;
         Hp = MaxHealth;
+        onHealthChanged?.Invoke(Hp, maxHp);
     }
 }
