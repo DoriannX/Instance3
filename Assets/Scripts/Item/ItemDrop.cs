@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace Item
 {
+    [RequireComponent(typeof(Collider))]
+    [RequireComponent(typeof(Rigidbody))]
     public abstract class ItemDrop : MonoBehaviour
     {
-        [SerializeField, Min(0.1f)] protected float travelTime = 1f;
-        [field: SerializeField] public bool GotPickedUp { get; private set; }
-        [field: SerializeField] public bool HasArrived { get; private set; }
+        public bool GotPickedUp { get; private set; }
+        public bool HasArrived { get; private set; }
 
         protected Player targetPlayer;
         protected Vector3 startPos;
@@ -19,8 +20,10 @@ namespace Item
         protected bool isMovingToTarget = false;
         [SerializeField] protected float moveSpeed = 5f; // Force multiplier
         protected Rigidbody rb;
+        [SerializeField] protected float maxPickupTime = 5f; // Maximum seconds before forced pickup
+        protected float pickupStartTime;
         
-        protected virtual void Awake()
+        protected virtual void Awake()  
         {
             rb = GetComponent<Rigidbody>();
             if (rb == null)
@@ -41,7 +44,6 @@ namespace Item
             {
                 return;
             }
-
             targetPlayer = player;
             startPos = transform.position;
             if (!GotPickedUp)
@@ -50,6 +52,7 @@ namespace Item
             }
 
             GotPickedUp = true;
+            pickupStartTime = Time.time;
         }
         
         protected virtual void Update()
@@ -70,9 +73,26 @@ namespace Item
         protected void MoveTowardsTarget()
         {
             if (targetPlayer == null) return;
-
+        
             Vector3 direction = (targetPlayer.transform.position - transform.position).normalized;
+            float distanceToPlayer = Vector3.Distance(transform.position, targetPlayer.transform.position);
+            
+            // Apply force for natural movement
             rb.AddForce(direction * moveSpeed, ForceMode.Acceleration);
+            
+            // If very close or orbiting (detected by distance not decreasing over time)
+            if (distanceToPlayer < 0.5f)
+            {
+                // If close enough, snap to player
+                transform.position = targetPlayer.transform.position;
+                HasArrived = true;
+            }
+            else if (isMovingToTarget && Time.time - pickupStartTime > maxPickupTime)
+            {
+                // Force completion after timeout
+                transform.position = targetPlayer.transform.position;
+                HasArrived = true;
+            }
         }
 
         public void OnTriggerEnter(Collider other)
