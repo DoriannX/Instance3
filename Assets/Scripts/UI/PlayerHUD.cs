@@ -31,7 +31,7 @@ public class PlayerHUD : MonoBehaviour
         // Initialize HUD elements.
         if (healthBar != null && healthComp != null)
         {
-            healthBar.maxValue = healthComp.MaxHealth;
+            healthBar.maxValue = healthComp.maxHp;
             healthBar.value = healthComp.Hp;
         }
         if (chipsText != null)

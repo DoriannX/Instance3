@@ -12,7 +12,7 @@ namespace Item
 
         protected Player targetPlayer;
         protected bool isMovingToTarget = false;
-        protected float moveSpeed = 5f; // Force multiplier
+        [SerializeField] protected float moveSpeed = 5f; // Force multiplier
         protected Rigidbody rb;
         
         protected virtual void Start()

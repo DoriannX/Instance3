@@ -14,7 +14,10 @@ public class MeleeWeapon : Weapon
         base.LoadData(data);
 
         if (data is not MeleeWeaponData meleeWeaponData)
+        {
+            Debug.Log(data.GetType());
             throw new InvalidCastException("WeaponData is not a meleeWeaponData");
+        }
 
         attackRange = Mathf.Clamp(meleeWeaponData.attackRange, 0.1f, 100f);
     }
