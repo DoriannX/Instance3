@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
@@ -11,6 +12,8 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private int ammoAmount;
     private float cooldownTimer = 0f;
     private Weapon currentWeapon;
+    
+    public event Action<int> onAmmoChanged;
 
     private void Start()
     {
@@ -43,18 +46,12 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
-        SwitchWeapon();
+        //SwitchWeapon();
 
-        Cooldown();
-
-        if (Input.GetKey(KeyCode.Mouse0))
-        {
-            Attack();
-        }
-
+        Cooldown();      
     }
 
-    private void Attack()
+    public void Attack()
     {
         if (cooldownTimer > 0)
             return;
@@ -80,8 +77,9 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void ConsumeAmmo(int ammo)
-    {    
-        ammoAmount =Mathf.Max(ammoAmount - ammo, 0);
+    {
+        ammoAmount = Mathf.Max(ammoAmount - ammo, 0);
+        onAmmoChanged?.Invoke(ammoAmount);
     }
 
     private void Cooldown()
@@ -92,15 +90,12 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    private void SwitchWeapon()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            GameObject objectToDisable = (currentWeapon == rangeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
-            GameObject objectToEnable = (currentWeapon == meleeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
-            objectToDisable.SetActive(false);
-            objectToEnable.SetActive(true);
-            currentWeapon = (currentWeapon == meleeWeapon) ? rangeWeapon : meleeWeapon;
-        }        
+    public void SwitchWeapon()
+    {        
+        GameObject objectToDisable = (currentWeapon == rangeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
+        GameObject objectToEnable = (currentWeapon == meleeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
+        objectToDisable.SetActive(false);
+        objectToEnable.SetActive(true);
+        currentWeapon = (currentWeapon == meleeWeapon) ? rangeWeapon : meleeWeapon;               
     }
 }
