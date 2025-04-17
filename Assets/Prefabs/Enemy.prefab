@@ -133,8 +133,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 640
   weaponData: {fileID: 11400000, guid: 58d03203e945edf4d9adaffee7667092, type: 2}
+  weapon: {fileID: 1299943628239758444}
+  cooldownBeforeAttack: 10
   fovDetectionRadius: 10
-  fovAngle: 90
+  fovAngle: 120
   maxEnemyDetection: 10
   chaseSpeed: 7
   patrolPoints:
@@ -232,13 +234,13 @@ MonoBehaviour:
   currentWeapon: {fileID: 0}
   meleeWeapon: {fileID: 0}
   rangeWeapon: {fileID: 0}
-  fragmentChipDropRangeMin: 1
-  fragmentChipDropRangeMax: 10
-  fragmentChipPrefab: {fileID: 7684936609199240483, guid: 04ccf61755d88654ca87fa0805c87fd7, type: 3}
-  groundDistance: 3
+  fragmentChipDropRangeMin: 0
+  fragmentChipDropRangeMax: 0
+  fragmentChipPrefab: {fileID: 0}
+  groundDistance: 1
   groundLayer:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 0
 --- !u!1001 &7129253031410377580
 PrefabInstance:
   m_ObjectHideFlags: 0

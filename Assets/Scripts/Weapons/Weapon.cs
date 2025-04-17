@@ -13,7 +13,7 @@ public abstract class Weapon : MonoBehaviour
     
     public WeaponData Data => weaponData;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         // Ensure an AudioSource is available on this weapon.
         audioSource = GetComponent<AudioSource>();

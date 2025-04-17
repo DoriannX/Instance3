@@ -45,7 +45,7 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
         
         if (other.TryGetComponent(out EntityHealth entityHealth))
         {
-            entityHealth.TakeDamage(damage);
+            entityHealth.TakeDamage(damage, bulletTransform);
         }
         
         if (releaseFunc == null)

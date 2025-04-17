@@ -8,6 +8,7 @@ public class EntityHealth : MonoBehaviour
     [field : SerializeField] public int maxHp { get; private set; } = 30 ;
     [field: SerializeField] public int Hp { get; private set; }
     public event Action onDeath;
+    public event Action<Transform> onHit;
     public event Action<int, int> onHealthChanged;
     private InvincibilityManager invincibilityManager;
 
@@ -18,7 +19,7 @@ public class EntityHealth : MonoBehaviour
         invincibilityManager = GetComponent<InvincibilityManager>();
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Transform origin = null)
     {
         if (invincibilityManager != null && invincibilityManager.isInvulnerable)
         {
@@ -27,6 +28,7 @@ public class EntityHealth : MonoBehaviour
         }
         Hp = Mathf.Max(Hp - damage, 0);
         onHealthChanged?.Invoke(Hp, maxHp);
+        onHit?.Invoke(origin);
         if (Hp <= 0)
         {
             Die();
