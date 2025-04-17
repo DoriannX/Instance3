@@ -17,7 +17,7 @@ namespace Item
         // Static event (global to all ItemDrop instances) for item pickup feedback.
         public static event System.Action<ItemDrop> onItemPickedUp;
         protected bool isMovingToTarget = false;
-        protected float moveSpeed = 5f; // Force multiplier
+        [SerializeField] protected float moveSpeed = 5f; // Force multiplier
         protected Rigidbody rb;
         
         protected virtual void Awake()

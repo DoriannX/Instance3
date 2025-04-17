@@ -15,9 +15,10 @@ MonoBehaviour:
   weaponName: Basic Gun
   description: Shoots 1 bullet in front of you
   mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-  damage: 10
-  cooldown: 0.1
+  damage: 3
+  cooldown: 0.3
   attackRange: 20
+  icon: {fileID: 0}
   bulletSpread: 2
   ammoConsume: 0
   ammoShoot: 1
