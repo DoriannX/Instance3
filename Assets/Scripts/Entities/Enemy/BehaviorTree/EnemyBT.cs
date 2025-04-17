@@ -27,7 +27,7 @@ namespace Entities.Enemy.BehaviorTree
         
         [Header("Attack")]
         [SerializeField] private WeaponData weaponData;
-        [SerializeField] private Weapon weapon;
+        private Weapon weapon;
         [SerializeField] private float cooldownBeforeAttack = 0.5f;
         
         [Header("FOV Detection")]
@@ -55,9 +55,13 @@ namespace Entities.Enemy.BehaviorTree
 
         protected override Node SetupTree()
         {
+            weapon = GetComponentInChildren<Weapon>();
+            if (weapon == null)
+            {
+                Debug.LogWarning($"{gameObject.name} does not have a Weapon.");   
+            }
             Assert.IsNotNull(navMeshAgent, "NavMeshAgent is not assigned in the inspector.");
             Assert.IsTrue(patrolPoints.Length > 0, "Patrol points are not assigned in the inspector.");
-            Assert.IsNotNull(weapon, "Weapon is not assigned in the inspector.");
             Assert.IsNotNull(weaponData, "WeaponData is not assigned in the inspector.");
             
             selfTransform = transform;

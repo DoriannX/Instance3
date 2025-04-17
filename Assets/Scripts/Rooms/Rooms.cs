@@ -14,10 +14,14 @@ public class Rooms : MonoBehaviour
 
     [Header("RoomExitPoints")] [SerializeField]
     private List<GameObject> roomTranstions;
+    
+    [field : SerializeField] public float zoomCameraData { get; private set; }
 
     public void Start()
     {
+        LoadData();
         RoomInitialization();
+        Assert.IsNotNull(room, "Room is not assigned.");
     }
 
     public void RoomInitialization()
@@ -38,5 +42,10 @@ public class Rooms : MonoBehaviour
                 spawnTracker++;
             }
         }
+    }
+
+    private void LoadData()
+    {
+        zoomCameraData = Mathf.Clamp(room.zoomCameraData, 0.1f, 100f);
     }
 }

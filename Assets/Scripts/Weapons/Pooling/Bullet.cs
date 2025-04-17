@@ -4,21 +4,31 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour, IPooledObject<Bullet>
 {
-    [SerializeField] private float speed = 10f;
-    private Action<Bullet> releaseFunc;
+    [Header("References")]
     private Transform bulletTransform;
+    private Action<Bullet> releaseFunc;
+
+    [Header("Bullet Settings")]
     private LayerMask hitLayerMask;
-    
     private int damage;
+    private float lifeTime = 5f;
+    [SerializeField] private float maxLifeTime = 5f;
+    [SerializeField] private float speed = 10f;
 
     private void Awake()
     {
         bulletTransform = GetComponent<Transform>();
     }
 
+    private void OnEnable()
+    {
+        lifeTime = maxLifeTime;
+    }
+
     private void Update()
     {
         bulletTransform.position += bulletTransform.forward * (speed * Time.deltaTime);
+        LifeTime();
     }
 
     public void SetLayer(LayerMask layerMask)
@@ -63,4 +73,18 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
     {
         releaseFunc = currentReleaseFunc;
     }
+
+    private void LifeTime()
+    {       
+        if (lifeTime <= 0)
+        {
+
+            releaseFunc(this);
+        }
+        else
+        {
+            lifeTime -= Time.deltaTime;
+        }
+    }
+
 }

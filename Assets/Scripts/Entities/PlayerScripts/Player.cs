@@ -9,6 +9,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerAttack))]
 [RequireComponent(typeof(EntityHealth))]
 [RequireComponent(typeof(PlayerInteract))]
+[RequireComponent(typeof(InputManager))]
 public class Player : Entity
 {
     // --- Player-specific attributes ---
@@ -27,7 +28,7 @@ public class Player : Entity
     private PlayerOrientation orientation;
 
     private PlayerVulnerabilityManager vulnerabilityManager;
-    private PlayerAttack attack;
+    private PlayerAttack playerAttack;
     // private UI ui;
 
     protected override void Awake()
@@ -37,7 +38,7 @@ public class Player : Entity
         vulnerabilityManager = GetComponent<PlayerVulnerabilityManager>();
         dash = GetComponent<PlayerDash>();
         orientation = GetComponent<PlayerOrientation>();
-        attack = GetComponent<PlayerAttack>();
+        playerAttack = GetComponent<PlayerAttack>();
         playerInteract = GetComponent<PlayerInteract>();
         // ui = FindObjectOfType<UI>(); // Assuming UI is scene-based and singleton-style
     }
@@ -46,7 +47,7 @@ public class Player : Entity
     {
         vulnerabilityManager.CheckVulnerability();
     }
-
+    
     public void SetRightStickInput(Vector3 rightStickInput)
     {
         orientation.SetRightStickInput(rightStickInput);
@@ -60,6 +61,11 @@ public class Player : Entity
     public void Interact()
     {
         playerInteract.Interact();
+    }
+
+    public void Attack()
+    {
+        playerAttack.Attack();
     }
 
     public void SetMovementInput(Vector3 moveInput)
@@ -81,20 +87,7 @@ public class Player : Entity
     /// </summary>
     public void SwitchWeapon()
     {
-        // If current weapon is melee and we have a ranged weapon, swap to ranged.
-        if (currentWeapon is MeleeWeapon && rangeWeapon != null)
-        {
-            SetCurrentWeapon(rangeWeapon);
-        }
-        // Otherwise, if current weapon is ranged and we have a melee weapon, swap to melee.
-        else if (currentWeapon is RangeWeapon && meleeWeapon != null)
-        {
-            SetCurrentWeapon(meleeWeapon);
-        }
-        else
-        {
-            Debug.LogWarning("Weapon switch not possible: one or both weapon slots are empty.");
-        }
+        playerAttack.SwitchWeapon();
     }
 
     private void FixedUpdate()

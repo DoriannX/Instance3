@@ -23,7 +23,6 @@ public class RangeWeapon : Weapon
     public override void LoadData(WeaponData data)
     {
         base.LoadData(data);
-
         if (data is not RangeWeaponData rangeWeaponData)
             throw new InvalidCastException("WeaponData is not a rangeWeaponData");
 
@@ -129,12 +128,12 @@ public class RangeWeapon : Weapon
             Vector3 bulletSpawnPos = bulletSpawner.transform.position;
 
             Bullet bullet = bulletSpawner.SpawnBullet(damage, hitLayerMask, bulletSpawnPos, bulletRotation);
-
-
             bullet.gameObject.SetActive(true);
         }
-
         onWeaponUsed?.Invoke(ammoConsume);
+
+        // Play the weapon's attack SFX.
+        PlayAttackSFX();
     }
 
     public int AmmoConsume => ammoConsume;
