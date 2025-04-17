@@ -1,10 +1,7 @@
 using UnityEngine;
 
 public class DashEffectManager : MonoBehaviour
-{
-    [SerializeField] private AudioClip dashSFX;
-    private AudioSource audioSource;
-    
+{       
     private DashGhostEffect ghostEffect;
     private PlayerDash playerDash;
 
@@ -12,13 +9,7 @@ public class DashEffectManager : MonoBehaviour
     {
         // Cache required components.
         playerDash = GetComponent<PlayerDash>();
-        ghostEffect = GetComponent<DashGhostEffect>();
-
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
+        ghostEffect = GetComponent<DashGhostEffect>();              
         
         // Subscribe to the dash event.
         if (playerDash != null)
@@ -38,11 +29,8 @@ public class DashEffectManager : MonoBehaviour
     private void OnDashTriggered()
     {
         // Play dash SFX.
-        if (dashSFX != null)
-        {
-            audioSource.PlayOneShot(dashSFX);
-        }
-        
+        SFXManager.instance?.PlaySFX("Dash");
+
         // Trigger the ghost effect.
         if (ghostEffect != null)
         {
