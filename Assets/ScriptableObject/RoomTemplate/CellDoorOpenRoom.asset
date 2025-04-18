@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8eac1d4fac5f7148aae332b27f3bbd8, type: 3}
-  m_Name: Corridor
+  m_Name: CellDoorOpenRoom
   m_EditorClassIdentifier: 
-  roomID: 1
-  roomName: Corridor
+  roomID: 10
+  roomName: CellDoorOpen
   nbEnemy: 
   enemyType: []
-  roomPrefab: {fileID: 431190158325701107, guid: 785d829f98949104b9a0b5291fbbbec3, type: 3}
-  zoomCameraData: 40
+  roomPrefab: {fileID: 6123041402304331168, guid: 9494e23230538d147bae0bd6ae1c16a5, type: 3}
+  zoomCameraData: 50

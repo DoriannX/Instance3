@@ -26,6 +26,11 @@ public class EntityHealth : MonoBehaviour
             Debug.Log($"{gameObject.name} is invulnerable and took no damage.");
             return; 
         }
+        ParticleSystem hitParticle = GetComponent<ParticleSystem>();
+        if (hitParticle != null)
+        {
+            hitParticle.Play(withChildren: false);
+        }
         Hp = Mathf.Max(Hp - damage, 0);
         onHealthChanged?.Invoke(Hp, maxHp);
         onHit?.Invoke(origin);
