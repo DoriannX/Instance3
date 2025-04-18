@@ -26,15 +26,15 @@ namespace UpgradeMachine
 
         private void OnButtonClicked()
         {
+            if (selfState == UpgradeMachineButtonState.Buy)
+                return;
+
             SwitchEnableState();
             OnClickEvent?.Invoke(this);
         }
         
         public void SwitchEnableState()
         {
-            if (selfState == UpgradeMachineButtonState.Buy)
-                return;
-            
             selfState = selfState switch
             {
                 UpgradeMachineButtonState.Selected => UpgradeMachineButtonState.Unselected,

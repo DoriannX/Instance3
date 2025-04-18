@@ -89,4 +89,9 @@ public class PlayerUpgrade : MonoBehaviour
         OnUpgradeChanged?.Invoke("Cooldown", cooldownUpgrade.Level);
         Debug.Log("All upgrades have been reset.");
     }
+    
+    public SpeedUpgrade SpeedUpgrade => speedUpgrade;
+    public HealthUpgrade HealthUpgrade => healthUpgrade;
+    public AmmoUpgrade AmmoUpgrade => ammoUpgrade;
+    public CooldownUpgrade CooldownUpgrade => cooldownUpgrade;
 }

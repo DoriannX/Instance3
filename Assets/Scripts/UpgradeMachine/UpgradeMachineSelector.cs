@@ -1,3 +1,5 @@
+using System;
+using System.ComponentModel;
 using UnityEngine;
 
 namespace UpgradeMachine
@@ -7,8 +9,9 @@ namespace UpgradeMachine
         [SerializeField] private UpgradeMachineButton[] upgradeMachineButtons;
         
         private int currentLevel;
-        private int maxLevel = 5;
         private int desiredLevel;
+        
+        public event Action<int> OnDesiredLevelChanged;
 
         private void Start()
         {
@@ -21,17 +24,21 @@ namespace UpgradeMachine
         
         private void ManageButtonClick(UpgradeMachineButton button)
         {
-            if (button.State == UpgradeMachineButtonState.Selected)
+            switch (button.State)
             {
-                ChangeButtonState(currentLevel, button.Level, UpgradeMachineButtonState.Selected);
-                desiredLevel = button.Level;
-            }
-            else if (button.State == UpgradeMachineButtonState.Unselected)
-            {
-                ChangeButtonState(button.Level, desiredLevel, UpgradeMachineButtonState.Unselected);
-                desiredLevel = button.Level - 1;
+                case UpgradeMachineButtonState.Selected:
+                    ChangeButtonState(currentLevel, button.Level, UpgradeMachineButtonState.Selected);
+                    desiredLevel = button.Level;
+                    break;
+                case UpgradeMachineButtonState.Unselected:
+                    ChangeButtonState(button.Level, desiredLevel, UpgradeMachineButtonState.Unselected);
+                    desiredLevel = button.Level - 1;
+                    break;
+                default:
+                    throw new InvalidEnumArgumentException("Invalid button state");
             }
             
+            OnDesiredLevelChanged?.Invoke(desiredLevel);
         }
         
         private void ChangeButtonState(int origin, int end, UpgradeMachineButtonState state)
@@ -42,5 +49,18 @@ namespace UpgradeMachine
                     upgradeMachineButtons[i].ChangeButtonState(state);
             }
         }
+
+        private void OnDestroy()
+        {
+            foreach (var button in upgradeMachineButtons)
+            {
+                button.OnClickEvent -= ManageButtonClick;
+            }
+        }
+        
+        public int CurrentLevel => currentLevel;
+        public int DesiredLevel => desiredLevel;
+        
+        public bool WantToBeUpgraded => desiredLevel > currentLevel;
     }
 }
