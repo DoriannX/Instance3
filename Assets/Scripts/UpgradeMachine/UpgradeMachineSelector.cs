@@ -49,6 +49,16 @@ namespace UpgradeMachine
                     upgradeMachineButtons[i].ChangeButtonState(state);
             }
         }
+        
+        public void UpgradeLevel()
+        {
+            for (int i = currentLevel; i < desiredLevel; i++)
+            {
+                upgradeMachineButtons[i].ChangeButtonState(UpgradeMachineButtonState.Buy);
+            }
+            
+            currentLevel = desiredLevel;
+        }
 
         private void OnDestroy()
         {

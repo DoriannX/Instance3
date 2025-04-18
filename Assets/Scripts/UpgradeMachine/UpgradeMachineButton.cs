@@ -32,8 +32,8 @@ namespace UpgradeMachine
             SwitchEnableState();
             OnClickEvent?.Invoke(this);
         }
-        
-        public void SwitchEnableState()
+
+        private void SwitchEnableState()
         {
             selfState = selfState switch
             {

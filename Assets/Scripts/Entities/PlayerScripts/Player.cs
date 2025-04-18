@@ -113,4 +113,10 @@ public class Player : Entity
     {
         cooldownMultiplier = multiplier;
     }
+    
+    public void SetChips(int amount)
+    {
+        Chips = amount;
+        onChipsChanged?.Invoke(Chips);
+    }
 }
