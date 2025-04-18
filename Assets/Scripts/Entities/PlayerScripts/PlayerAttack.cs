@@ -10,6 +10,9 @@ public class PlayerAttack : MonoBehaviour
 
     [Header("Weapons Settings")]
     [SerializeField] private int ammoAmount;
+    [SerializeField] private float damageMultiplier = 1.0f;
+    [SerializeField] private float cooldownMultiplier = 1.0f;
+    [SerializeField] private float ammoMultiplier = 1.0f;
     private float cooldownTimer = 0f;
     private Weapon currentWeapon;
     
@@ -34,6 +37,8 @@ public class PlayerAttack : MonoBehaviour
         {
             currentWeapon = rangeWeapon;
         }
+
+        ammoAmount = Mathf.RoundToInt(ammoAmount * ammoMultiplier);
     }
 
     private void OnDestroy()
@@ -60,7 +65,7 @@ public class PlayerAttack : MonoBehaviour
         {
             if (ammoAmount >= rangeWeapon.AmmoConsume)
             {
-                currentWeapon.Attack(playerTransform);
+                currentWeapon.Attack(playerTransform, damageMultiplier);
             }
             else
             {
@@ -70,10 +75,10 @@ public class PlayerAttack : MonoBehaviour
         }
         else if (currentWeapon is MeleeWeapon)
         {
-            currentWeapon.Attack(playerTransform);
+            currentWeapon.Attack(playerTransform, damageMultiplier);
         }
 
-        cooldownTimer = currentWeapon.Cooldown;
+        cooldownTimer = currentWeapon.Cooldown * cooldownMultiplier;
     }
 
     private void ConsumeAmmo(int ammo)
@@ -97,5 +102,35 @@ public class PlayerAttack : MonoBehaviour
         objectToDisable.SetActive(false);
         objectToEnable.SetActive(true);
         currentWeapon = (currentWeapon == meleeWeapon) ? rangeWeapon : meleeWeapon;               
+    }
+
+    public float GetCooldownMultiplier()
+    {
+        return cooldownMultiplier;
+    }
+
+    public float GetDamageMultiplier()
+    {
+        return damageMultiplier;
+    }
+
+    public float GetAmmoMultiplier()
+    {
+        return ammoMultiplier;
+    }
+
+    public void SetCooldownMultiplier(float newMultiplier)
+    {
+        cooldownMultiplier = newMultiplier;
+    }
+
+    public void SetDamageMultiplier(float newMultiplier)
+    {
+        damageMultiplier = newMultiplier;
+    }
+
+    public void SetAmmoMultiplier(float newMultiplier)
+    {
+        ammoMultiplier = newMultiplier;
     }
 }

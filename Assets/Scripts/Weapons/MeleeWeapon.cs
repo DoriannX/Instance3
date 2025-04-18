@@ -18,11 +18,12 @@ public class MeleeWeapon : Weapon
         attackRange = Mathf.Clamp(meleeWeaponData.attackRange, 0.1f, 100f);
     }
 
-    public override void Attack(Transform playerTransform)
+    public override void Attack(Transform playerTransform, float damageMultiplier = 1.0f)
     {
         Vector3 boxCenter = playerTransform.position + playerTransform.forward * attackRange;
         Vector3 boxSize = Vector3.one * attackRange;
-        
+        int appliedDamage = Mathf.RoundToInt(damage * damageMultiplier);
+
         // Draw debug box visualization
         DrawDebugBox(boxCenter, boxSize, playerTransform.rotation, Color.red, 0.2f);
         
@@ -35,7 +36,7 @@ public class MeleeWeapon : Weapon
         {
             if (hitCollider.TryGetComponent(out EntityHealth entityHealth))
             {
-                entityHealth.TakeDamage(damage, transform);
+                entityHealth.TakeDamage(appliedDamage, transform);
                 onWeaponUsed?.Invoke(0); 
                 Debug.Log("attack ");
                 

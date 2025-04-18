@@ -14,8 +14,7 @@ public class Player : Entity
 {
     // --- Player-specific attributes ---
     [field: SerializeField] public int Chips { get; private set; } = 0;
-    [SerializeField] private float ammoMultiplier = 1.0f;
-    [SerializeField] private float cooldownMultiplier = 1.0f;
+    [SerializeField] private float speedMultiplier = 1.0f;
     public bool hasKey = false;
 
     // Events for updating UI
@@ -95,21 +94,33 @@ public class Player : Entity
         dash.HandleDash();
         if (!dash.isDashing)
         {
-            movement.HandleMovement(Speed);
+            movement.HandleMovement(Speed * speedMultiplier);
         }
         movement.ApplyVelocity();
     }
 
-    public virtual float GetAmmoMultiplier() => ammoMultiplier;
-    public virtual float GetCooldownMultiplier() => cooldownMultiplier;
+    public virtual float GetAmmoMultiplier() => playerAttack.GetAmmoMultiplier();
+    public virtual float GetCooldownMultiplier() => playerAttack.GetCooldownMultiplier();
+    public virtual float GetDamageMultiplier() => playerAttack.GetDamageMultiplier();
+    public virtual float GetSpeedMultiplier() => speedMultiplier;
 
     public virtual void SetAmmoMultiplier(float multiplier)
     {
-        ammoMultiplier = multiplier;
+        playerAttack.SetAmmoMultiplier(multiplier);
     }
 
     public virtual void SetCooldownMultiplier(float multiplier)
     {
-        cooldownMultiplier = multiplier;
+        playerAttack.SetCooldownMultiplier(multiplier);
+    }
+
+    public virtual void SetDamageMultiplier(float multiplier)
+    {
+        playerAttack.SetDamageMultiplier(multiplier);
+    }
+
+    public virtual void SetSpeedMultiplier(float multiplier)
+    {
+        speedMultiplier = multiplier;
     }
 }

@@ -8,8 +8,7 @@ public class AmmoUpgrade : Upgrade
 
     public override void Apply(Player player)
     {
-        // Since we haven't implemented weapons in detail,
-        // we simply log the effect. Later this would increase ammo capacity.
+        player.SetAmmoMultiplier(1+ammoIncrement/100);
         Debug.Log($"Applied AmmoUpgrade: increased ammo capacity by {ammoIncrement} (Level {Level}).");
         IncreaseLevel();
     }

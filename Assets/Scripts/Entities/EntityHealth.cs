@@ -7,6 +7,7 @@ public class EntityHealth : MonoBehaviour
     // --- Health Attributes ---
     [field : SerializeField] public int maxHp { get; private set; } = 30 ;
     [field: SerializeField] public int Hp { get; private set; }
+    [field: SerializeField] public float hpMultiplier = 1.0f;
     public event Action onDeath;
     public event Action<Transform> onHit;
     public event Action<int, int> onHealthChanged;
@@ -15,7 +16,7 @@ public class EntityHealth : MonoBehaviour
     private void Awake()
     {
         // Set starting health and max health.
-        Hp = maxHp;
+        Hp = Mathf.RoundToInt(maxHp * hpMultiplier);
         invincibilityManager = GetComponent<InvincibilityManager>();
     }
 
@@ -60,5 +61,12 @@ public class EntityHealth : MonoBehaviour
         maxHp = amount;
         Hp = maxHp;
         onHealthChanged?.Invoke(Hp, maxHp);
+    }
+
+    public void UpgradeHealthMultiplier(float amount)
+    {
+        hpMultiplier = amount;
+        maxHp = Mathf.RoundToInt(maxHp * hpMultiplier);
+        Hp = Mathf.RoundToInt(Hp * hpMultiplier);
     }
 }

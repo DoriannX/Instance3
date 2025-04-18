@@ -84,7 +84,7 @@ public class RangeWeapon : Weapon
         }
     }
 
-    public override void Attack(Transform playerTransform)
+    public override void Attack(Transform playerTransform, float damageMultiplier = 1.0f)
     {
         float sphereRadius = 0.5f;
         Ray ray = new Ray(playerTransform.position, playerTransform.forward);

@@ -37,7 +37,7 @@ public abstract class Weapon : MonoBehaviour
         weaponMesh = GetComponent<MeshFilter>();
     }
 
-    public abstract void Attack(Transform playerTransform);
+    public abstract void Attack(Transform playerTransform, float damageMultiplier = 1.0f);
 
     public virtual void LoadData(WeaponData data)
     {
