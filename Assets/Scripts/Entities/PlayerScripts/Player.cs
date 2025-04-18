@@ -17,6 +17,7 @@ public class Player : Entity
     [field: SerializeField] public int Chips { get; private set; } = 0;
     [SerializeField] private float ammoMultiplier = 1.0f;
     [SerializeField] private float cooldownMultiplier = 1.0f;
+    [SerializeField] private float speedMultiplier = 1.0f;
     public bool hasKey = false;
 
     // Events for updating UI
@@ -103,6 +104,8 @@ public class Player : Entity
 
     public virtual float GetAmmoMultiplier() => ammoMultiplier;
     public virtual float GetCooldownMultiplier() => cooldownMultiplier;
+    public float GetSpeedMultiplier() => speedMultiplier;
+    public int GetMaxHealth() => healthComponent.maxHp;
 
     public virtual void SetAmmoMultiplier(float multiplier)
     {
@@ -112,6 +115,15 @@ public class Player : Entity
     public virtual void SetCooldownMultiplier(float multiplier)
     {
         cooldownMultiplier = multiplier;
+    }
+    public void SetSpeedMultiplier(float multiplier)
+    {
+        speedMultiplier = multiplier;
+        Speed *= speedMultiplier;
+    }
+    public void SetMaxHealth(int maxHealth)
+    {
+        healthComponent.SetMaxHp(maxHealth);
     }
     
     public void SetChips(int amount)

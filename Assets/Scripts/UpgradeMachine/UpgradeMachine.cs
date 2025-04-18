@@ -9,6 +9,7 @@ namespace UpgradeMachine
         [Header("Player References")] 
         [SerializeField] private Player player;
         [SerializeField] private PlayerUpgrade playerUpgrade;
+        [SerializeField] private PlayerSave playerSave;
 
         [Header("Upgrade Machine References")] 
         [SerializeField] private UpgradeMachineSelector speedSelector;
@@ -133,6 +134,8 @@ namespace UpgradeMachine
             }
             
             UpdateCostText();
+            
+            playerSave.Save();
         }
 
         public void ClosePriceWarningPanel()
