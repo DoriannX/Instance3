@@ -37,6 +37,12 @@ public class MeleeWeapon : Weapon
             if (hitCollider.TryGetComponent(out EntityHealth entityHealth))
             {
                 entityHealth.TakeDamage(damage, transform);
+                Rigidbody enemyRb = hitCollider.GetComponent<Rigidbody>();
+                if (enemyRb != null)
+                {
+                    Vector3 forceDirection = (hitCollider.transform.position - playerTransform.position).normalized;
+                    enemyRb.AddForce(forceDirection * KnockbackForce, ForceMode.Impulse);
+                }
                 onWeaponUsed?.Invoke(0); 
                 Debug.Log("attack ");
                 

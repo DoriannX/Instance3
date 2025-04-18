@@ -7,6 +7,7 @@ public abstract class Weapon : MonoBehaviour
     protected float cooldown;
     protected int damage;
     protected string attackSFX;
+    protected float knockbackForce;
     private MeshFilter weaponMesh;
     protected Action<int> onWeaponUsed;
     
@@ -40,6 +41,7 @@ public abstract class Weapon : MonoBehaviour
         weaponData = data;
         cooldown = Mathf.Clamp(data.cooldown, 0.1f, 10f);
         damage = Mathf.Clamp(data.damage, 1, 100);
+        knockbackForce = Mathf.Clamp(data.knockbackForce, 0.1f, 100f);
         attackSFX = data.attackSFX;
         if (weaponMesh != null)
         {
@@ -53,6 +55,8 @@ public abstract class Weapon : MonoBehaviour
 
     public float Cooldown => cooldown;
     public int Damage => damage;
+
+    public float KnockbackForce => knockbackForce;
 
     public Action<int> OnWeaponUsed
     {

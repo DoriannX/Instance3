@@ -12,6 +12,7 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
     private Action<Bullet> releaseFunc;
     private Transform shooterTransform;
     private bool isParried;
+    private TrailRenderer bulletTrail;
 
     [Header("Bullet Settings")]
     private LayerMask hitLayerMask;
@@ -23,11 +24,17 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
     private void Awake()
     {
         bulletTransform = GetComponent<Transform>();
+        bulletTrail = GetComponent<TrailRenderer>();
     }
 
     private void OnEnable()
     {
         lifeTime = maxLifeTime;
+    }
+
+    private void OnDisable()
+    {
+        bulletTrail.Clear();
     }
 
     private void Update()
@@ -43,6 +50,7 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
 
     private void OnTriggerEnter(Collider other)
     {
+        
         if ((hitLayerMask.value & (1 << other.gameObject.layer)) == 0)
         {
             return;
@@ -84,7 +92,6 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
     {       
         if (lifeTime <= 0)
         {
-
             releaseFunc(this);
         }
         else
