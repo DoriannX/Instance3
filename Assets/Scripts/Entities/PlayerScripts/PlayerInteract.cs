@@ -17,6 +17,11 @@ public class PlayerInteract : MonoBehaviour
 
         if (Physics.Raycast(playerTransform.position, playerTransform.forward, out hit, 5f))
         {
+            Debug.Log(hit.transform.gameObject.name);
+            if (hit.collider.gameObject.TryGetComponent<StageExitTrigger>(out var st))
+            {
+                st.TeleportPlayerToNextLevel(gameObject);
+            }
             DoorSystem doorSystem = hit.collider.GetComponent<DoorSystem>();
 
             if (doorSystem != null)
