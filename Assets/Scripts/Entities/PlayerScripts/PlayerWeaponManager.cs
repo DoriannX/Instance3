@@ -2,34 +2,22 @@ using UnityEngine;
 
 public class PlayerWeaponManager : MonoBehaviour
 {
-    [SerializeField] private MeleeWeapon meleeWeaponComponent;
-    [SerializeField] private RangeWeapon rangeWeaponComponent;
-    private Entity playerEntity;
+    private PlayerAttack playerAttack;
 
     private void Awake()
     {
-        playerEntity = GetComponent<Entity>();
+        playerAttack = GetComponent<PlayerAttack>();
     }
 
-    /// <summary>
-    /// Installs the new weapon data and fires the OnWeaponChanged event.
-    /// </summary>
-    public void SwapWeapon(WeaponData newData)
+    public void TakeWeapon(WeaponData weaponData)
     {
-        if (newData is RangeWeaponData)
+        if (weaponData == null)
         {
-            rangeWeaponComponent.gameObject.SetActive(true);
-            meleeWeaponComponent.gameObject.SetActive(false);
-            rangeWeaponComponent.LoadData(newData);
-            playerEntity.SetCurrentWeapon(rangeWeaponComponent);
+            Debug.LogWarning("Attempted to take null weapon data");
+            return;
         }
-        else // Melee
-        {
-            meleeWeaponComponent.gameObject.SetActive(true);
-            rangeWeaponComponent.gameObject.SetActive(false);
-            meleeWeaponComponent.LoadData(newData);
-            playerEntity.SetCurrentWeapon(meleeWeaponComponent);
-        }
+        
+        playerAttack.TakeWeapon(Instantiate(weaponData.weaponPrefab, playerAttack.transform));
     }
 
     /// <summary>
@@ -39,7 +27,7 @@ public class PlayerWeaponManager : MonoBehaviour
     {
         get
         {
-            var w = playerEntity.CurrentWeapon;
+            var w = playerAttack.currentWeapon;
             return w != null ? w.Data : null;
         }
     }

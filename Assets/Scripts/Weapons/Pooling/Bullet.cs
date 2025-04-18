@@ -13,9 +13,10 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
     private Transform shooterTransform;
     private bool isParried;
     private TrailRenderer bulletTrail;
+    private Rigidbody bulletRigidbody;
 
     [Header("Bullet Settings")]
-    private LayerMask hitLayerMask;
+    [SerializeField] private LayerMask hitLayerMask;
     
     private int damage;
     private float lifeTime = 5f;
@@ -25,6 +26,7 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
     {
         bulletTransform = GetComponent<Transform>();
         bulletTrail = GetComponent<TrailRenderer>();
+        bulletRigidbody = GetComponent<Rigidbody>();
     }
 
     private void OnEnable()
@@ -39,7 +41,7 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
 
     private void Update()
     {
-        bulletTransform.position += bulletTransform.forward * (speed * Time.deltaTime);
+        bulletRigidbody.linearVelocity = bulletTransform.forward * (speed);
         LifeTime();
     }
 
@@ -48,9 +50,12 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
         hitLayerMask = layerMask;
     }
 
+    private void OnCollisionEnter(Collision other)
+    {
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        
         if ((hitLayerMask.value & (1 << other.gameObject.layer)) == 0)
         {
             return;
