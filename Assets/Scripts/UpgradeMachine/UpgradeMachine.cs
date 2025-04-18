@@ -83,15 +83,56 @@ namespace UpgradeMachine
 
             player.SetChips(player.Chips - cost);
             
-            UpgradeSelectors();
+            Upgrade();
         }
         
-        private void UpgradeSelectors()
+        private void Upgrade()
         {
-            speedSelector.UpgradeLevel();
-            cooldownSelector.UpgradeLevel();
-            healthSelector.UpgradeLevel();
-            ammoSelector.UpgradeLevel();
+            if (speedSelector.WantToBeUpgraded)
+            {
+                for (int i = speedSelector.CurrentLevel; i < speedSelector.DesiredLevel; i++)
+                {
+                    playerUpgrade.ApplySpeedUpgrade();
+                }
+                
+                speedSelector.UpgradeLevel();
+                speedCost = 0;
+            }
+            
+            if (cooldownSelector.WantToBeUpgraded)
+            {
+                for (int i = cooldownSelector.CurrentLevel; i < cooldownSelector.DesiredLevel; i++)
+                {
+                    playerUpgrade.ApplyCooldownUpgrade();
+                }
+                
+                cooldownSelector.UpgradeLevel();
+                cooldownCost = 0;
+            }
+            
+            if (healthSelector.WantToBeUpgraded)
+            {
+                for (int i = healthSelector.CurrentLevel; i < healthSelector.DesiredLevel; i++)
+                {
+                    playerUpgrade.ApplyHealthUpgrade();
+                }
+                
+                healthSelector.UpgradeLevel();
+                healthCost = 0;
+            }
+            
+            if (ammoSelector.WantToBeUpgraded)
+            {
+                for (int i = ammoSelector.CurrentLevel; i < ammoSelector.DesiredLevel; i++)
+                {
+                    playerUpgrade.ApplyAmmoUpgrade();
+                }
+                
+                ammoSelector.UpgradeLevel();
+                ammoCost = 0;
+            }
+            
+            UpdateCostText();
         }
 
         public void ClosePriceWarningPanel()
