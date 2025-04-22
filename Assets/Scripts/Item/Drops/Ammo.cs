@@ -14,7 +14,7 @@ namespace Item.Drops
             {
                 throw new InvalidCastException($"Wrong Entity: {targetPlayer}");
             }
-            //TODO: add ammo to player
+            player.GatherAmmo((int)ammoAmount);
         }
     }
 }

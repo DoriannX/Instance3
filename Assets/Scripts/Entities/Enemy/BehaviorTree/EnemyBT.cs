@@ -67,6 +67,7 @@ namespace Entities.Enemy.BehaviorTree
             selfTransform = transform;
             
             SetWeaponData(weaponData);
+            SetPatrolPoints(patrolPoints);
             
             return CreateTree();
         }

@@ -11,15 +11,17 @@ public class PlayerAttack : MonoBehaviour
     [Header("Weapons Settings")]
     [SerializeField] private int ammoAmount;
     private float cooldownTimer = 0f;
-    private Weapon currentWeapon;
-    
+    public Weapon currentWeapon { get; private set; }
+
     public event Action<int> onAmmoChanged;
 
     private void Start()
     {
+        onAmmoChanged?.Invoke(ammoAmount);
         playerTransform = GetComponent<Transform>();
         meleeWeapon = GetComponentInChildren<MeleeWeapon>(true);
         rangeWeapon = GetComponentInChildren<RangeWeapon>(true);
+        
 
         if (rangeWeapon != null)
         {
@@ -44,6 +46,12 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    public void GatherAmmo(int count)
+    {
+        ammoAmount += count;
+        onAmmoChanged?.Invoke(ammoAmount);
+    }
+
     private void Update()
     {
         //SwitchWeapon();
@@ -53,7 +61,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void Attack()
     {
-        if (cooldownTimer > 0)
+        if (cooldownTimer > 0 || currentWeapon == null)
             return;
 
         if (currentWeapon is RangeWeapon)
@@ -92,16 +100,26 @@ public class PlayerAttack : MonoBehaviour
 
     public void TakeWeapon(Weapon takenWeapon)
     {
-        if(takenWeapon is MeleeWeapon newMelee)
+        if (currentWeapon != null)
+        {
+            currentWeapon.gameObject.SetActive(false);
+        }
+    
+        if (takenWeapon is MeleeWeapon newMelee)
         {
             meleeWeapon = newMelee;
             currentWeapon = meleeWeapon;
         }
-        else if(takenWeapon is RangeWeapon newRange)
+        else if (takenWeapon is RangeWeapon newRange)
         {
             rangeWeapon = newRange;
             currentWeapon = rangeWeapon;
-        }   
+        }
+    
+        if (currentWeapon != null)
+        {
+            currentWeapon.gameObject.SetActive(true);
+        }
     }
 
     public void SwitchWeapon()

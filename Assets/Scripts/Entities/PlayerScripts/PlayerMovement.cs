@@ -36,9 +36,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void ApplyVelocity()
     {
-        Vector3 currentVelWithGravity = currentVel;
-        currentVelWithGravity.y = rb.linearVelocity.y;
-        rb.linearVelocity = currentVelWithGravity;
+        rb.linearVelocity = currentVel;
     }
 
     public void SetMovementInput(Vector3 moveInput)

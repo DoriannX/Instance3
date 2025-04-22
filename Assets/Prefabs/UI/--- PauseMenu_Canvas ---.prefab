@@ -1164,7 +1164,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6346828598320807332}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
-        m_MethodName: PauseUI
+        m_MethodName: TogglePause
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
