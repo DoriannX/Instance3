@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Armory;
@@ -21,9 +22,6 @@ public class ArmoryUIController : MonoBehaviour
 
     [Header("Player Hook")]
     [SerializeField] private PlayerWeaponManager weaponManager;
-    
-    [Header("Testing (no player needed)")]
-    [SerializeField] private ArmoryTerminal testTerminal;
 
     private ArmoryTerminal currentTerminal;
     private WeaponData[]   stock;
@@ -31,16 +29,10 @@ public class ArmoryUIController : MonoBehaviour
 
     private void Awake()
     {
-        // armoryCanvas .SetActive(false);
+        armoryCanvas .SetActive(false);
         confirmWindow.SetActive(false);
         confirmButton.onClick.AddListener(OnConfirm);
         cancelButton .onClick.AddListener(OnCancel);
-    }
-    
-    private void Start()
-    {
-        if (testTerminal != null)
-            Show(testTerminal);
     }
 
     /// <summary>
@@ -48,9 +40,17 @@ public class ArmoryUIController : MonoBehaviour
     /// </summary>
     public void Show(ArmoryTerminal terminal)
     {
+        Debug.Log("show");
         currentTerminal = terminal;
         stock           = terminal.Storage.WeaponsInStock;
         selectedIndex   = -1;
+        
+        // Validate stock
+        Debug.Log(stock.Length);
+        if (stock == null || stock.Any(item => item == null))
+        {
+            Debug.LogWarning("Invalid weapon data found in stock.");
+        }
 
         // show armory panel
         armoryCanvas.SetActive(true);
@@ -92,20 +92,22 @@ public class ArmoryUIController : MonoBehaviour
 
     private void OnConfirm()
     {
-        if (currentTerminal == null 
-         || selectedIndex < 0 
-         || stock == null 
+        if (currentTerminal == null
+         || selectedIndex < 0
+         || stock == null
          || selectedIndex >= stock.Length)
             return;
-
-        // swap in storage & equip
-        var oldData = currentTerminal.Storage.SwitchWeaponData(
-            weaponManager.CurrentWeaponData, selectedIndex
-        );
-        var newData = stock[selectedIndex];
-        weaponManager.SwapWeapon(newData);
-        currentTerminal.Storage.SwitchWeaponData(oldData, selectedIndex);
-
+    
+        WeaponData newWeapon = stock[selectedIndex];
+        
+        WeaponData oldWeapon = weaponManager.CurrentWeaponData;
+    
+        weaponManager.TakeWeapon(newWeapon);
+        
+        currentTerminal.Storage.SwitchWeaponData(oldWeapon, selectedIndex);
+        
+        stock = currentTerminal.Storage.WeaponsInStock;
+    
         currentTerminal.NotifyChosen();
         HideAll();
     }

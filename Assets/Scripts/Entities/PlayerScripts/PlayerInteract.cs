@@ -12,14 +12,28 @@ public class PlayerInteract : MonoBehaviour
         playerTransform = transform;
     }
 
+    RaycastHit[] hits = new RaycastHit[5];
+
     public void Interact()
     {
-        if (!Physics.Raycast(playerTransform.position, playerTransform.forward, out var hit, 5f))
+        Debug.Log("interact");
+        int hitCount = Physics.RaycastNonAlloc(playerTransform.position, playerTransform.forward, hits, 5f);
+
+        if (hitCount <= 0)
+        {
+            Debug.DrawRay(playerTransform.position, playerTransform.forward * 5f, Color.red, 1f);
             return;
+        }
+
+        RaycastHit hit = hits[0]; // Use the closest hit
+        Debug.DrawRay(playerTransform.position, playerTransform.forward * hit.distance, Color.green, 1f);
+
+        Debug.Log(hit.collider.name);
 
         // --- ArmoryTerminal takes priority ---
         if (hit.collider.TryGetComponent<ArmoryTerminal>(out var terminal))
         {
+            Debug.Log("Interacting with ArmoryTerminal.");
             terminal.TryOpen();
             return;
         }
@@ -27,14 +41,16 @@ public class PlayerInteract : MonoBehaviour
         // --- Door logic unchanged ---
         if (hit.collider.TryGetComponent<DoorSystem>(out var door))
         {
-            if (player.hasKey)
+            Debug.Log("Interacting with DoorSystem.");
+            if (Player.hasKey)
             {
+                Debug.Log("Player has a key. Opening the door.");
                 door.OpenDoor();
-                player.hasKey = false;
+                player.HasKey(false);
             }
             else
             {
-                Debug.Log("You need a key to open this door.");
+                Debug.Log("Player does not have a key. Cannot open the door.");
             }
         }
     }

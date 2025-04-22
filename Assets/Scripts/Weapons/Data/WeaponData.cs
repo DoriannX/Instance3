@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class WeaponData : ScriptableObject
 {
+    public Weapon weaponPrefab;
     public string weaponName;
     public string description;
     public Mesh mesh;
