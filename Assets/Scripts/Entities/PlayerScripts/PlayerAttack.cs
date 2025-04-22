@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using Armory;    // if your Weapon types live in the Armory namespace
+using Entities; // for Entity
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -12,63 +14,66 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private int ammoAmount;
     private float cooldownTimer = 0f;
     private Weapon currentWeapon;
-    
+
+    // events for HUD & animation
     public event Action<int> onAmmoChanged;
+    public event Action onAttackStarted;
+
+    private Entity entity;    // to notify weapon‐switch
+
+    private void Awake()
+    {
+        entity = GetComponent<Entity>();
+    }
 
     private void Start()
     {
-        playerTransform = GetComponent<Transform>();
-        meleeWeapon = GetComponentInChildren<MeleeWeapon>(true);
-        rangeWeapon = GetComponentInChildren<RangeWeapon>(true);
+        playerTransform = transform;
+        meleeWeapon     = GetComponentInChildren<MeleeWeapon>(true);
+        rangeWeapon     = GetComponentInChildren<RangeWeapon>(true);
 
         if (rangeWeapon != null)
-        {
             rangeWeapon.OnWeaponUsed += ConsumeAmmo;
-        }
 
+        // pick whichever weapon GameObject is active
         if (meleeWeapon != null && !rangeWeapon.gameObject.activeSelf)
-        {
             currentWeapon = meleeWeapon;
-        }
         else if (rangeWeapon != null && !meleeWeapon.gameObject.activeSelf)
-        {
             currentWeapon = rangeWeapon;
-        }
+
+        // sync Entity’s currentWeapon once
+        if (currentWeapon != null)
+            entity.SetCurrentWeapon(currentWeapon);
     }
 
     private void OnDestroy()
     {
         if (rangeWeapon != null)
-        {
             rangeWeapon.OnWeaponUsed -= ConsumeAmmo;
-        }
     }
 
     private void Update()
     {
-        //SwitchWeapon();
-
-        Cooldown();      
+        if (cooldownTimer > 0f)
+            cooldownTimer -= Time.deltaTime;
     }
 
     public void Attack()
     {
-        if (cooldownTimer > 0)
+        if (cooldownTimer > 0f)
             return;
 
-        if (currentWeapon is RangeWeapon)
+        // fire animation trigger
+        onAttackStarted?.Invoke();
+
+        if (currentWeapon is RangeWeapon rw)
         {
-            if (ammoAmount >= rangeWeapon.AmmoConsume)
-            {
+            if (ammoAmount >= rw.AmmoConsume)
                 currentWeapon.Attack(playerTransform);
-            }
             else
-            {
                 Debug.Log("Not enough ammo");
-                return;
-            }
         }
-        else if (currentWeapon is MeleeWeapon)
+        else
         {
             currentWeapon.Attack(playerTransform);
         }
@@ -82,39 +87,38 @@ public class PlayerAttack : MonoBehaviour
         onAmmoChanged?.Invoke(ammoAmount);
     }
 
-    private void Cooldown()
-    {
-        if (cooldownTimer > 0f)
-        {
-            cooldownTimer -= Time.deltaTime;
-        }
-    }
-
-    public void TakeWeapon(Weapon takenWeapon)
-    {
-        if(takenWeapon is MeleeWeapon newMelee)
-        {
-            meleeWeapon = newMelee;
-            currentWeapon = meleeWeapon;
-        }
-        else if(takenWeapon is RangeWeapon newRange)
-        {
-            rangeWeapon = newRange;
-            currentWeapon = rangeWeapon;
-        }   
-    }
-
+    /// <summary>
+    /// Toggle between melee & range and notify Entity.
+    /// </summary>
     public void SwitchWeapon()
-    {        
-      if (meleeWeapon == null || rangeWeapon == null)
-      {
-          return;
-      }
-      
-      GameObject objectToDisable = (currentWeapon == rangeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
-      GameObject objectToEnable = (currentWeapon == meleeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
-      objectToDisable.SetActive(false);
-      objectToEnable.SetActive(true);
-      currentWeapon = (currentWeapon == meleeWeapon) ? rangeWeapon : meleeWeapon;            
+    {
+        if (meleeWeapon == null || rangeWeapon == null)
+            return;
+
+        bool wasRange = (currentWeapon == rangeWeapon);
+        meleeWeapon.gameObject.SetActive(wasRange);
+        rangeWeapon.gameObject.SetActive(!wasRange);
+
+        currentWeapon = wasRange ? meleeWeapon : rangeWeapon;
+        entity.SetCurrentWeapon(currentWeapon);
+    }
+
+    /// <summary>
+    /// Called when picking up a new Weapon instance.
+    /// </summary>
+    public void TakeWeapon(Weapon pickedUp)
+    {
+        if (pickedUp is MeleeWeapon m)
+        {
+            meleeWeapon   = m;
+            currentWeapon = m;
+        }
+        else if (pickedUp is RangeWeapon r)
+        {
+            rangeWeapon   = r;
+            currentWeapon = r;
+        }
+
+        entity.SetCurrentWeapon(currentWeapon);
     }
 }

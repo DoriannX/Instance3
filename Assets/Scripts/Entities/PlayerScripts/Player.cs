@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerDash))]
 [RequireComponent(typeof(PlayerVulnerabilityManager))]
-[RequireComponent(typeof(PlayerOrientation))]
+// [RequireComponent(typeof(PlayerOrientation))]
 [RequireComponent(typeof(PlayerAttack))]
 [RequireComponent(typeof(EntityHealth))]
 [RequireComponent(typeof(PlayerInteract))]
