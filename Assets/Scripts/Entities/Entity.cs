@@ -28,7 +28,7 @@ public abstract class Entity : MonoBehaviour
     public event Action<Weapon> OnWeaponChanged;
 
     // --- Health Component ---
-    protected EntityHealth healthComponent;
+    public EntityHealth healthComponent { get; protected set; }
 
     protected virtual void Awake()
     {

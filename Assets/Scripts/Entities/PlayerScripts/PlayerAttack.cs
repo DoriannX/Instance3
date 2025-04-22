@@ -17,9 +17,11 @@ public class PlayerAttack : MonoBehaviour
 
     private void Start()
     {
+        onAmmoChanged?.Invoke(ammoAmount);
         playerTransform = GetComponent<Transform>();
         meleeWeapon = GetComponentInChildren<MeleeWeapon>(true);
         rangeWeapon = GetComponentInChildren<RangeWeapon>(true);
+        
 
         if (rangeWeapon != null)
         {
@@ -42,6 +44,12 @@ public class PlayerAttack : MonoBehaviour
         {
             rangeWeapon.OnWeaponUsed -= ConsumeAmmo;
         }
+    }
+
+    public void GatherAmmo(int count)
+    {
+        ammoAmount += count;
+        onAmmoChanged?.Invoke(ammoAmount);
     }
 
     private void Update()

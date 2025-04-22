@@ -14,9 +14,8 @@ namespace Item.Drops
             {
                 throw new InvalidCastException($"Wrong Entity: {targetPlayer}");
             }
-            Debug.Log($"Heal amount: {healAmount}");
 
-            player.GetComponent<EntityHealth>().Heal((int)healAmount);
+            player.healthComponent.Heal((int)healAmount);
         }
         
         public void SetHealAmount(uint amount)

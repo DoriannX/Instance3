@@ -36,10 +36,13 @@ namespace Entities
                 deathPanel.gameObject.SetActive(true);
 
                 // Corrected Lerp usage for smooth transition  
-                deathPanel.color = Color.Lerp(deathPanel.color, new Color(0, 0, 0, 1f), colorLerpSpeed * Time.unscaledDeltaTime);
-                deathText.color = Color.Lerp(deathText.color, new Color(1f, 0, 0, 1f), colorLerpSpeed * Time.unscaledDeltaTime);
+                deathPanel.color = Color.Lerp(deathPanel.color, new Color(0, 0, 0, 1f),
+                    colorLerpSpeed * Time.unscaledDeltaTime);
+                deathText.color = Color.Lerp(deathText.color, new Color(1f, 0, 0, 1f),
+                    colorLerpSpeed * Time.unscaledDeltaTime);
 
-                Time.timeScale = 0; // Slow down time for a better visual effect
+                Time.timeScale =
+                    Mathf.Lerp(Time.timeScale, 0f, colorLerpSpeed * Time.unscaledDeltaTime); // Gradually slow down time
 
                 if (restartTime <= 0)
                 {
