@@ -1,22 +1,13 @@
-// Path: Entities/PlayerDeathManager.cs
-
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
 namespace Entities
 {
     [RequireComponent(typeof(EntityHealth))]
     public class PlayerDeathManager : MonoBehaviour
     {
-        [Tooltip("Animator driving the Death animation")]
         [SerializeField] private Animator animator;
-
-        [Tooltip("Trigger parameter name for Death")]
         [SerializeField] private string deathTrigger = "Die";
-
-        [Tooltip("Exact name of the Death animation clip")]
-        [SerializeField] private string deathClipName = "Death";
-
         private EntityHealth health;
 
         private void Awake()
@@ -26,60 +17,44 @@ namespace Entities
                 animator = GetComponentInChildren<Animator>();
         }
 
-        private void OnEnable()
-        {
-            health.onDeath += HandleDeath;
-        }
-
-        private void OnDisable()
-        {
-            health.onDeath -= HandleDeath;
-        }
+        private void OnEnable()  => health.onDeath += HandleDeath;
+        private void OnDisable() => health.onDeath -= HandleDeath;
 
         private void HandleDeath()
         {
-            // 1) Stop any leftover velocity
-            var rb = GetComponent<Rigidbody>();
-            if (rb != null) rb.linearVelocity = Vector3.zero;
+            // 1) kill velocity
+            if (TryGetComponent<Rigidbody>(out var rb))
+                rb.linearVelocity = Vector3.zero;
 
-            // 2) Kill player control so nothing can interrupt the Death clip
+            // 2) disable all player controls
             foreach (var mb in new MonoBehaviour[] {
-                GetComponent<PlayerMovement>(),
-                GetComponent<PlayerDash>(),
-                GetComponent<InputManager>(),
-                GetComponent<PlayerAttack>()
-            })
-            {
-                if (mb != null)
-                    mb.enabled = false;
-            }
+                         GetComponent<PlayerMovement>(),
+                         GetComponent<PlayerDash>(),
+                         GetComponent<InputManager>(),
+                         GetComponent<PlayerAttack>()
+                     })
+                if (mb != null) mb.enabled = false;
 
-            // 3) Fire the trigger into the Death state
+            // 3) trigger the death animation
             animator.SetTrigger(deathTrigger);
 
-            // 4) Kick off our “wait out the clip then reload” coroutine
-            StartCoroutine(ReloadAfterDeath());
+            // 4) start polling for when it’s actually done
+            StartCoroutine(WaitForDeathAnimation());
         }
 
-        private IEnumerator ReloadAfterDeath()
+        private IEnumerator WaitForDeathAnimation()
         {
-            // default fallback
-            float waitTime = 1f;
+            // wait until we've actually entered the "Death" state
+            yield return new WaitUntil(() =>
+                animator.GetCurrentAnimatorStateInfo(0).IsName("Death")
+            );
 
-            // look up your animation clips for the exact length
-            var clips = animator.runtimeAnimatorController.animationClips;
-            for (int i = 0; i < clips.Length; i++)
-            {
-                if (clips[i].name == deathClipName)
-                {
-                    waitTime = clips[i].length;
-                    break;
-                }
-            }
+            // then wait until that state's normalizedTime >= 1 (i.e. fully played)
+            yield return new WaitUntil(() =>
+                animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f
+            );
 
-            // unscaled so it doesn't get cut off by any Time.timeScale fiddling
-            yield return new WaitForSecondsRealtime(waitTime);
-
+            // now we know the animation is 100% done:
             LevelManager.ReloadLevel();
         }
     }
