@@ -43,12 +43,7 @@ public class ItemPickupFeedbackManager : MonoBehaviour
             Bandages => "BandagesPickup",
             Ammo => "AmmoPickup",
             _ => "Pickup"
-        };
-
-        if (SFXManager.instance != null)
-        {
-            SFXManager.instance.PlaySFX(pickupSfxName);
-        }
+        };        
 
         // Determine VFX prefab – here we use a generic one.
         GameObject vfxPrefab = genericPickupVfx;

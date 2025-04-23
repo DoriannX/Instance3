@@ -1,18 +1,29 @@
+using System;
+using DG.Tweening;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
 public class DoorSystem : MonoBehaviour
 {
-    [Header("Reference")]
-    private Animator animator;
+    [SerializeField] private float animationDuration = 0.5f;
+    private Transform doorTransform;
+    public event Action onDoorOpened;
 
-    private void Awake()
+    protected virtual void Awake()
     {
-        animator = GetComponent<Animator>();
-    }  
+        doorTransform = transform;
+    }
 
     public void OpenDoor()
-    {        
-        animator.SetTrigger("hasKey");        
+    {
+        doorTransform.DOMoveY(-doorTransform.lossyScale.y , animationDuration)
+            .SetEase(Ease.OutBounce).OnComplete(Disable);
+        onDoorOpened?.Invoke();
+    }
+    
+    private void Disable()
+    {
+        doorTransform.DOKill();
+        gameObject.SetActive(false);
+        
     }
 }

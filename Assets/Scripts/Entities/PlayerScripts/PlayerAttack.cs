@@ -14,15 +14,17 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float cooldownMultiplier = 1.0f;
     [SerializeField] private float ammoMultiplier = 1.0f;
     private float cooldownTimer = 0f;
-    private Weapon currentWeapon;
-    
+    public Weapon currentWeapon { get; private set; }
+
     public event Action<int> onAmmoChanged;
 
     private void Start()
     {
+        onAmmoChanged?.Invoke(ammoAmount);
         playerTransform = GetComponent<Transform>();
         meleeWeapon = GetComponentInChildren<MeleeWeapon>(true);
         rangeWeapon = GetComponentInChildren<RangeWeapon>(true);
+        
 
         if (rangeWeapon != null)
         {
@@ -49,6 +51,12 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    public void GatherAmmo(int count)
+    {
+        ammoAmount += count;
+        onAmmoChanged?.Invoke(ammoAmount);
+    }
+
     private void Update()
     {
         //SwitchWeapon();
@@ -58,7 +66,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void Attack()
     {
-        if (cooldownTimer > 0)
+        if (cooldownTimer > 0 || currentWeapon == null)
             return;
 
         if (currentWeapon is RangeWeapon)
@@ -95,13 +103,42 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    public void TakeWeapon(Weapon takenWeapon)
+    {
+        if (currentWeapon != null)
+        {
+            currentWeapon.gameObject.SetActive(false);
+        }
+    
+        if (takenWeapon is MeleeWeapon newMelee)
+        {
+            meleeWeapon = newMelee;
+            currentWeapon = meleeWeapon;
+        }
+        else if (takenWeapon is RangeWeapon newRange)
+        {
+            rangeWeapon = newRange;
+            currentWeapon = rangeWeapon;
+        }
+    
+        if (currentWeapon != null)
+        {
+            currentWeapon.gameObject.SetActive(true);
+        }
+    }
+
     public void SwitchWeapon()
     {        
-        GameObject objectToDisable = (currentWeapon == rangeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
-        GameObject objectToEnable = (currentWeapon == meleeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
-        objectToDisable.SetActive(false);
-        objectToEnable.SetActive(true);
-        currentWeapon = (currentWeapon == meleeWeapon) ? rangeWeapon : meleeWeapon;               
+      if (meleeWeapon == null || rangeWeapon == null)
+      {
+          return;
+      }
+      
+      GameObject objectToDisable = (currentWeapon == rangeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
+      GameObject objectToEnable = (currentWeapon == meleeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
+      objectToDisable.SetActive(false);
+      objectToEnable.SetActive(true);
+      currentWeapon = (currentWeapon == meleeWeapon) ? rangeWeapon : meleeWeapon;            
     }
 
     public float GetCooldownMultiplier()

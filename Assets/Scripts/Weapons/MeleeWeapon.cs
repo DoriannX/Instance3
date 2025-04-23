@@ -7,6 +7,7 @@ public class MeleeWeapon : Weapon
     [SerializeField] private LayerMask hitableLayer;
     [SerializeField] private LayerMask enemyLayer;
     private float attackRange;
+
     public override void LoadData(WeaponData data)
     {
         base.LoadData(data);
@@ -36,7 +37,13 @@ public class MeleeWeapon : Weapon
         {
             if (hitCollider.TryGetComponent(out EntityHealth entityHealth))
             {
-                entityHealth.TakeDamage(appliedDamage, transform);
+                entityHealth.TakeDamage(damage, transform);
+                Rigidbody enemyRb = hitCollider.GetComponent<Rigidbody>();
+                if (enemyRb != null)
+                {
+                    Vector3 forceDirection = (hitCollider.transform.position - playerTransform.position).normalized;
+                    enemyRb.AddForce(forceDirection * KnockbackForce, ForceMode.Impulse);
+                }
                 onWeaponUsed?.Invoke(0); 
                 Debug.Log("attack ");
                 
@@ -54,7 +61,7 @@ public class MeleeWeapon : Weapon
             }
         }
         // Play the weapon's attack SFX.
-        PlayAttackSFX();
+        SFXManager.instance.PlaySFX(attackSFX);
     }
     
     private void DrawDebugBox(Vector3 center, Vector3 size, Quaternion rotation, Color color, float duration = 0.2f)

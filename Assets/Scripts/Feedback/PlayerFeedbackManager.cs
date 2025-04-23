@@ -41,7 +41,7 @@ public class PlayerFeedbackManager : MonoBehaviour
     /// </summary>
     private void OnPlayerDamaged(int lastHp, int newHp)
     {
-        sfxManager?.PlaySFX("Hit");
+        sfxManager?.PlaySFX("PlayerTakeDamage");
         damageFlash?.Flash();
         ScreenBorderFlash.Instance?.FlashBorder();
     }

@@ -14,8 +14,20 @@ public class Player : Entity
 {
     // --- Player-specific attributes ---
     [field: SerializeField] public int Chips { get; private set; } = 0;
+    [SerializeField] private float ammoMultiplier = 1.0f;
+    [SerializeField] private float cooldownMultiplier = 1.0f;
+    public static bool hasKey { get; private set; }
+
+    public void HasKey(bool value)
+    {
+        hasKey = value;
+    }
+
+    private void OnDestroy()
+    {
+        hasKey = false;
+    }
     [SerializeField] private float speedMultiplier = 1.0f;
-    public bool hasKey = false;
 
     // Events for updating UI
     public event Action<int> onChipsChanged;
@@ -46,7 +58,7 @@ public class Player : Entity
     {
         vulnerabilityManager.CheckVulnerability();
     }
-    
+
     public void SetRightStickInput(Vector3 rightStickInput)
     {
         orientation.SetRightStickInput(rightStickInput);
@@ -75,9 +87,9 @@ public class Player : Entity
     /// <summary>
     /// Adds chips to the player's total and notifies any subscribers.
     /// </summary>
-    public virtual void AddChips(int amount)
+    public virtual void AddChip()
     {
-        Chips += amount;
+        Chips++;
         onChipsChanged?.Invoke(Chips);
     }
 
@@ -89,6 +101,11 @@ public class Player : Entity
         playerAttack.SwitchWeapon();
     }
 
+    public void TakeWeapon(Weapon takenWeapon)
+    {
+        playerAttack.TakeWeapon(takenWeapon);
+    }
+
     private void FixedUpdate()
     {
         dash.HandleDash();
@@ -96,6 +113,7 @@ public class Player : Entity
         {
             movement.HandleMovement(Speed * speedMultiplier);
         }
+
         movement.ApplyVelocity();
     }
 
@@ -122,5 +140,10 @@ public class Player : Entity
     public virtual void SetSpeedMultiplier(float multiplier)
     {
         speedMultiplier = multiplier;
+    }
+
+    public void GatherAmmo(int ammoAmount)
+    {
+        playerAttack.GatherAmmo(ammoAmount);
     }
 }

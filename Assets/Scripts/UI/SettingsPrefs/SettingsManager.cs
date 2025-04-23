@@ -37,8 +37,6 @@ public class SettingsManager : MonoBehaviour
         }
 
         SetFullScreen();
-
-        MusicManager.instance.PlayMusic("MainMenu");
     }
 
     public void SetMusicVolume()

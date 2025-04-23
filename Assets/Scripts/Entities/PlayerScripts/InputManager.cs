@@ -61,19 +61,10 @@ public class InputManager : MonoBehaviour
         player.Attack();
     }
 
-    public void Previous(InputAction.CallbackContext context)
+    public void OnScroll(InputAction.CallbackContext context)
     {
-        if (!context.started)
-        {
-            return;
-        }
-
-        player.SwitchWeapon();
-    }
-
-    public void Next(InputAction.CallbackContext context)
-    {
-        if (!context.started)
+        Debug.Log(context.phase);
+        if (!context.canceled)
         {
             return;
         }

@@ -1,30 +1,19 @@
-using Item.Drops;
-using UnityEngine;
+using System;
 
 public class Enemy : Entity
 {
-    [Header("Fragment Chip Drop")] 
-    [SerializeField] private uint fragmentChipDropRangeMin;
-    [SerializeField] private uint fragmentChipDropRangeMax;
-    [SerializeField] private Chips fragmentChipPrefab;
-    
-    [SerializeField] private float groundDistance = 1f;
-    [SerializeField] private LayerMask groundLayer;
-    
+    public static int aliveEnemyCount { get; private set; } = 0;
+
     private void Start()
     {
-        healthComponent.onDeath += DropFragmentChip;
+        healthComponent.onDeath += OnEnemyDie;
+        aliveEnemyCount++;
     }
-    
-    private void DropFragmentChip()
+
+    private void OnEnemyDie()
     {
-        Debug.Log(" Dropping fragment chip...");
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, groundDistance, groundLayer))
-        {
-            Debug.Log("Dropping fragment chip at: " + hitInfo.point);
-            Chips fragmentChip = Instantiate(fragmentChipPrefab, hitInfo.point, Quaternion.identity);
-            fragmentChip.SetChipsAmount((uint)Random.Range(fragmentChipDropRangeMin, fragmentChipDropRangeMax));
-        }
         Destroy(gameObject);
+        aliveEnemyCount--;
+        SFXManager.instance.PlaySFX("EnemyDeath");
     }
 }

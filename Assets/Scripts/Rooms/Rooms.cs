@@ -16,6 +16,8 @@ public class Rooms : MonoBehaviour
     private List<GameObject> roomTranstions;
     
     [field : SerializeField] public float zoomCameraData { get; private set; }
+    [field : SerializeField] public Vector3 positionCameraData { get; private set; }
+    [field : SerializeField] public Vector3 rotationCameraData { get; private set; }
 
     public void Start()
     {
