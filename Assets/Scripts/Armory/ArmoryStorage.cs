@@ -5,13 +5,15 @@ using Random = UnityEngine.Random;
 
 namespace Armory
 {
+    [RequireComponent(typeof(Collider))]
     public class ArmoryStorage : MonoBehaviour
     {
         [SerializeField, Min(0)] private int nbWeapons = 3;
-        [SerializeField] private List<Weapon> possibleWeapons;
-        
-        private Weapon[] weaponsInStock;
-        
+        [Tooltip("All possible WeaponData assets to draw from at level end.")]
+        [SerializeField] private List<WeaponData> possibleWeaponDatas;
+
+        private WeaponData[] weaponsInStock;
+
         private void Awake()
         {
             FillStock();
@@ -19,49 +21,38 @@ namespace Armory
 
         private void FillStock()
         {
-            if (nbWeapons == 0)
+            if (nbWeapons == 0 || possibleWeaponDatas == null || possibleWeaponDatas.Count == 0)
             {
-                Debug.LogWarning("No weapons to fill in the stock.");
+                Debug.LogWarning("ArmoryStorage: No weapon data to fill."); 
+                weaponsInStock = Array.Empty<WeaponData>();
                 return;
             }
-            
-            weaponsInStock = new Weapon[nbWeapons];
-            List<Weapon> availableWeapons = new List<Weapon>(possibleWeapons);
-            
+
+            var pool = new List<WeaponData>(possibleWeaponDatas);
+            weaponsInStock = new WeaponData[nbWeapons];
+
             for (int i = 0; i < nbWeapons; i++)
             {
-                int randomIndex = Random.Range(0, availableWeapons.Count);
-                weaponsInStock[i] = availableWeapons[randomIndex];
-                availableWeapons.RemoveAt(randomIndex);
+                int r = Random.Range(0, pool.Count);
+                weaponsInStock[i] = pool[r];
+                pool.RemoveAt(r);
             }
         }
 
-        public Weapon SwitchWeapon(Weapon weaponToStore, int indexWeaponToTake)
+        /// <summary>
+        /// Swaps out the weaponData at the given index with the provided one,
+        /// returning the old data so the UI can put it back in the slot.
+        /// </summary>
+        public WeaponData SwitchWeaponData(WeaponData toStore, int index)
         {
-            if (weaponsInStock.Length == 0)
-            {
-                Debug.LogWarning("No weapons available in the stock.");
-                return null;
-            }
+            if (index < 0 || index >= weaponsInStock.Length)
+                throw new ArgumentOutOfRangeException(nameof(index));
 
-            if (indexWeaponToTake < 0 || indexWeaponToTake >= weaponsInStock.Length)
-                throw new ArgumentOutOfRangeException(nameof(indexWeaponToTake), "Index is out of range");
+            WeaponData taken = weaponsInStock[index];
+            weaponsInStock[index] = toStore;
+            return taken;
+        }
 
-            Weapon newWeapon = weaponsInStock[indexWeaponToTake];
-            weaponsInStock[indexWeaponToTake] = weaponToStore;
-            return newWeapon;
-        }
-        
-        public void SetNbAvailableWeapons(int nbWeapons)
-        {
-            if (nbWeapons < 0)
-                throw new ArgumentOutOfRangeException(nameof(nbWeapons), "Number of weapons cannot be negative");
-            
-            this.nbWeapons = nbWeapons;
-            weaponsInStock = new Weapon[nbWeapons];
-            FillStock();
-        }
-        
-        public Weapon[] WeaponsInStock => weaponsInStock;
+        public WeaponData[] WeaponsInStock => weaponsInStock;
     }
 }

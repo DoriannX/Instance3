@@ -13,9 +13,7 @@ public class PlayerAttack : MonoBehaviour
     [Header("Weapons Settings")]
     [SerializeField] private int ammoAmount;
     private float cooldownTimer = 0f;
-    private Weapon currentWeapon;
-
-    // events for HUD & animation
+    public Weapon currentWeapon { get; private set; }
     public event Action<int> onAmmoChanged;
     public event Action onAttackStarted;
 
@@ -31,6 +29,7 @@ public class PlayerAttack : MonoBehaviour
         playerTransform = transform;
         meleeWeapon     = GetComponentInChildren<MeleeWeapon>(true);
         rangeWeapon     = GetComponentInChildren<RangeWeapon>(true);
+        onAmmoChanged?.Invoke(ammoAmount);
 
         if (rangeWeapon != null)
             rangeWeapon.OnWeaponUsed += ConsumeAmmo;
@@ -52,6 +51,12 @@ public class PlayerAttack : MonoBehaviour
             rangeWeapon.OnWeaponUsed -= ConsumeAmmo;
     }
 
+    public void GatherAmmo(int count)
+    {
+        ammoAmount += count;
+        onAmmoChanged?.Invoke(ammoAmount);
+    }
+
     private void Update()
     {
         if (cooldownTimer > 0f)
@@ -60,7 +65,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void Attack()
     {
-        if (cooldownTimer > 0f)
+        if (cooldownTimer > 0 || currentWeapon == null)
             return;
 
         // fire animation trigger
@@ -90,6 +95,38 @@ public class PlayerAttack : MonoBehaviour
     /// <summary>
     /// Toggle between melee & range and notify Entity.
     /// </summary>
+    private void Cooldown()
+    {
+        if (cooldownTimer > 0f)
+        {
+            cooldownTimer -= Time.deltaTime;
+        }
+    }
+
+    public void TakeWeapon(Weapon takenWeapon)
+    {
+        if (currentWeapon != null)
+        {
+            currentWeapon.gameObject.SetActive(false);
+        }
+    
+        if (takenWeapon is MeleeWeapon newMelee)
+        {
+            meleeWeapon = newMelee;
+            currentWeapon = meleeWeapon;
+        }
+        else if (takenWeapon is RangeWeapon newRange)
+        {
+            rangeWeapon = newRange;
+            currentWeapon = rangeWeapon;
+        }
+    
+        if (currentWeapon != null)
+        {
+            currentWeapon.gameObject.SetActive(true);
+        }
+    }
+
     public void SwitchWeapon()
     {
         if (meleeWeapon == null || rangeWeapon == null)

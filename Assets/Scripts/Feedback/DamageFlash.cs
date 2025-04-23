@@ -1,65 +1,54 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DamageFlash : MonoBehaviour
 {
-    [SerializeField] private Material damageMaterial; // The material to apply for the flash effect.
     [SerializeField] private float flashDuration = 0.1f;  // Duration of the flash.
 
-    private Renderer[] renderers;
-    private Material[] originalMaterials;
+    private Material[] originalMaterials; // Array to store the original materials of the renderers.
+    private Color[] originalColors; // Array to store the original colors of the materials.
 
     private void Awake()
     {
-        // Get all renderers on this object or its children.
-        renderers = GetComponentsInChildren<Renderer>();
-        if (renderers == null || renderers.Length == 0)
+        List<Material> materialsList = new();
+        List<Color> colorsList = new();
+
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
         {
-            Renderer rootRenderer = GetComponent<Renderer>();
-            if (rootRenderer != null)
+            foreach (var mat in renderer.materials)
             {
-                renderers = new Renderer[] { rootRenderer };
-            }
-            else
-            {
-                Debug.LogWarning($"{gameObject.name} has no Renderer components. Damage flash disabled.");
-                renderers = new Renderer[0];
+                if (mat.HasProperty("_Color"))
+                {
+                    materialsList.Add(mat);
+                    colorsList.Add(mat.color);
+                }
             }
         }
-        
-        // Cache each renderer’s original material.
-        originalMaterials = new Material[renderers.Length];
-        for (int i = 0; i < renderers.Length; i++)
-        {
-            originalMaterials[i] = renderers[i].material;
-        }
+
+        originalMaterials = materialsList.ToArray();
+        originalColors = colorsList.ToArray();
     }
 
-    // Call this method to perform the flash effect.
     public void Flash()
     {
-        if (damageMaterial == null)
-        {
-            Debug.LogError($"{gameObject.name}: Damage material is not assigned for flashing!");
-            return;
-        }
         StartCoroutine(DoFlash());
     }
 
     private IEnumerator DoFlash()
     {
-        // Swap in the damage material.
-        for (int i = 0; i < renderers.Length; i++)
+        // Flash rouge
+        foreach (Material mat in originalMaterials)
         {
-            renderers[i].material = damageMaterial;
+            mat.color = Color.red;
         }
-        
+
         yield return new WaitForSeconds(flashDuration);
-        
-        // Restore the original materials.
-        for (int i = 0; i < renderers.Length; i++)
+
+        // Restaure les couleurs
+        for (int i = 0; i < originalMaterials.Length; i++)
         {
-            renderers[i].material = originalMaterials[i];
-        }
+            originalMaterials[i].color = originalColors[i];
+        }   
     }
 }

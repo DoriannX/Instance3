@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 310b78f049f92dd4ebba4696f6de5801, type: 3}
   m_Name: MetalBar
   m_EditorClassIdentifier: 
+  weaponPrefab: {fileID: 3174521618182604050, guid: 7ba573234186880469f2cea112169af7, type: 3}
   weaponName: MetalBar
   description: A metal of bar
   mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
   damage: 5
   cooldown: 0.25
   attackRange: 2
+  attackSFX: 
+  knockbackForce: 20
   icon: {fileID: 21300000, guid: efe9592376188934490a1156765f032b, type: 3}

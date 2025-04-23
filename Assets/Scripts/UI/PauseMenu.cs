@@ -13,21 +13,17 @@ public class PauseMenu : MonoBehaviour
         Assert.IsNotNull(pauseMenu, "Pause menu is not assigned in the inspector.");
     }
 
-    public void PauseUI(InputAction.CallbackContext context)
-    {
-        if (context.performed)
+    public void TogglePause()
+    {   
+        Debug.Log("tried to pause");
+        if (pauseMenu.activeSelf)
         {
-            if (pauseMenu.activeSelf)
-            {
-                ResumeGame();
-                ToggleTimePause(false);
-            }
-            else
-            {
-                PauseGame();
-                ToggleTimePause(true);
-            } 
-        }        
+            ResumeGame();
+        }
+        else
+        {
+            PauseGame();
+        } 
     }
 
     private void ToggleTimePause(bool isPaused)
@@ -38,11 +34,13 @@ public class PauseMenu : MonoBehaviour
     public void ResumeGame()
     {
         pauseMenu.SetActive(false);
+        ToggleTimePause(false);
     }
 
     private void PauseGame()
     {
         pauseMenu.SetActive(true);
+        ToggleTimePause(true);
     }
 
     public void RestartGame()

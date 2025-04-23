@@ -4,10 +4,9 @@ using UnityEngine.Assertions;
 public class CameraZoomEnterRoom : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private float smooth = 0.1f;
+    [SerializeField] private float smooth = 5f;
     [SerializeField] private LayerMask playerLayer;
     private Rooms rooms;
-
     private bool isZooming = false;
 
     private void Awake()
@@ -31,9 +30,20 @@ public class CameraZoomEnterRoom : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == playerLayer)
+        if (((1 << other.gameObject.layer) & playerLayer) != 0)
+        {            
+            if(!isZooming)
+            {
+                isZooming = true;                     
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (((1 << other.gameObject.layer) & playerLayer) != 0)
         {
-            isZooming = true;
+            isZooming = false;
         }
     }
 
