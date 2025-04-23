@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b2dd93a4f702bf4480b818006551342, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponData: {fileID: 11400000, guid: ab16820772263774ca1f239648b4e564, type: 2}
+  weaponData: {fileID: 11400000, guid: 76ebe7091f8a2544a9520cd17e05ef31, type: 2}
   hitableLayer:
     serializedVersion: 2
     m_Bits: 1088
