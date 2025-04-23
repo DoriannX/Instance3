@@ -37,6 +37,7 @@ public class EntityHealth : MonoBehaviour
         if (Hp <= 0)
         {
             Die();
+            
         }
     }
 

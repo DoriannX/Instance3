@@ -35,6 +35,8 @@ namespace Entities
                 Debug.Log("Player is dead. Restarting scene...");
                 deathPanel.gameObject.SetActive(true);
 
+                SFXManager.instance.PlaySFX("PlayerDeath");
+
                 // Corrected Lerp usage for smooth transition  
                 deathPanel.color = Color.Lerp(deathPanel.color, new Color(0, 0, 0, 1f),
                     colorLerpSpeed * Time.unscaledDeltaTime);
