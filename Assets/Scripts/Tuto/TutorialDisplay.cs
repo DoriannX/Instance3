@@ -13,6 +13,8 @@ namespace Tuto
         private void Awake()
         {
             InputDetector.OnInputModeChanged += UpdateDisplay;
+            
+            UpdateDisplay(InputMode.KeyboardMouse);
         }
         
         private void UpdateDisplay(InputMode inputMode)
