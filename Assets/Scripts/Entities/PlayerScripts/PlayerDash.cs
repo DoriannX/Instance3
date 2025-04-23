@@ -43,6 +43,7 @@ public class PlayerDash : MonoBehaviour
 
         isDashing = true;
         lastDashTime = Time.time;
+        SFXManager.instance.PlaySFX("PlayerDash");
     }
 
     public void HandleDash()

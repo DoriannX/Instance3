@@ -13964,6 +13964,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 745303354}
     - target: {fileID: 4402750113698462694, guid: 1f302ecb04ae4e924859ee8ef4aaf420, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1207638625218984422}
+    - target: {fileID: 4402750113698462694, guid: 1f302ecb04ae4e924859ee8ef4aaf420, type: 3}
       propertyPath: m_ActionEvents.Array.data[21].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1688832340}
@@ -13974,6 +13978,10 @@ PrefabInstance:
     - target: {fileID: 4402750113698462694, guid: 1f302ecb04ae4e924859ee8ef4aaf420, type: 3}
       propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnLookControllerPerformed
+      objectReference: {fileID: 0}
+    - target: {fileID: 4402750113698462694, guid: 1f302ecb04ae4e924859ee8ef4aaf420, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TogglePauseInput
       objectReference: {fileID: 0}
     - target: {fileID: 4402750113698462694, guid: 1f302ecb04ae4e924859ee8ef4aaf420, type: 3}
       propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -14072,6 +14080,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99438d6c9d44fa49edccb6d28cbc237, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1207638625218984422 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8106052565352111986, guid: 1f302ecb04ae4e924859ee8ef4aaf420, type: 3}
+  m_PrefabInstance: {fileID: 1207638625218984420}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527442116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 575dd923329349c6a5e720aa7303d513, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1282729400293484353
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14104,7 +14123,7 @@ RectTransform:
   m_GameObject: {fileID: 4218895206884774597}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7959855995910822958}
@@ -14308,7 +14327,7 @@ RectTransform:
   m_GameObject: {fileID: 2061746271192570225}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3648349975360963329}
@@ -14347,7 +14366,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 89.99997, y: -152.49998}
+  m_AnchoredPosition: {x: 650, y: -467.5}
   m_SizeDelta: {x: 150, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2061746271192570225
@@ -14985,7 +15004,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 89.99997, y: -32.499985}
+  m_AnchoredPosition: {x: 650, y: -347.5}
   m_SizeDelta: {x: 200, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3652830351993912999
@@ -15113,7 +15132,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 89.99997, y: -112.499985}
+  m_AnchoredPosition: {x: 650, y: -427.5}
   m_SizeDelta: {x: 200, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4148985681096624424
@@ -16327,7 +16346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioClips:
   - name: MainMenu
-    audioClip: {fileID: 8300000, guid: 9de7926dcc601b34abe27b71ed9e0e6a, type: 3}
+    audioClip: {fileID: 8300000, guid: bbf12f6b59d1caf49ae2c2f9c7f01043, type: 3}
   - name: InGame
     audioClip: {fileID: 8300000, guid: 3d21fcdd4e8a6c24eb3dec8f1a8c0ada, type: 3}
 --- !u!1 &6008071846979693002
@@ -16422,7 +16441,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 89.99997, y: -72.499985}
+  m_AnchoredPosition: {x: 650, y: -387.5}
   m_SizeDelta: {x: 200, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6377584879359055618
@@ -16880,8 +16899,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioClips:
-  - name: Test
-    audioClip: {fileID: 8300000, guid: 9cb4f8314500d26408b6c92027dbc998, type: 3}
+  - name: DoorOpen
+    audioClip: {fileID: 8300000, guid: f67b909930642ca49ba51a55c3edde91, type: 3}
+  - name: EnemyDeath
+    audioClip: {fileID: 8300000, guid: d001767ee6e3091459af88e83b248a2e, type: 3}
+  - name: GunShot
+    audioClip: {fileID: 8300000, guid: f494d4897c046fc44b9b072a5fc5a8ed, type: 3}
+  - name: InteractVendingMachin
+    audioClip: {fileID: 8300000, guid: e7d40e5f27509474fab3f6f63e9ba218, type: 3}
+  - name: PlayerDash
+    audioClip: {fileID: 8300000, guid: be3c20815a112aa418eaa1fbfb3fa752, type: 3}
+  - name: PlayerDeath
+    audioClip: {fileID: 8300000, guid: 9a5b8a68af24f0d469db7f0fc7b87910, type: 3}
+  - name: PlayerTakeDamage
+    audioClip: {fileID: 8300000, guid: 1aadfa2204cba7e409260ad94080a24b, type: 3}
+  - name: RifleShot
+    audioClip: {fileID: 8300000, guid: 83da9c193b0bd40459d85c4038431548, type: 3}
+  - name: Shotgun
+    audioClip: {fileID: 8300000, guid: 380a61624a607f042ab5e96218f37633, type: 3}
+  - name: SwitchWeapon
+    audioClip: {fileID: 8300000, guid: 7e9fb9ae72c26ff46bb20ee599d9a4d6, type: 3}
+  - name: MeleeAttack
+    audioClip: {fileID: 8300000, guid: 8b96066e32f73d742aaf68a4af61f2a2, type: 3}
 --- !u!224 &6995271198718546056
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17331,7 +17370,7 @@ RectTransform:
   m_GameObject: {fileID: 7414452852271019158}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6995271198718546056}
@@ -17339,7 +17378,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -50}
+  m_AnchoredPosition: {x: 0, y: -111}
   m_SizeDelta: {x: -100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8009488880929140216

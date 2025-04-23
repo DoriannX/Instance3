@@ -11,6 +11,7 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1f;
         Assert.IsNotNull(pauseMenu, "Pause menu is not assigned in the inspector.");
+        MusicManager.instance.PlayMusic("InGame");
     }
 
     public void TogglePause()

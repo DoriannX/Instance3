@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 310b78f049f92dd4ebba4696f6de5801, type: 3}
+  m_Name: Baton
+  m_EditorClassIdentifier: 
+  weaponPrefab: {fileID: 3174521618182604050, guid: 7ba573234186880469f2cea112169af7, type: 3}
+  weaponName: Baton
+  description: 
+  mesh: {fileID: 2534964839176971238, guid: 28221359bf5cfb4498269452a3df8c86, type: 3}
+  damage: 18
+  cooldown: 0.75
+  attackRange: 2
+  attackSFX: MeleeAttack
+  knockbackForce: 20
+  icon: {fileID: 21300000, guid: 4821f9c494b79774fbbf0c49f2ea9056, type: 3}

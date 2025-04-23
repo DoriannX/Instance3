@@ -47,6 +47,7 @@ public class PlayerInteract : MonoBehaviour
                 Debug.Log("Player has a key. Opening the door.");
                 door.OpenDoor();
                 player.HasKey(false);
+                SFXManager.instance.PlaySFX("DoorOpen");
             }
             else
             {

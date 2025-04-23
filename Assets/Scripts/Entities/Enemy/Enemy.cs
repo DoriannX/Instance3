@@ -14,5 +14,6 @@ public class Enemy : Entity
     {
         Destroy(gameObject);
         aliveEnemyCount--;
+        SFXManager.instance.PlaySFX("EnemyDeath");
     }
 }
