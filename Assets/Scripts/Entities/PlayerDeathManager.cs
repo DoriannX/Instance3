@@ -19,12 +19,12 @@ namespace Entities
         private float restartTime = 0f;
         private TextMeshProUGUI deathText;
 
+
         private void Awake()
         {
             health = GetComponent<EntityHealth>();
             if (animator == null)
                 animator = GetComponentInChildren<Animator>();
-            playerHealth = GetComponent<EntityHealth>();
             deathText = deathPanel.GetComponentInChildren<TextMeshProUGUI>();
             Assert.IsNotNull(deathPanel, "Death panel is not assigned in the inspector.");
         }
@@ -52,7 +52,6 @@ namespace Entities
 
             // 4) start polling for when it’s actually done
             StartCoroutine(WaitForDeathAnimation());
-            playerHealth.onDeath += OnPlayerDie;
             restartTime = maxRestartTime;
         }
 

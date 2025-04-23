@@ -142,20 +142,20 @@ public class PlayerAttack : MonoBehaviour
 
     /// <summary>
     /// Called when picking up a new Weapon instance.
-    /// </summary>
-    public void TakeWeapon(Weapon pickedUp)
-    {
-        if (pickedUp is MeleeWeapon m)
-        {
-            meleeWeapon   = m;
-            currentWeapon = m;
-        }
-        else if (pickedUp is RangeWeapon r)
-        {
-            rangeWeapon   = r;
-            currentWeapon = r;
-        }
+    ///// </summary>
+    //public void TakeWeapon(Weapon pickedUp)
+    //{
+    //    if (pickedUp is MeleeWeapon m)
+    //    {
+    //        meleeWeapon   = m;
+    //        currentWeapon = m;
+    //    }
+    //    else if (pickedUp is RangeWeapon r)
+    //    {
+    //        rangeWeapon   = r;
+    //        currentWeapon = r;
+    //    }
 
-        entity.SetCurrentWeapon(currentWeapon);
-    }
+    //    entity.SetCurrentWeapon(currentWeapon);
+    //}
 }
