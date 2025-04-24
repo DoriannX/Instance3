@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 506668413158549265}
   - component: {fileID: 8307610168066002682}
   m_Layer: 12
-  m_Name: restroom
+  m_Name: Restroom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

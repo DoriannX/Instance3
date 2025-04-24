@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 4682249687889213972}
   - component: {fileID: 4582787215553771151}
   m_Layer: 0
-  m_Name: ArmoryTerminal
+  m_Name: armoryTerminal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
