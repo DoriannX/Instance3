@@ -1,8 +1,6 @@
 using UnityEngine;
-using Armory;   // if your Weapon types live here
-using Entities; // for Entity & EntityHealth
 
-[RequireComponent(typeof(Entity))]
+[RequireComponent(typeof(Player))]
 [RequireComponent(typeof(EntityHealth))]
 [RequireComponent(typeof(PlayerAttack))]
 public class PlayerAnimationController : MonoBehaviour
@@ -14,51 +12,51 @@ public class PlayerAnimationController : MonoBehaviour
     private static readonly int IsDeadHash     = Animator.StringToHash("IsDead");
     private static readonly int WeaponTypeHash = Animator.StringToHash("WeaponType");
 
-    private Entity       entity;
-    private EntityHealth health;
-    private PlayerAttack attack;
-    private Rigidbody    rb;
+    private Player        player;
+    private EntityHealth  health;
+    private PlayerAttack  attack;
+    private Rigidbody     rb;
 
     private void Awake()
     {
         if (animator == null) animator = GetComponent<Animator>();
-        entity = GetComponent<Entity>();
+        player = GetComponent<Player>();
         health = GetComponent<EntityHealth>();
         attack = GetComponent<PlayerAttack>();
         rb     = GetComponent<Rigidbody>();
 
-        // set initial weapon‑type
-        animator.SetInteger(WeaponTypeHash, WeaponToIndex(entity.CurrentWeapon));
+        // Set initial weapon type based on currently equipped weapon
+        animator.SetInteger(WeaponTypeHash, WeaponToIndex(player.CurrentWeapon));
     }
 
     private void OnEnable()
     {
-        entity.OnWeaponChanged   += OnWeaponChanged;
-        attack.onAttackStarted   += OnAttackTriggered;
-        health.onDeath           += OnDeath;
+        player.onWeaponSwitched += RefreshWeaponAnimation;
+        attack.onAttackStarted  += OnAttackTriggered;
+        health.onDeath          += OnDeath;
     }
 
     private void OnDisable()
     {
-        entity.OnWeaponChanged   -= OnWeaponChanged;
-        attack.onAttackStarted   -= OnAttackTriggered;
-        health.onDeath           -= OnDeath;
+        player.onWeaponSwitched -= RefreshWeaponAnimation;
+        attack.onAttackStarted  -= OnAttackTriggered;
+        health.onDeath          -= OnDeath;
     }
 
     private void Update()
     {
         if (rb != null)
         {
-            // normalized horizontal speed
+            // Normalized horizontal speed
             Vector3 horiz = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-            float norm = horiz.magnitude / Mathf.Max(1f, entity.Speed);
+            float norm = horiz.magnitude / Mathf.Max(1f, player.Speed);
             animator.SetFloat(SpeedHash, norm);
         }
     }
 
-    private void OnWeaponChanged(Weapon newWeapon)
+    private void RefreshWeaponAnimation()
     {
-        animator.SetInteger(WeaponTypeHash, WeaponToIndex(newWeapon));
+        animator.SetInteger(WeaponTypeHash, WeaponToIndex(player.CurrentWeapon));
     }
 
     private void OnAttackTriggered()
@@ -73,7 +71,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     private int WeaponToIndex(Weapon w)
     {
-        // convention: 0 = melee, 1 = ranged
+        // Convention: 0 = melee, 1 = ranged
         if (w is RangeWeapon) return 1;
         if (w is MeleeWeapon) return 0;
         return 0;

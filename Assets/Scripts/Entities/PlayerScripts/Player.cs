@@ -30,6 +30,7 @@ public class Player : Entity
 
     // Events for updating UI
     public event Action<int> onChipsChanged;
+    public event Action onWeaponSwitched;
 
     // --- References ---
     private PlayerMovement movement;
@@ -93,11 +94,17 @@ public class Player : Entity
     }
 
     /// <summary>
-    /// Switches the weapon between melee and ranged (if both are available).
+    /// Raise the onWeaponSwitched event so external callers can notify listeners.
     /// </summary>
+    public void NotifyWeaponSwitched()
+    {
+        onWeaponSwitched?.Invoke();
+    }
+
     public void SwitchWeapon()
     {
         playerAttack.SwitchWeapon();
+        onWeaponSwitched?.Invoke();
     }
 
     public void TakeWeapon(Weapon takenWeapon)

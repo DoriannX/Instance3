@@ -124,6 +124,7 @@ public class PlayerAttack : MonoBehaviour
         if (currentWeapon != null)
         {
             currentWeapon.gameObject.SetActive(true);
+            entity.SetCurrentWeapon(currentWeapon);
         }
     }
 
