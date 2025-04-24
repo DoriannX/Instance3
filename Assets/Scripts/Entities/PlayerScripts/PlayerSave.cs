@@ -30,7 +30,7 @@ using UnityEngine;
             {
                 PlayerPrefs.SetFloat(KEY_AMMO, player.GetAmmoMultiplier());
                 PlayerPrefs.SetFloat(KEY_COOLDOWN, player.GetCooldownMultiplier());
-                PlayerPrefs.SetInt(KEY_MAXHEALTH, player.GetMaxHealth());
+                PlayerPrefs.SetInt(KEY_MAXHEALTH, player.healthComponent.maxHp);
                 PlayerPrefs.SetFloat(KEY_SPEED, player.GetSpeedMultiplier());
                 PlayerPrefs.Save();
                 return true;
@@ -52,7 +52,7 @@ using UnityEngine;
             {
                 float ammo = PlayerPrefs.GetFloat(KEY_AMMO, player.GetAmmoMultiplier());
                 float cooldown = PlayerPrefs.GetFloat(KEY_COOLDOWN, player.GetCooldownMultiplier());
-                int maxHealth = PlayerPrefs.GetInt(KEY_MAXHEALTH, player.GetMaxHealth());
+                int maxHealth = PlayerPrefs.GetInt(KEY_MAXHEALTH, player.healthComponent.maxHp);
                 float speed = PlayerPrefs.GetFloat(KEY_SPEED, player.GetSpeedMultiplier());
 
                 if (ValidateValues(ammo, cooldown, speed, maxHealth))

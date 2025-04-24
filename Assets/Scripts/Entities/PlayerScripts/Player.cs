@@ -5,12 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerDash))]
 [RequireComponent(typeof(PlayerVulnerabilityManager))]
-// [RequireComponent(typeof(PlayerOrientation))]
+[RequireComponent(typeof(PlayerOrientation))]
 [RequireComponent(typeof(PlayerAttack))]
 [RequireComponent(typeof(EntityHealth))]
 [RequireComponent(typeof(PlayerInteract))]
 [RequireComponent(typeof(InputManager))]
-[RequireComponent(typeof(PlayerUpgrade))]
 public class Player : Entity
 {
     // --- Player-specific attributes ---
@@ -28,6 +27,7 @@ public class Player : Entity
     {
         hasKey = false;
     }
+    [SerializeField] private float speedMultiplier = 1.0f;
 
     // Events for updating UI
     public event Action<int> onChipsChanged;
@@ -117,11 +117,10 @@ public class Player : Entity
         movement.ApplyVelocity();
     }
 
-    public virtual float GetAmmoMultiplier() => ammoMultiplier;
-    public virtual float GetCooldownMultiplier() => cooldownMultiplier;
-    public float GetSpeedMultiplier() => speedMultiplier;
+    public virtual float GetAmmoMultiplier() => playerAttack.GetAmmoMultiplier();
+    public virtual float GetCooldownMultiplier() => playerAttack.GetCooldownMultiplier();
     public virtual float GetDamageMultiplier() => playerAttack.GetDamageMultiplier();
-    public int GetMaxHealth() => healthComponent.maxHp;
+    public virtual float GetSpeedMultiplier() => speedMultiplier;
 
     public virtual void SetAmmoMultiplier(float multiplier)
     {
@@ -130,8 +129,15 @@ public class Player : Entity
 
     public virtual void SetCooldownMultiplier(float multiplier)
     {
-        cooldownMultiplier = multiplie
-    public void SetSpeedMultiplier(float multiplier)
+        playerAttack.SetCooldownMultiplier(multiplier);
+    }
+
+    public virtual void SetDamageMultiplier(float multiplier)
+    {
+        playerAttack.SetDamageMultiplier(multiplier);
+    }
+
+    public virtual void SetSpeedMultiplier(float multiplier)
     {
         speedMultiplier = multiplier;
         Speed *= speedMultiplier;
@@ -140,11 +146,12 @@ public class Player : Entity
     {
         healthComponent.SetMaxHp(maxHealth);
     }
-    
+
     public void SetChips(int amount)
     {
         Chips = amount;
         onChipsChanged?.Invoke(Chips);
+    }
 
     public void GatherAmmo(int ammoAmount)
     {

@@ -60,12 +60,6 @@ public class PlayerAttack : MonoBehaviour
         onAmmoChanged?.Invoke(ammoAmount);
     }
 
-    public void GatherAmmo(int count)
-    {
-        ammoAmount += count;
-        onAmmoChanged?.Invoke(ammoAmount);
-    }
-
     private void Update()
     {
         if (cooldownTimer > 0f)
