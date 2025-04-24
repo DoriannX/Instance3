@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8906067635801501162}
   - component: {fileID: 230974877722137014}
   m_Layer: 0
-  m_Name: corridor 1
+  m_Name: corridor 1_obsolete
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
