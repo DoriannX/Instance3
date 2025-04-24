@@ -21,7 +21,7 @@ MonoBehaviour:
   attackRange: 2
   attackSFX: Shotgun
   knockbackForce: 0
-  icon: {fileID: 21300000, guid: b6dff2a3895b38441ae4e419a1f153b0, type: 3}
+  icon: {fileID: 21300000, guid: 9715c26dce9b53c4b9d0e59a2f4c372f, type: 3}
   bulletSpread: 45
   ammoConsume: 3
   ammoShoot: 4

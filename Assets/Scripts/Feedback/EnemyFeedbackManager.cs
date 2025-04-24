@@ -3,15 +3,15 @@ using UnityEngine;
 public class EnemyFeedbackManager : MonoBehaviour
 {
     private EntityHealth     entityHealth;
-    private DamageFlash      damageFlash;
     private SFXManager       sfxManager;
+    private DamageFlash damageFlash;
 
     private void Awake()
     {
         // Cache components
         entityHealth = GetComponent<EntityHealth>();
-        damageFlash  = GetComponent<DamageFlash>();
         sfxManager   = SFXManager.instance;
+        damageFlash = GetComponent<DamageFlash>();
 
         // Subscribe health‐damage feedback
         if (entityHealth != null)
@@ -32,7 +32,6 @@ public class EnemyFeedbackManager : MonoBehaviour
     {
         sfxManager?.PlaySFX("Hit");
         damageFlash?.Flash();
-        ScreenBorderFlash.Instance?.FlashBorder();
     }
     /// <summary>
     /// Called when the player dashes.

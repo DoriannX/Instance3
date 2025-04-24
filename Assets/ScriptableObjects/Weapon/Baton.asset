@@ -21,4 +21,4 @@ MonoBehaviour:
   attackRange: 2
   attackSFX: MeleeAttack
   knockbackForce: 20
-  icon: {fileID: 21300000, guid: 4821f9c494b79774fbbf0c49f2ea9056, type: 3}
+  icon: {fileID: 21300000, guid: 444e703f4339b2f44b8800559c43c39a, type: 3}

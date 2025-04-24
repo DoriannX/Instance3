@@ -74,7 +74,11 @@ public class PlayerAttack : MonoBehaviour
         if (currentWeapon is RangeWeapon rw)
         {
             if (ammoAmount >= rw.AmmoConsume)
+            {
                 currentWeapon.Attack(playerTransform);
+                ammoAmount -= rw.AmmoConsume;
+                onAmmoChanged?.Invoke(ammoAmount);
+            }
             else
                 Debug.Log("Not enough ammo");
         }

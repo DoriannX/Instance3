@@ -17,7 +17,7 @@ public class PlayerFeedbackManager : MonoBehaviour
 
         // Subscribe health‐damage feedback
         if (entityHealth != null)
-            entityHealth.onHealthChanged += OnPlayerDamaged;
+            entityHealth.onHit += OnPlayerDamaged;
 
         // Subscribe dash feedback
         if (playerDash != null)
@@ -28,7 +28,7 @@ public class PlayerFeedbackManager : MonoBehaviour
     {
         // Unsubscribe everything
         if (entityHealth != null)
-            entityHealth.onHealthChanged -= OnPlayerDamaged;
+            entityHealth.onHit -= OnPlayerDamaged;
 
         if (playerDash != null)
             playerDash.OnDash -= OnPlayerDash;
@@ -37,11 +37,8 @@ public class PlayerFeedbackManager : MonoBehaviour
     /// <summary>
     /// Called when the player takes damage.
     /// </summary>
-    private void OnPlayerDamaged(int currentHp, int newHp)
+    private void OnPlayerDamaged()
     {
-        if (currentHp <= 0)
-            return; 
-        
         SFXManager.instance.PlaySFX("PlayerTakeDamage");
         damageFlash?.Flash();
         ScreenBorderFlash.Instance?.FlashBorder();

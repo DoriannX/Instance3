@@ -8,7 +8,7 @@ public class EntityHealth : MonoBehaviour
     [field : SerializeField] public int maxHp { get; private set; } = 30 ;
     [field: SerializeField] public int Hp { get; private set; }
     public event Action onDeath;
-    public event Action<Transform> onHit;
+    public event Action onHit;
     public event Action<int, int> onHealthChanged;
     private InvincibilityManager invincibilityManager;
 
@@ -36,7 +36,7 @@ public class EntityHealth : MonoBehaviour
         }
         Hp = Mathf.Max(Hp - damage, 0);
         onHealthChanged?.Invoke(Hp, maxHp);
-        onHit?.Invoke(origin);
+        onHit?.Invoke();
         if (Hp <= 0)
         {
             Die();
