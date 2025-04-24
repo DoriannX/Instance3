@@ -64,16 +64,9 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
         if (other.TryGetComponent(out EntityHealth entityHealth))
         {
             StartCoroutine(WaitForParry(entityHealth));
-            //entityHealth.TakeDamage(damage);
+            entityHealth.TakeDamage(damage);
         }
-        
-        /*if (releaseFunc == null)
-        {
-            Debug.LogError($"[Bullet] Release function not set on bullet {gameObject.name}");
-            return;
-        }
-        Debug.Log(other.name);
-        Debug.Log("hit bullet");*/
+
         releaseFunc(this);
     }
     
