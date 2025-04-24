@@ -1524,7 +1524,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   patrolMovementType: 0
-  patrolSpeed: 2
+  patrolSpeed: 1
   patrolWaitTime: 1
   patrolStopDistance: 0.5
 --- !u!195 &7420164730351728756
