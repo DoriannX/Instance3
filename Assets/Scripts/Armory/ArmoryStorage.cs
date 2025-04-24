@@ -5,7 +5,6 @@ using Random = UnityEngine.Random;
 
 namespace Armory
 {
-    [RequireComponent(typeof(Collider))]
     public class ArmoryStorage : MonoBehaviour
     {
         [SerializeField, Min(0)] private int nbWeapons = 3;
