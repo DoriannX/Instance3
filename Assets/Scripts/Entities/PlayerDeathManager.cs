@@ -61,6 +61,7 @@ namespace Entities
             yield return new WaitUntil(() =>
                 animator.GetCurrentAnimatorStateInfo(0).IsName("Death")
             );
+
             if (isDead)
             {
                 Debug.Log("Player is dead. Restarting scene...");
