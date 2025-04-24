@@ -57,9 +57,9 @@ namespace Entities.Enemy.BehaviorTree
                 time += Time.deltaTime;
                 
                 object targetData = GetData(targetKey);
-                
+
                 if (targetData == null)
-                    throw new NullReferenceException("TargetData is null"); 
+                    return NodeState.FAILURE;
                 
                 if (targetData is not Transform targetTransform)
                     throw new InvalidCastException("TargetData is not a Transform");

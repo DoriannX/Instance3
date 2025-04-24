@@ -83,6 +83,7 @@ namespace Entities.Enemy.BehaviorTree
                 }),
                 new Sequence(new List<Node> // sequence for the attack
                 {
+                    new CheckEnemyInRoom(targetKey, roomDataKey),
                     new CheckEnemyInAttackRange(selfTransform, enemyLayer, attackMode, weaponData.attackRange, targetKey, maxEnemyDetection),
                     new TaskEnableAttack(enableAttackKey)
                 }),

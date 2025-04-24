@@ -661,7 +661,6 @@ GameObject:
   - component: {fileID: 5506116609549967974}
   - component: {fileID: 6029070575305425362}
   - component: {fileID: 3816763988762125708}
-  - component: {fileID: 10551076949007056}
   m_Layer: 6
   m_Name: Elite
   m_TagString: Untagged
@@ -5678,22 +5677,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundDistance: 5
---- !u!208 &10551076949007056
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3303481751818157121}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 0
-  m_Extents: {x: 0.5, y: 1, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!1 &3371294458925026642
 GameObject:
   m_ObjectHideFlags: 0
