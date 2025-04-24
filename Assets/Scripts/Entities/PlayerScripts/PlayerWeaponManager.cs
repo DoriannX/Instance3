@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerWeaponManager : MonoBehaviour
 {
     private PlayerAttack playerAttack;
+    [SerializeField] private Transform weaponHolder;
 
     private void Awake()
     {
@@ -17,7 +18,7 @@ public class PlayerWeaponManager : MonoBehaviour
             return;
         }
         
-        playerAttack.TakeWeapon(Instantiate(weaponData.weaponPrefab, playerAttack.transform));
+        playerAttack.TakeWeapon(Instantiate(weaponData.weaponPrefab, weaponHolder));
     }
 
     /// <summary>

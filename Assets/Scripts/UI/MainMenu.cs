@@ -3,15 +3,16 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    [Header("Scene Settings")]
-    [Tooltip("Scene index to load when the game starts.")]
-    [SerializeField] private int startSceneIndex = 1;
 
-    
+    private void Start()
+    {
+        MusicManager.instance.PlayMusic("MainMenu");
+    }
+
     public void StartGame()
     {
         // Load the scene using the specified index.
-        SceneManager.LoadScene(startSceneIndex);
+        SceneManager.LoadScene("Merge");
     }
     
     public void QuitGame()

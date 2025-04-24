@@ -12,14 +12,17 @@ namespace Entities.PlayerScripts
         {
             Assert.IsNotNull(pauseMenu);
         }
-        
-        public void TogglePauseInput(InputAction.CallbackContext ctx)
+
+        private void Update()
         {
-            if (!ctx.started)
+            if(Input.GetKeyDown(KeyCode.Escape))
             {
-                return;
+                TogglePauseInput();
             }
-            Debug.Log("Pause Game");
+        }
+
+        public void TogglePauseInput()
+        {
             pauseMenu.TogglePause();
         }
     }

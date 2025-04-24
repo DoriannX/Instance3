@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using Armory;    // if your Weapon types live in the Armory namespace
+using Entities; // for Entity
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -15,40 +17,47 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float ammoMultiplier = 1.0f;
     private float cooldownTimer = 0f;
     public Weapon currentWeapon { get; private set; }
-
     public event Action<int> onAmmoChanged;
+    public event Action onAttackStarted;
+
+    private Entity entity;    // to notify weapon‐switch
+
+    private void Awake()
+    {
+        entity = GetComponent<Entity>();
+    }
 
     private void Start()
     {
+        playerTransform = transform;
+        meleeWeapon     = GetComponentInChildren<MeleeWeapon>(true);
+        rangeWeapon     = GetComponentInChildren<RangeWeapon>(true);
         onAmmoChanged?.Invoke(ammoAmount);
-        playerTransform = GetComponent<Transform>();
-        meleeWeapon = GetComponentInChildren<MeleeWeapon>(true);
-        rangeWeapon = GetComponentInChildren<RangeWeapon>(true);
-        
 
         if (rangeWeapon != null)
-        {
             rangeWeapon.OnWeaponUsed += ConsumeAmmo;
-        }
 
+        // pick whichever weapon GameObject is active
         if (meleeWeapon != null && !rangeWeapon.gameObject.activeSelf)
-        {
             currentWeapon = meleeWeapon;
-        }
         else if (rangeWeapon != null && !meleeWeapon.gameObject.activeSelf)
-        {
             currentWeapon = rangeWeapon;
-        }
 
-        ammoAmount = Mathf.RoundToInt(ammoAmount * ammoMultiplier);
+        // sync Entity’s currentWeapon once
+        if (currentWeapon != null)
+            entity.SetCurrentWeapon(currentWeapon);
     }
 
     private void OnDestroy()
     {
         if (rangeWeapon != null)
-        {
             rangeWeapon.OnWeaponUsed -= ConsumeAmmo;
-        }
+    }
+
+    public void GatherAmmo(int count)
+    {
+        ammoAmount += count;
+        onAmmoChanged?.Invoke(ammoAmount);
     }
 
     public void GatherAmmo(int count)
@@ -59,9 +68,8 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
-        //SwitchWeapon();
-
-        Cooldown();      
+        if (cooldownTimer > 0f)
+            cooldownTimer -= Time.deltaTime;
     }
 
     public void Attack()
@@ -69,19 +77,17 @@ public class PlayerAttack : MonoBehaviour
         if (cooldownTimer > 0 || currentWeapon == null)
             return;
 
-        if (currentWeapon is RangeWeapon)
+        // fire animation trigger
+        onAttackStarted?.Invoke();
+
+        if (currentWeapon is RangeWeapon rw)
         {
-            if (ammoAmount >= rangeWeapon.AmmoConsume)
-            {
-                currentWeapon.Attack(playerTransform, damageMultiplier);
-            }
+            if (ammoAmount >= rw.AmmoConsume)
+                currentWeapon.Attack(playerTransform);
             else
-            {
                 Debug.Log("Not enough ammo");
-                return;
-            }
         }
-        else if (currentWeapon is MeleeWeapon)
+        else
         {
             currentWeapon.Attack(playerTransform, damageMultiplier);
         }
@@ -95,6 +101,9 @@ public class PlayerAttack : MonoBehaviour
         onAmmoChanged?.Invoke(ammoAmount);
     }
 
+    /// <summary>
+    /// Toggle between melee & range and notify Entity.
+    /// </summary>
     private void Cooldown()
     {
         if (cooldownTimer > 0f)
@@ -128,17 +137,16 @@ public class PlayerAttack : MonoBehaviour
     }
 
     public void SwitchWeapon()
-    {        
-      if (meleeWeapon == null || rangeWeapon == null)
-      {
-          return;
-      }
-      
-      GameObject objectToDisable = (currentWeapon == rangeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
-      GameObject objectToEnable = (currentWeapon == meleeWeapon) ? rangeWeapon.gameObject : meleeWeapon.gameObject;
-      objectToDisable.SetActive(false);
-      objectToEnable.SetActive(true);
-      currentWeapon = (currentWeapon == meleeWeapon) ? rangeWeapon : meleeWeapon;            
+    {
+        if (meleeWeapon == null || rangeWeapon == null)
+            return;
+
+        bool wasRange = (currentWeapon == rangeWeapon);
+        meleeWeapon.gameObject.SetActive(wasRange);
+        rangeWeapon.gameObject.SetActive(!wasRange);
+
+        currentWeapon = wasRange ? meleeWeapon : rangeWeapon;
+        entity.SetCurrentWeapon(currentWeapon);
     }
 
     public float GetCooldownMultiplier()

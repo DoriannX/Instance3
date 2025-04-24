@@ -3,6 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class SpeedUpgrade : Upgrade
 {
+    [Header("Speed Upgrade Settings")]
     // Fixed increase in speed per upgrade level.
     [SerializeField] private float speedIncrement = 10f;
     public override void Apply(Player player)

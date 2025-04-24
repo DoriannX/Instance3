@@ -1,66 +1,108 @@
 using TMPro;
 using UnityEngine;
+using System.Collections;
+using UnityEngine.Assertions;
+using UnityEngine.UI;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 namespace Entities
 {
+    [RequireComponent(typeof(EntityHealth))]
     public class PlayerDeathManager : MonoBehaviour
     {
-        private EntityHealth playerHealth;
-        private bool isDead = false;
-        private float restartTime = 0f;
+        [Header("Animator Settings")]
+        [SerializeField] private Animator animator;
+        [SerializeField] private string deathTrigger = "Die";
+
+        [Header("Death Panel Settings")]
+        [SerializeField] private Image deathPanel;
         [SerializeField] private float maxRestartTime = 1f;
         [SerializeField] private float colorLerpSpeed = 1f;
-        [SerializeField] private Image deathPanel;
+
+        private EntityHealth health;
         private TextMeshProUGUI deathText;
 
         private void Awake()
         {
-            playerHealth = GetComponent<EntityHealth>();
-            deathText = deathPanel.GetComponentInChildren<TextMeshProUGUI>();
+            health = GetComponent<EntityHealth>();
+
+            // Fallback if you forgot to assign Animator in the Inspector
+            if (animator == null)
+                animator = GetComponentInChildren<Animator>();
+
+            // Make sure the panel reference is set, then grab its Text
             Assert.IsNotNull(deathPanel, "Death panel is not assigned in the inspector.");
+            deathText = deathPanel.GetComponentInChildren<TextMeshProUGUI>();
+
+            // Start with panel hidden
+            deathPanel.gameObject.SetActive(false);
         }
 
-        private void Start()
+        private void OnEnable()  => health.onDeath += HandleDeath;
+        private void OnDisable() => health.onDeath -= HandleDeath;
+
+        private void HandleDeath()
         {
-            playerHealth.onDeath += OnPlayerDie;
-            restartTime = maxRestartTime;
+            // 1) kill any velocity
+            if (TryGetComponent<Rigidbody>(out var rb))
+                rb.linearVelocity = Vector3.zero;
+
+            // 2) disable all player controls
+            foreach (var mb in new MonoBehaviour[] {
+                         GetComponent<PlayerMovement>(),
+                         GetComponent<PlayerDash>(),
+                         GetComponent<InputManager>(),
+                         GetComponent<PlayerAttack>()
+                     })
+                if (mb != null) mb.enabled = false;
+
+            // 3) trigger the death animation
+            animator.SetTrigger(deathTrigger);
+
+            // 4) launch our fade-&-reload coroutine
+            StartCoroutine(PlayDeathSequence());
         }
 
-        private void Update()
+        private IEnumerator PlayDeathSequence()
         {
-            if (isDead)
+            // A) wait until the Animator actually enters the "Death" state
+            yield return new WaitUntil(() =>
+                animator.GetCurrentAnimatorStateInfo(0).IsName("Death")
+            );
+
+            // B) show panel and sfx
+            deathPanel.gameObject.SetActive(true);
+            SFXManager.instance.PlaySFX("PlayerDeath");
+
+            // initialize transparent
+            Color panelClr = deathPanel.color; panelClr.a = 0f;
+            deathPanel.color = panelClr;
+            Color textClr = deathText.color; textClr.a = 0f;
+            deathText.color = textClr;
+
+            // C) over maxRestartTime seconds, fade panel to black, text to red, and slow time to 0
+            float elapsed = 0f;
+            while (elapsed < maxRestartTime)
             {
-                Debug.Log("Player is dead. Restarting scene...");
-                deathPanel.gameObject.SetActive(true);
+                elapsed += Time.unscaledDeltaTime * colorLerpSpeed;
+                float alpha = Mathf.Clamp01(elapsed / maxRestartTime);
 
-                SFXManager.instance.PlaySFX("PlayerDeath");
+                // fade panel from transparent to opaque black
+                deathPanel.color = new Color(0f, 0f, 0f, alpha);
 
-                // Corrected Lerp usage for smooth transition  
-                deathPanel.color = Color.Lerp(deathPanel.color, new Color(0, 0, 0, 1f),
-                    colorLerpSpeed * Time.unscaledDeltaTime);
-                deathText.color = Color.Lerp(deathText.color, new Color(1f, 0, 0, 1f),
-                    colorLerpSpeed * Time.unscaledDeltaTime);
+                // fade text from transparent to opaque red
+                deathText.color = new Color(1f, 0f, 0f, alpha);
 
-                Time.timeScale =
-                    Mathf.Lerp(Time.timeScale, 0f, colorLerpSpeed * Time.unscaledDeltaTime); // Gradually slow down time
+                // slow game time
+                Time.timeScale = Mathf.Lerp(1f, 0f, alpha);
 
-                if (restartTime <= 0)
-                {
-                    Time.timeScale = 1;
-                    LevelManager.ReloadLevel();
-                }
-                else
-                {
-                    restartTime -= Time.unscaledDeltaTime;
-                }
+                yield return null;
             }
-        }
 
-        private void OnPlayerDie()
-        {
-            isDead = true;
+            // D) restore time & reload
+            Time.timeScale = 1f;
+            LevelManager.ReloadLevel();
         }
     }
 }

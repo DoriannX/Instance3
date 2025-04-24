@@ -9,6 +9,7 @@ namespace BehaviorTreeModules
         protected void Start()
         {
             root = SetupTree();
+            
         }
 
         private void Update()
@@ -16,6 +17,6 @@ namespace BehaviorTreeModules
             root?.Evaluate();
         }
 
-        protected abstract Node SetupTree();
+        protected abstract Node SetupTree();     
     }
 }

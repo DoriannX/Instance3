@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5049373746146666827}
   - component: {fileID: 8384389782582698245}
   - component: {fileID: 7518710255531517012}
-  - component: {fileID: 1211457848567018731}
   - component: {fileID: 8226420354506784751}
   m_Layer: 10
   m_Name: ElevatorExit
@@ -88,19 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1211457848567018731
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7622359349375440421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5deba4ac295744b48dbcf327d02f479c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nextStageEntranceSpawnPoint: {fileID: 0}
 --- !u!65 &8226420354506784751
 BoxCollider:
   m_ObjectHideFlags: 0

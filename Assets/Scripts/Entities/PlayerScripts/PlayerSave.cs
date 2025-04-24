@@ -8,6 +8,8 @@ using UnityEngine;
 
         private const string KEY_AMMO = "player.ammoMultiplier";
         private const string KEY_COOLDOWN = "player.cooldownMultiplier";
+        private const string KEY_MAXHEALTH = "player.maxHealth";
+        private const string KEY_SPEED = "player.speedMultiplier";
 
         private void Start()
         {
@@ -28,6 +30,8 @@ using UnityEngine;
             {
                 PlayerPrefs.SetFloat(KEY_AMMO, player.GetAmmoMultiplier());
                 PlayerPrefs.SetFloat(KEY_COOLDOWN, player.GetCooldownMultiplier());
+                PlayerPrefs.SetInt(KEY_MAXHEALTH, player.GetMaxHealth());
+                PlayerPrefs.SetFloat(KEY_SPEED, player.GetSpeedMultiplier());
                 PlayerPrefs.Save();
                 return true;
             }
@@ -48,11 +52,15 @@ using UnityEngine;
             {
                 float ammo = PlayerPrefs.GetFloat(KEY_AMMO, player.GetAmmoMultiplier());
                 float cooldown = PlayerPrefs.GetFloat(KEY_COOLDOWN, player.GetCooldownMultiplier());
+                int maxHealth = PlayerPrefs.GetInt(KEY_MAXHEALTH, player.GetMaxHealth());
+                float speed = PlayerPrefs.GetFloat(KEY_SPEED, player.GetSpeedMultiplier());
 
-                if (ValidateValues(ammo, cooldown))
+                if (ValidateValues(ammo, cooldown, speed, maxHealth))
                 {
                     player.SetAmmoMultiplier(ammo);
                     player.SetCooldownMultiplier(cooldown);
+                    player.SetMaxHealth(maxHealth);
+                    player.SetSpeedMultiplier(speed);
                     return true;
                 }
 
@@ -65,9 +73,9 @@ using UnityEngine;
             }
         }
 
-        private bool ValidateValues(float ammo, float cooldown)
+        private bool ValidateValues(float ammo, float cooldown, float speed, int maxHealth)
         {
-            return ammo > 0 && cooldown > 0; // Add appropriate validation logic
+            return ammo > 0 && cooldown > 0 && speed > 0 && maxHealth > 0;
         }
 
         public void SetPlayer(Player mockPlayer)
