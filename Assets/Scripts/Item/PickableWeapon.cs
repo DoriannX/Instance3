@@ -16,8 +16,8 @@ namespace Item
 
         public override void ApplyEffect()
         {
-            Weapon weaponToTakeInstance = Instantiate(weaponToTakePrefab, targetPlayer.transform);
-            targetPlayer.TakeWeapon(weaponToTakeInstance);
+            WeaponData data = weaponToTakePrefab.Data;
+            targetPlayer.GetComponent<PlayerWeaponManager>().TakeWeapon(data);
         }
     }
 }

@@ -17,9 +17,16 @@ public class PlayerWeaponManager : MonoBehaviour
             Debug.LogWarning("Attempted to take null weapon data");
             return;
         }
-        
-        playerAttack.TakeWeapon(Instantiate(weaponData.weaponPrefab, weaponHolder));
+
+        var weaponInstance = Instantiate(weaponData.weaponPrefab, weaponHolder, false);
+        weaponInstance.transform.localPosition = Vector3.zero;
+        weaponInstance.transform.localRotation = Quaternion.identity;
+
+        Debug.Log($"[WeaponManager] Instantiated '{weaponInstance.name}' under '{weaponHolder.name}'");
+
+        playerAttack.TakeWeapon(weaponInstance);
     }
+
 
     /// <summary>
     /// Exposes what the player currently has equipped (for the UI swap).
