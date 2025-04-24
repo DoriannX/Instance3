@@ -134,7 +134,7 @@ PrefabInstance:
     - target: {fileID: 109353570734125388, guid: f0051f897cad0df66bc62465417566c0, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 4874126678125670354, guid: 902e1ccb0b1a2e4449b3127edc21edda, type: 3}
+      objectReference: {fileID: 2100000, guid: 25729ca77c14b154a9404b7d63476022, type: 2}
     - target: {fileID: 7135624245050370955, guid: f0051f897cad0df66bc62465417566c0, type: 3}
       propertyPath: m_Name
       value: AMMO

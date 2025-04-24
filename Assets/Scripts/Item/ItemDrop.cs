@@ -102,7 +102,7 @@ namespace Item
                 if (HasArrived)
                 {
                     onItemPickedUp?.Invoke(this);
-                    ApplyEffect();
+                    ApplyEffect();  
                     Destroy(gameObject);
                 }
             }
