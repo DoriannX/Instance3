@@ -6,7 +6,6 @@ public class PlayerFeedbackManager : MonoBehaviour
     private DamageFlash      damageFlash;
     private PlayerDash       playerDash;
     private DashGhostEffect  dashGhost;
-    private SFXManager       sfxManager;
 
     private void Awake()
     {
@@ -15,7 +14,6 @@ public class PlayerFeedbackManager : MonoBehaviour
         damageFlash  = GetComponent<DamageFlash>();
         playerDash   = GetComponent<PlayerDash>();
         dashGhost    = GetComponent<DashGhostEffect>();
-        sfxManager   = SFXManager.instance;
 
         // Subscribe health‐damage feedback
         if (entityHealth != null)
@@ -44,7 +42,7 @@ public class PlayerFeedbackManager : MonoBehaviour
         if (currentHp <= 0)
             return; 
         
-        sfxManager?.PlaySFX("PlayerTakeDamage");
+        SFXManager.instance.PlaySFX("PlayerTakeDamage");
         damageFlash?.Flash();
         ScreenBorderFlash.Instance?.FlashBorder();
     }
@@ -54,7 +52,7 @@ public class PlayerFeedbackManager : MonoBehaviour
     /// </summary>
     private void OnPlayerDash()
     {
-        sfxManager?.PlaySFX("Dash");
+        SFXManager.instance.PlaySFX("Dash");
         dashGhost?.TriggerGhost();
         ScreenBlinkEffect.Instance?.Blink();
     }

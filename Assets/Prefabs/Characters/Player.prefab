@@ -951,7 +951,6 @@ GameObject:
   - component: {fileID: 7968931702877072914}
   - component: {fileID: 3534255143174771367}
   - component: {fileID: 499243990582240178}
-  - component: {fileID: 9191186812190912837}
   - component: {fileID: 593632306025556754}
   - component: {fileID: 8002109369884292245}
   - component: {fileID: 8410285801112974155}
@@ -1447,19 +1446,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostPrefab: {fileID: 5674102266328318690, guid: ab3ae9ded2170d947a623a4d3806d179, type: 3}
   ghostLifetime: 0.3
---- !u!114 &9191186812190912837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5313647932819149050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dca78b32668d4112a2251a660985557a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  genericPickupVfx: {fileID: 0}
 --- !u!198 &593632306025556754
 ParticleSystem:
   m_ObjectHideFlags: 0

@@ -73,8 +73,8 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
             return;
         }
         Debug.Log(other.name);
-        Debug.Log("hit bullet");
-        releaseFunc(this);*/
+        Debug.Log("hit bullet");*/
+        releaseFunc(this);
     }
     
     public void SetDamage(int damage)
