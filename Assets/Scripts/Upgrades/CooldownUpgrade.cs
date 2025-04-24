@@ -3,7 +3,6 @@ using UnityEngine;
 [System.Serializable]
 public class CooldownUpgrade : Upgrade
 {
-    [Header("Cooldown Upgrade Settings")]
     // Fixed reduction in cooldown multiplier per upgrade level.
     [SerializeField] private float cooldownReduction = 0.1f;
 

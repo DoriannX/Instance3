@@ -3,7 +3,6 @@ using UnityEngine;
 [System.Serializable]
 public class AmmoUpgrade : Upgrade
 {
-    [Header("Ammo Upgrade Settings")]
     // Fixed increase in ammo capacity per upgrade level.
     [SerializeField] private int ammoIncrement = 10;
 

@@ -3,7 +3,6 @@ using UnityEngine;
 [System.Serializable]
 public class HealthUpgrade : Upgrade
 {
-    [Header("Health Upgrade Settings")]
     // Fixed increase in max health per upgrade level.
     [SerializeField] private int healthIncrement = 20;
 

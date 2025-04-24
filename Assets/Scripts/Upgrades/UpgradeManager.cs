@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class PlayerUpgrade : MonoBehaviour
+public class UpgradeManager : MonoBehaviour
 {
     [Header("Upgrade References")]
     [SerializeField] private SpeedUpgrade speedUpgrade;
@@ -19,7 +19,7 @@ public class PlayerUpgrade : MonoBehaviour
     {
         player = GetComponent<Player>();
         if (player == null)
-            Debug.LogError("PlayerUpgrade must be attached to a Player.");
+            Debug.LogError("UpgradeManager must be attached to a Player.");
     }
 
     // Example methods for applying each upgrade:
@@ -89,9 +89,4 @@ public class PlayerUpgrade : MonoBehaviour
         OnUpgradeChanged?.Invoke("Cooldown", cooldownUpgrade.Level);
         Debug.Log("All upgrades have been reset.");
     }
-    
-    public SpeedUpgrade SpeedUpgrade => speedUpgrade;
-    public HealthUpgrade HealthUpgrade => healthUpgrade;
-    public AmmoUpgrade AmmoUpgrade => ammoUpgrade;
-    public CooldownUpgrade CooldownUpgrade => cooldownUpgrade;
 }

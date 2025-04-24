@@ -1,16 +1,12 @@
-using System;
 using UnityEngine;
 
 [System.Serializable]
 public abstract class Upgrade
 {
-    [Header("Upgrade Settings")]
     [SerializeField] private string upgradeName;  // Name for identification
     [SerializeField] private int level = 0;         // Current upgrade level
     [SerializeField] private int maxLevel = 5;        // Maximum level for this upgrade
     [SerializeField] private int baseCost = 10;       // Base cost for the first upgrade
-    
-    [SerializeField] private int[] costPerLevel; // Cost for each level (optional, can be used for different costs per level)
 
     // Public properties for designer and code access
     public string UpgradeName => upgradeName;
@@ -37,21 +33,6 @@ public abstract class Upgrade
     public void ResetUpgrade()
     {
         level = 0;
-    }
-    
-    public int GetCost(int desiredLevel)
-    {
-        if (desiredLevel < 0 || desiredLevel > costPerLevel.Length)
-            throw new IndexOutOfRangeException("Invalid desiredLevel index for costPerLevel array.");
-
-        int cost = 0;
-
-        for (int i = level; i < desiredLevel; i++)
-        {
-            cost += costPerLevel[i];
-        }
-
-        return cost;
     }
 
     /// <summary>
