@@ -10,6 +10,7 @@ using UnityEngine;
 [RequireComponent(typeof(EntityHealth))]
 [RequireComponent(typeof(PlayerInteract))]
 [RequireComponent(typeof(InputManager))]
+[RequireComponent(typeof(PlayerUpgrade))]
 public class Player : Entity
 {
     // --- Player-specific attributes ---
@@ -118,6 +119,8 @@ public class Player : Entity
 
     public virtual float GetAmmoMultiplier() => ammoMultiplier;
     public virtual float GetCooldownMultiplier() => cooldownMultiplier;
+    public float GetSpeedMultiplier() => speedMultiplier;
+    public int GetMaxHealth() => healthComponent.maxHp;
 
     public virtual void SetAmmoMultiplier(float multiplier)
     {
@@ -126,8 +129,21 @@ public class Player : Entity
 
     public virtual void SetCooldownMultiplier(float multiplier)
     {
-        cooldownMultiplier = multiplier;
+        cooldownMultiplier = multiplie
+    public void SetSpeedMultiplier(float multiplier)
+    {
+        speedMultiplier = multiplier;
+        Speed *= speedMultiplier;
     }
+    public void SetMaxHealth(int maxHealth)
+    {
+        healthComponent.SetMaxHp(maxHealth);
+    }
+    
+    public void SetChips(int amount)
+    {
+        Chips = amount;
+        onChipsChanged?.Invoke(Chips);
 
     public void GatherAmmo(int ammoAmount)
     {

@@ -18,7 +18,7 @@ public class PlayerProfileUI : MonoBehaviour
     [Header("Player Reference")]
     [SerializeField] private Player player;
 
-    private UpgradeManager upgradeManager;
+    private PlayerUpgrade _playerUpgrade;
 
     private void Awake()
     {
@@ -28,10 +28,10 @@ public class PlayerProfileUI : MonoBehaviour
             return;
         }
 
-        upgradeManager = player.GetComponent<UpgradeManager>();
-        if (upgradeManager == null)
+        _playerUpgrade = player.GetComponent<PlayerUpgrade>();
+        if (_playerUpgrade == null)
         {
-            Debug.LogError("UpgradeManager not found on the assigned Player.");
+            Debug.LogError("PlayerUpgrade not found on the assigned Player.");
             return;
         }
 
@@ -55,9 +55,9 @@ public class PlayerProfileUI : MonoBehaviour
             player.onChipsChanged += UpdateChipsUI;
             player.OnWeaponChanged += UpdateWeaponUI;
         }
-        if (upgradeManager != null)
+        if (_playerUpgrade != null)
         {
-            upgradeManager.OnUpgradeChanged += UpdateUpgradeUI;
+            _playerUpgrade.OnUpgradeChanged += UpdatePlayerUpgradeUI;
         }
     }
 
@@ -68,9 +68,9 @@ public class PlayerProfileUI : MonoBehaviour
             player.onChipsChanged -= UpdateChipsUI;
             player.OnWeaponChanged -= UpdateWeaponUI;
         }
-        if (upgradeManager != null)
+        if (_playerUpgrade != null)
         {
-            upgradeManager.OnUpgradeChanged -= UpdateUpgradeUI;
+            _playerUpgrade.OnUpgradeChanged -= UpdatePlayerUpgradeUI;
         }
     }
 
@@ -121,7 +121,7 @@ public class PlayerProfileUI : MonoBehaviour
         }
     }
 
-    private void UpdateUpgradeUI(string upgradeType, int level)
+    private void UpdatePlayerUpgradeUI(string upgradeType, int level)
     {
         Debug.Log($"Upgrade changed: {upgradeType} new level: {level}");
         int index = -1;
