@@ -9,24 +9,32 @@ namespace Entities
     [RequireComponent(typeof(EntityHealth))]
     public class PlayerDeathManager : MonoBehaviour
     {
+        [Header("Animator Settings")]
         [SerializeField] private Animator animator;
         [SerializeField] private string deathTrigger = "Die";
+
+        [Header("Death Panel Settings")]
+        [SerializeField] private Image deathPanel;
         [SerializeField] private float maxRestartTime = 1f;
         [SerializeField] private float colorLerpSpeed = 1f;
-        [SerializeField] private Image deathPanel;
-        private EntityHealth health;
-        private bool isDead = false;
-        private float restartTime = 0f;
-        private TextMeshProUGUI deathText;
 
+        private EntityHealth health;
+        private TextMeshProUGUI deathText;
 
         private void Awake()
         {
             health = GetComponent<EntityHealth>();
+
+            // Fallback if you forgot to assign Animator in the Inspector
             if (animator == null)
                 animator = GetComponentInChildren<Animator>();
-            deathText = deathPanel.GetComponentInChildren<TextMeshProUGUI>();
+
+            // Make sure the panel reference is set, then grab its Text
             Assert.IsNotNull(deathPanel, "Death panel is not assigned in the inspector.");
+            deathText = deathPanel.GetComponentInChildren<TextMeshProUGUI>();
+
+            // Start with panel hidden
+            deathPanel.gameObject.SetActive(false);
         }
 
         private void OnEnable()  => health.onDeath += HandleDeath;
@@ -34,7 +42,7 @@ namespace Entities
 
         private void HandleDeath()
         {
-            // 1) kill velocity
+            // 1) kill any velocity
             if (TryGetComponent<Rigidbody>(out var rb))
                 rb.linearVelocity = Vector3.zero;
 
@@ -50,51 +58,48 @@ namespace Entities
             // 3) trigger the death animation
             animator.SetTrigger(deathTrigger);
 
-            // 4) start polling for when it’s actually done
-            StartCoroutine(WaitForDeathAnimation());
-            restartTime = maxRestartTime;
+            // 4) launch our fade-&-reload coroutine
+            StartCoroutine(PlayDeathSequence());
         }
 
-        private IEnumerator WaitForDeathAnimation()
+        private IEnumerator PlayDeathSequence()
         {
-            // wait until we've actually entered the "Death" state
+            // A) wait until the Animator actually enters the "Death" state
             yield return new WaitUntil(() =>
                 animator.GetCurrentAnimatorStateInfo(0).IsName("Death")
             );
 
-            if (isDead)
+            // B) show panel and sfx
+            deathPanel.gameObject.SetActive(true);
+            SFXManager.instance.PlaySFX("PlayerDeath");
+
+            // initialize transparent
+            Color panelClr = deathPanel.color; panelClr.a = 0f;
+            deathPanel.color = panelClr;
+            Color textClr = deathText.color; textClr.a = 0f;
+            deathText.color = textClr;
+
+            // C) over maxRestartTime seconds, fade panel to black, text to red, and slow time to 0
+            float elapsed = 0f;
+            while (elapsed < maxRestartTime)
             {
-                Debug.Log("Player is dead. Restarting scene...");
-                deathPanel.gameObject.SetActive(true);
+                elapsed += Time.unscaledDeltaTime * colorLerpSpeed;
+                float alpha = Mathf.Clamp01(elapsed / maxRestartTime);
 
-                SFXManager.instance.PlaySFX("PlayerDeath");
+                // fade panel from transparent to opaque black
+                deathPanel.color = new Color(0f, 0f, 0f, alpha);
 
-                // Corrected Lerp usage for smooth transition  
-                deathPanel.color = Color.Lerp(deathPanel.color, new Color(0, 0, 0, 1f),
-                    colorLerpSpeed * Time.unscaledDeltaTime);
-                deathText.color = Color.Lerp(deathText.color, new Color(1f, 0, 0, 1f),
-                    colorLerpSpeed * Time.unscaledDeltaTime);
+                // fade text from transparent to opaque red
+                deathText.color = new Color(1f, 0f, 0f, alpha);
 
-                Time.timeScale =
-                    Mathf.Lerp(Time.timeScale, 0f, colorLerpSpeed * Time.unscaledDeltaTime); // Gradually slow down time
+                // slow game time
+                Time.timeScale = Mathf.Lerp(1f, 0f, alpha);
 
-                if (restartTime <= 0)
-                {
-                    Time.timeScale = 1;
-                    LevelManager.ReloadLevel();
-                }
-                else
-                {
-                    restartTime -= Time.unscaledDeltaTime;
-                }
+                yield return null;
             }
 
-            // then wait until that state's normalizedTime >= 1 (i.e. fully played)
-            yield return new WaitUntil(() =>
-                animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f
-            );
-
-            // now we know the animation is 100% done:
+            // D) restore time & reload
+            Time.timeScale = 1f;
             LevelManager.ReloadLevel();
         }
     }
