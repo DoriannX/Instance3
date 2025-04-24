@@ -2,6 +2,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Armory;
+using Entities.Enemy;
 
 public class ArmoryUIController : MonoBehaviour
 {
@@ -67,6 +68,8 @@ public class ArmoryUIController : MonoBehaviour
             card.Initialize(data, () => OnCardClicked(idx));
             card.SetSelected(false);
         }
+        
+        ItemToDrop.RemoveUniqueCard();
     }
 
     private void OnCardClicked(int idx)

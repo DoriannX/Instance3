@@ -25,6 +25,7 @@ namespace Entities.Enemy
         [SerializeField] private float upwardForceMax = 500f;
 
         private static HashSet<string> droppedUniqueItems = new HashSet<string>();
+        private static string cardItemId;
 
         private void Awake()
         {
@@ -59,6 +60,7 @@ namespace Entities.Enemy
             if (isUniqueItem)
             {
                 droppedUniqueItems.Add(itemDropPrefab.uniqueItemId);
+                cardItemId = itemDropPrefab.uniqueItemId;
             }
         }
 
@@ -70,6 +72,14 @@ namespace Entities.Enemy
         private void OnApplicationQuit()
         {
             ResetUniqueItems();
+        }
+
+        public static void RemoveUniqueCard()
+        {
+            if (cardItemId != null)
+            {
+                droppedUniqueItems.Remove(cardItemId);
+            }
         }
 
 #if UNITY_EDITOR
