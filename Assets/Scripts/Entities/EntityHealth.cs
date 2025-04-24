@@ -21,6 +21,9 @@ public class EntityHealth : MonoBehaviour
 
     public void TakeDamage(int damage, Transform origin = null)
     {
+        if (Hp <= 0)
+            return; 
+        
         if (invincibilityManager != null && invincibilityManager.isInvulnerable)
         {
             Debug.Log($"{gameObject.name} is invulnerable and took no damage.");

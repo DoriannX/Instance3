@@ -39,8 +39,11 @@ public class PlayerFeedbackManager : MonoBehaviour
     /// <summary>
     /// Called when the player takes damage.
     /// </summary>
-    private void OnPlayerDamaged(int lastHp, int newHp)
+    private void OnPlayerDamaged(int currentHp, int newHp)
     {
+        if (currentHp <= 0)
+            return; 
+        
         sfxManager?.PlaySFX("PlayerTakeDamage");
         damageFlash?.Flash();
         ScreenBorderFlash.Instance?.FlashBorder();
