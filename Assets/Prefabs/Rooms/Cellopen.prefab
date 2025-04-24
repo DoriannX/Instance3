@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 7317073696779362766}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 40.16, y: 64.17, z: -146.98}
+  m_LocalPosition: {x: 12.23, y: -0.5, z: 1.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7317073696779362766}
-  m_Mesh: {fileID: 2483032630708881063, guid: 61c0db3c9357dd94ba7a8308a15b4b8e, type: 3}
+  m_Mesh: {fileID: 2483032630708881063, guid: b48e801eec394cf45a72b53cbb698540, type: 3}
 --- !u!23 &5716843625567399390
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -146,10 +146,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   room: {fileID: 0}
-  spawnPointEnemy: {fileID: 0}
   spawnTracker: 0
   roomTranstions: []
   <zoomCameraData>k__BackingField: 0
+  <positionCameraData>k__BackingField: {x: 0, y: 0, z: 0}
+  <rotationCameraData>k__BackingField: {x: 0, y: 0, z: 0}
 --- !u!114 &2424736421384821259
 MonoBehaviour:
   m_ObjectHideFlags: 0

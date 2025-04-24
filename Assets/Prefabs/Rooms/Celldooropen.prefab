@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6123041402304331168}
-  m_Mesh: {fileID: -9204314156138396539, guid: 3b70ef95bdc2cb84aacbfcc4dcc512ab, type: 3}
+  m_Mesh: {fileID: -9204314156138396539, guid: a6e8200205e355146901655f2dd06ada, type: 3}
 --- !u!23 &4212154125168043218
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -146,10 +146,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   room: {fileID: 0}
-  spawnPointEnemy: {fileID: 0}
   spawnTracker: 0
   roomTranstions: []
   <zoomCameraData>k__BackingField: 0
+  <positionCameraData>k__BackingField: {x: 0, y: 0, z: 0}
+  <rotationCameraData>k__BackingField: {x: 0, y: 0, z: 0}
 --- !u!114 &4291772082161716007
 MonoBehaviour:
   m_ObjectHideFlags: 0
