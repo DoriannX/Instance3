@@ -43,14 +43,15 @@ public class PlayerDash : MonoBehaviour
 
         isDashing = true;
         lastDashTime = Time.time;
+        SFXManager.instance.PlaySFX("PlayerDash");
     }
 
     public void HandleDash()
     {
         if (isDashing)
         {
-            playerMovement.SetVelocity(playerMovement.AddGravityToVelocity(playerMovement.lastMoveDirection.normalized *
-                                                                           (dashDistance / dashDuration)));
+            playerMovement.SetVelocity(playerMovement.lastMoveDirection.normalized *
+                                       (dashDistance / dashDuration));
             CheckDashFinish();
         }
     }
@@ -61,6 +62,7 @@ public class PlayerDash : MonoBehaviour
         if (isDashFinished)
         {
             isDashing = false;
+            playerMovement.SetVelocity(Vector3.zero);
         }
     }
 }

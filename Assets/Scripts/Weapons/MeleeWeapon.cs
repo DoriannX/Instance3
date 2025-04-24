@@ -4,10 +4,10 @@ using UnityEngine;
 public class MeleeWeapon : Weapon
 {
     [Header("Melee Weapon Stats")]
+    [SerializeField] private LayerMask hitableLayer;
     [SerializeField] private LayerMask enemyLayer;
     private float attackRange;
 
-    public Transform playerTransform; // Used for gizmo drawing.
     public override void LoadData(WeaponData data)
     {
         base.LoadData(data);
@@ -27,7 +27,7 @@ public class MeleeWeapon : Weapon
         // Draw debug box visualization
         DrawDebugBox(boxCenter, boxSize, playerTransform.rotation, Color.red, 0.2f);
         
-        Collider[] hitColliders = Physics.OverlapBox(boxCenter, boxSize * 0.5f, playerTransform.rotation, enemyLayer);
+        Collider[] hitColliders = Physics.OverlapBox(boxCenter, boxSize * 0.5f, playerTransform.rotation, hitableLayer);
     
         if (hitColliders.Length <= 0)
             return;
@@ -36,7 +36,13 @@ public class MeleeWeapon : Weapon
         {
             if (hitCollider.TryGetComponent(out EntityHealth entityHealth))
             {
-                entityHealth.TakeDamage(damage);
+                entityHealth.TakeDamage(damage, transform);
+                Rigidbody enemyRb = hitCollider.GetComponent<Rigidbody>();
+                if (enemyRb != null)
+                {
+                    Vector3 forceDirection = (hitCollider.transform.position - playerTransform.position).normalized;
+                    enemyRb.AddForce(forceDirection * KnockbackForce, ForceMode.Impulse);
+                }
                 onWeaponUsed?.Invoke(0); 
                 Debug.Log("attack ");
                 
@@ -46,9 +52,15 @@ public class MeleeWeapon : Weapon
                     DrawDebugBox(hitCollider.bounds.center, hitCollider.bounds.size, hitCollider.transform.rotation, Color.green, 0.2f);
                 }
             }
+            if (hitCollider.TryGetComponent(out Bullet bullet))
+            {
+                bullet.ParryBullet();
+                bullet.SetLayer(enemyLayer);
+                onWeaponUsed?.Invoke(0);
+            }
         }
         // Play the weapon's attack SFX.
-        PlayAttackSFX();
+        SFXManager.instance.PlaySFX(attackSFX);
     }
     
     private void DrawDebugBox(Vector3 center, Vector3 size, Quaternion rotation, Color color, float duration = 0.2f)

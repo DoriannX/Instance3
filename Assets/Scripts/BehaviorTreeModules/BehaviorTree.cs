@@ -4,11 +4,12 @@ namespace BehaviorTreeModules
 {
     public abstract class BehaviorTree : MonoBehaviour
     {
-        private Node root;
+        protected Node root;
 
         protected void Start()
         {
             root = SetupTree();
+            
         }
 
         private void Update()
@@ -16,6 +17,6 @@ namespace BehaviorTreeModules
             root?.Evaluate();
         }
 
-        protected abstract Node SetupTree();
+        protected abstract Node SetupTree();     
     }
 }

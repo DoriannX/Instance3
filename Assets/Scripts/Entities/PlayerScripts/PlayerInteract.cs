@@ -1,4 +1,5 @@
 using UnityEngine;
+using Armory;
 
 public class PlayerInteract : MonoBehaviour
 {
@@ -8,28 +9,53 @@ public class PlayerInteract : MonoBehaviour
     private void Awake()
     {
         player = GetComponent<Player>();
-        playerTransform = GetComponent<Transform>();
+        playerTransform = transform;
     }
+
+    RaycastHit[] hits = new RaycastHit[5];
 
     public void Interact()
     {
-        RaycastHit hit;
+        Debug.Log("interact");
+        int hitCount = Physics.RaycastNonAlloc(playerTransform.position, playerTransform.forward, hits, 5f);
 
-        if (Physics.Raycast(playerTransform.position, playerTransform.forward, out hit, 5f))
+        if (hitCount <= 0)
         {
-            DoorSystem doorSystem = hit.collider.GetComponent<DoorSystem>();
+            Debug.DrawRay(playerTransform.position, playerTransform.forward * 5f, Color.red, 1f);
+            return;
+        }
+        foreach(RaycastHit hit in hits)
+        {
+            Debug.DrawRay(playerTransform.position, playerTransform.forward * hit.distance, Color.green, 1f);
 
+            Debug.Log(hit.collider.name);
+
+            // --- ArmoryTerminal takes priority ---
+            ArmoryTerminal armoryTerminal = hit.collider.GetComponentInParent<ArmoryTerminal>();
+            if (armoryTerminal != null)
+            {
+                Debug.Log("Interacting with ArmoryTerminal.");
+                armoryTerminal.TryOpen();
+                return;
+            }
+
+            // --- Door logic unchanged ---
+            DoorSystem doorSystem = hit.collider.GetComponentInParent<DoorSystem>();
             if (doorSystem != null)
             {
-                if (player.hasKey)
+                Debug.Log("Interacting with DoorSystem.");
+                if (Player.hasKey)
                 {
+                    Debug.Log("Player has a key. Opening the door.");
                     doorSystem.OpenDoor();
-                    player.hasKey = false;
+                    player.HasKey(false);
+                    SFXManager.instance.PlaySFX("DoorOpen");
                 }
                 else
                 {
-                    Debug.Log("You need a key to open this door.");
+                    Debug.Log("Player does not have a key. Cannot open the door.");
                 }
+                break;
             }
         }
     }

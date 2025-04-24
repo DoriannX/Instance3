@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8eac1d4fac5f7148aae332b27f3bbd8, type: 3}
   m_Name: Corridor
   m_EditorClassIdentifier: 
-  roomID: 0
-  roomName: 
+  roomID: 1
+  roomName: Corridor
   nbEnemy: 
   enemyType: []
-  roomPrefab: {fileID: 0}
-  zoomCameraData: 0
+  roomPrefab: {fileID: 431190158325701107, guid: 785d829f98949104b9a0b5291fbbbec3, type: 3}
+  zoomCameraData: 40

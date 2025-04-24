@@ -1,23 +1,32 @@
 using System;
+using System.Collections;
 using Pooling;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour, IPooledObject<Bullet>
 {
     [Header("References")]
+    [SerializeField] private float speed = 10f;
+    [SerializeField] private float parryWindow = 1f;
     private Transform bulletTransform;
     private Action<Bullet> releaseFunc;
+    private Transform shooterTransform;
+    private bool isParried;
+    private TrailRenderer bulletTrail;
+    private Rigidbody bulletRigidbody;
 
     [Header("Bullet Settings")]
-    private LayerMask hitLayerMask;
+    [SerializeField] private LayerMask hitLayerMask;
+    
     private int damage;
     private float lifeTime = 5f;
     [SerializeField] private float maxLifeTime = 5f;
-    [SerializeField] private float speed = 10f;
 
     private void Awake()
     {
         bulletTransform = GetComponent<Transform>();
+        bulletTrail = GetComponent<TrailRenderer>();
+        bulletRigidbody = GetComponent<Rigidbody>();
     }
 
     private void OnEnable()
@@ -25,15 +34,24 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
         lifeTime = maxLifeTime;
     }
 
+    private void OnDisable()
+    {
+        bulletTrail.Clear();
+    }
+
     private void Update()
     {
-        bulletTransform.position += bulletTransform.forward * (speed * Time.deltaTime);
+        bulletRigidbody.linearVelocity = bulletTransform.forward * (speed);
         LifeTime();
     }
 
     public void SetLayer(LayerMask layerMask)
     {
         hitLayerMask = layerMask;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
     }
 
     private void OnTriggerEnter(Collider other)
@@ -45,17 +63,18 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
         
         if (other.TryGetComponent(out EntityHealth entityHealth))
         {
-            entityHealth.TakeDamage(damage);
+            StartCoroutine(WaitForParry(entityHealth));
+            //entityHealth.TakeDamage(damage);
         }
         
-        if (releaseFunc == null)
+        /*if (releaseFunc == null)
         {
             Debug.LogError($"[Bullet] Release function not set on bullet {gameObject.name}");
             return;
         }
         Debug.Log(other.name);
         Debug.Log("hit bullet");
-        releaseFunc(this);
+        releaseFunc(this);*/
     }
     
     public void SetDamage(int damage)
@@ -78,7 +97,6 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
     {       
         if (lifeTime <= 0)
         {
-
             releaseFunc(this);
         }
         else
@@ -87,4 +105,46 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
         }
     }
 
+
+    public void SetShooterOrigin(Transform shooterOrigin)
+    {
+        shooterTransform = shooterOrigin;
+    }
+
+    public void ParryBullet()
+    {
+        if (shooterTransform.position == null)
+        {
+            transform.eulerAngles += 180f * Vector3.up;
+            isParried = true;
+            return;
+        }
+        transform.LookAt(shooterTransform.position);
+        isParried = true;
+    }
+
+    public void SetIsParried(bool value)
+    {
+        isParried = value;
+    }
+
+    IEnumerator WaitForParry(EntityHealth entityHealth)
+    {
+        yield return new WaitForSeconds(parryWindow);
+        if (isParried)
+        {
+            releaseFunc(this);
+            yield break;
+        }
+        entityHealth.TakeDamage(damage);
+        if (releaseFunc == null)
+        {
+            Debug.LogError($"[Bullet] Release function not set on bullet {gameObject.name}");
+            yield break;
+            //return;
+        }
+        //Debug.Log(other.name);
+        Debug.Log("hit bullet");
+        releaseFunc(this);
+    }
 }

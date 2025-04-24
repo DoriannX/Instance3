@@ -1,71 +1,58 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 public class PlayerFeedbackManager : MonoBehaviour
 {
-    private EntityHealth entityHealth;
-    private PlayerDash playerDash;
-
-    private DamageFlash damageFlash;
-    private DashGhostEffect dashGhost;
-    
-    private SFXManager sfxManager;
+    private EntityHealth     entityHealth;
+    private DamageFlash      damageFlash;
+    private PlayerDash       playerDash;
+    private DashGhostEffect  dashGhost;
+    private SFXManager       sfxManager;
 
     private void Awake()
     {
+        // Cache components
         entityHealth = GetComponent<EntityHealth>();
-        playerDash = GetComponent<PlayerDash>();
-        damageFlash = GetComponent<DamageFlash>();
-        dashGhost = GetComponent<DashGhostEffect>();
+        damageFlash  = GetComponent<DamageFlash>();
+        playerDash   = GetComponent<PlayerDash>();
+        dashGhost    = GetComponent<DashGhostEffect>();
+        sfxManager   = SFXManager.instance;
 
-        sfxManager = SFXManager.instance;
-
-        // Subscribe to health and dash events.
-        if(entityHealth != null)
+        // Subscribe health‐damage feedback
+        if (entityHealth != null)
             entityHealth.onHealthChanged += OnPlayerDamaged;
-        if(playerDash != null)
+
+        // Subscribe dash feedback
+        if (playerDash != null)
             playerDash.OnDash += OnPlayerDash;
     }
 
     private void OnDestroy()
     {
-        if(entityHealth != null)
-            entityHealth.onHealthChanged += OnPlayerDamaged;
-        if(playerDash != null)
+        // Unsubscribe everything
+        if (entityHealth != null)
+            entityHealth.onHealthChanged -= OnPlayerDamaged;
+
+        if (playerDash != null)
             playerDash.OnDash -= OnPlayerDash;
     }
 
     /// <summary>
     /// Called when the player takes damage.
     /// </summary>
-    /// <param name="damage">Damage amount.</param>
     private void OnPlayerDamaged(int lastHp, int newHp)
     {
-        sfxManager?.PlaySFX("Hit");
-        
-        if(damageFlash != null)
-        {
-            damageFlash.Flash();
-        }
-        
-        if (ScreenBorderFlash.Instance != null)
-        {
-            ScreenBorderFlash.Instance.FlashBorder();
-        }
+        sfxManager?.PlaySFX("PlayerTakeDamage");
+        damageFlash?.Flash();
+        ScreenBorderFlash.Instance?.FlashBorder();
     }
-    
+
+    /// <summary>
+    /// Called when the player dashes.
+    /// </summary>
     private void OnPlayerDash()
     {
         sfxManager?.PlaySFX("Dash");
-        
-        if(dashGhost != null)
-        {
-            dashGhost.TriggerGhost();
-        }
-        
-        if (ScreenBlinkEffect.Instance != null)
-        {
-            ScreenBlinkEffect.Instance.Blink();
-        }
+        dashGhost?.TriggerGhost();
+        ScreenBlinkEffect.Instance?.Blink();
     }
 }
