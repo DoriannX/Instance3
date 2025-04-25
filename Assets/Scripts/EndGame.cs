@@ -16,5 +16,6 @@ public class EndGame : MonoBehaviour
     public void EndMenu()
     {
         endMenuUI.SetActive(true);
+        Time.timeScale = 0; // Pause the game
     }
 }
