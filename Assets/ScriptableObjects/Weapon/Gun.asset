@@ -18,7 +18,7 @@ MonoBehaviour:
   mesh: {fileID: 4493585093827132993, guid: f3da54c9f1d679b47b02581d92ab8570, type: 3}
   damage: 12
   cooldown: 0.5
-  attackRange: 1
+  attackRange: 15
   attackSFX: GunShot
   knockbackForce: 0
   icon: {fileID: 21300000, guid: e24a83f8437379e44b7244e79467479d, type: 3}
