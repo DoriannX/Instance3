@@ -7,10 +7,12 @@ public class PlayerAnimationController : MonoBehaviour
 {
     [Header("Animator & Parameters")]
     [SerializeField] private Animator animator;
+    [SerializeField] private float movementThreshold = 0.1f;
     private static readonly int SpeedHash      = Animator.StringToHash("Speed");
     private static readonly int AttackHash     = Animator.StringToHash("Attack");
     private static readonly int IsDeadHash     = Animator.StringToHash("IsDead");
     private static readonly int WeaponTypeHash = Animator.StringToHash("WeaponType");
+    private static readonly int IsMoving = Animator.StringToHash("Moving");
 
     private Player        player;
     private EntityHealth  health;
@@ -47,10 +49,10 @@ public class PlayerAnimationController : MonoBehaviour
     {
         if (rb != null)
         {
-            // Normalized horizontal speed
             Vector3 horiz = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-            float norm = horiz.magnitude / Mathf.Max(1f, player.Speed);
-            animator.SetFloat(SpeedHash, norm);
+            float speed = Vector3.Dot(horiz, player.transform.forward);
+            animator.SetFloat(SpeedHash, speed);
+            animator.SetBool(IsMoving, Mathf.Abs(speed) > movementThreshold);
         }
     }
 

@@ -46,6 +46,7 @@ namespace Entities.Enemy.BehaviorTree
             selfTransform.rotation = Quaternion.Euler(lookAtRotation);
             
             weapon?.Attack(selfTransform);
+            
             lastAttackTime = Time.time;
             parent.parent.SetData(enableAttackKey, false);
             

@@ -12,7 +12,6 @@ public class RangeWeapon : Weapon
     private int ammoConsume;
     private float bulletSpread;
     private int ammoShoot;
-
     private ParticleSystem muzzleFlash;
 
     protected override void SetupWeapon()
