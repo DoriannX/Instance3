@@ -28,7 +28,7 @@ public class PlayerAnimationController : MonoBehaviour
         rb     = GetComponent<Rigidbody>();
 
         // Set initial weapon type based on currently equipped weapon
-        animator.SetFloat(WeaponTypeHash, WeaponToIndex(player.CurrentWeapon));
+        animator.SetInteger(WeaponTypeHash, WeaponToIndex(player.CurrentWeapon));
     }
 
     private void OnEnable()
@@ -58,7 +58,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void RefreshWeaponAnimation()
     {
-        animator.SetFloat(WeaponTypeHash, WeaponToIndex(player.CurrentWeapon));
+        animator.SetInteger(WeaponTypeHash, WeaponToIndex(player.CurrentWeapon));
     }
 
     private void OnAttackTriggered()
@@ -75,6 +75,7 @@ public class PlayerAnimationController : MonoBehaviour
     {
         // Convention: 0 = melee, 1 = ranged
         if (w is RangeWeapon) return 1;
+        if (w is MeleeWeapon) return 0;
         return 0;
     }
 }
