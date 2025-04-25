@@ -734,11 +734,6 @@ MonoBehaviour:
   fovAngle: 90
   maxEnemyDetection: 10
   chaseSpeed: 3.5
-  patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   patrolMovementType: 0
   patrolSpeed: 2
   patrolWaitTime: 1
@@ -804,7 +799,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df28b230e4746f590c6922bb95ea81c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <maxHp>k__BackingField: 30
+  <maxHp>k__BackingField: 50
   <Hp>k__BackingField: 0
 --- !u!114 &8335205185001847351
 MonoBehaviour:

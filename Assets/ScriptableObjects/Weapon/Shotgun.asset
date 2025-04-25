@@ -17,11 +17,11 @@ MonoBehaviour:
   description: Shoots 3 balls into cones
   mesh: {fileID: -2477511411847689622, guid: 4417dddc68b59b7499f3cd341717e2fc, type: 3}
   damage: 15
-  cooldown: 0.5
-  attackRange: 2
+  cooldown: 0.6
+  attackRange: 1
   attackSFX: Shotgun
   knockbackForce: 0
   icon: {fileID: 21300000, guid: 9715c26dce9b53c4b9d0e59a2f4c372f, type: 3}
-  bulletSpread: 45
+  bulletSpread: 10
   ammoConsume: 3
   ammoShoot: 4

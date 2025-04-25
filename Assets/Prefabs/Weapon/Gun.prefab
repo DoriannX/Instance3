@@ -105,7 +105,7 @@ MonoBehaviour:
   weaponData: {fileID: 11400000, guid: 58d03203e945edf4d9adaffee7667092, type: 2}
   hitLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
 --- !u!198 &6734125894956498478
 ParticleSystem:
   m_ObjectHideFlags: 0
