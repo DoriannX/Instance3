@@ -1,25 +1,28 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 public class HasKeyUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI keyStateText;
+    [SerializeField] private Image keyImage;
+    [SerializeField] private Sprite HasState, HasNotState;
 
     private void Awake()
     {
-        Assert.IsNotNull(keyStateText);
+        Assert.IsNotNull(keyImage);
     }
 
     private void Start()
     {
-        keyStateText.text = Player.hasKey.ToString();
+        //keyStateText.text = Player.hasKey.ToString();
+        keyImage.sprite = Player.hasKey ? HasState : HasNotState;
         Player.onKeyStateChanged += PlayerOnonKeyStateChanged;
     }
 
     private void PlayerOnonKeyStateChanged()
     {
-        keyStateText.text = Player.hasKey.ToString();
+        keyImage.sprite = Player.hasKey ? HasState : HasNotState;
     }
 
     private void OnDestroy()
