@@ -138,6 +138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4565850766331305841}
   - component: {fileID: 3124790456378312379}
+  - component: {fileID: 4801492999323130567}
   m_Layer: 6
   m_Name: RIG ELITE
   m_TagString: Untagged
@@ -172,10 +173,10 @@ Animator:
   m_GameObject: {fileID: 899869647136256284}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: b824c18e603a3054eb4c46f5151e5d85, type: 3}
-  m_Controller: {fileID: 9100000, guid: cc9418cb291b33948ac14316943db803, type: 2}
+  m_Controller: {fileID: 9100000, guid: b55381f160d4f5461ab9861291982238, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -184,6 +185,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4801492999323130567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899869647136256284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7d47768ff8c49cb9c291a942c0a5f29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveThreshold: 0.5
 --- !u!1 &1285989523150783432
 GameObject:
   m_ObjectHideFlags: 0

@@ -106,6 +106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7558444412510357142}
   - component: {fileID: 6123378158766744035}
+  - component: {fileID: 1012073515407890132}
   m_Layer: 6
   m_Name: RIG PRISONER
   m_TagString: Untagged
@@ -140,10 +141,10 @@ Animator:
   m_GameObject: {fileID: 218478384697979371}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: d955df7cc61bbf4419cf227c3dab3d03, type: 3}
-  m_Controller: {fileID: 9100000, guid: dbf98e70a5c23984ab519106b0d3ab22, type: 2}
+  m_Controller: {fileID: 9100000, guid: c5d9acc3951e561b9a58a5c8512f718c, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -152,6 +153,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1012073515407890132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218478384697979371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7d47768ff8c49cb9c291a942c0a5f29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &646991018334962953
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,7 +348,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1459076135239696350}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0006070328, y: 0.17115359, z: 0.022353582, w: 0.98499054}
+  m_LocalRotation: {x: 0.00060703285, y: 0.17115359, z: 0.022353584, w: 0.98499054}
   m_LocalPosition: {x: -0.0000000047683715, y: 0.28539485, z: -0.00000008791685}
   m_LocalScale: {x: 0.9999999, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -849,7 +862,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4276421841385234768}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.034538794, y: -0.00016716402, z: -0.0048786416, w: 0.99939144}
+  m_LocalRotation: {x: 0.034538798, y: -0.00016716402, z: -0.004878642, w: 0.99939144}
   m_LocalPosition: {x: -0.000000004012836, y: 0.41855037, z: 0.000000003173386}
   m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 1}
   m_ConstrainProportionsScale: 0

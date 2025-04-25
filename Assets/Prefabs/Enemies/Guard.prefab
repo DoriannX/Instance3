@@ -659,6 +659,8 @@ GameObject:
   - component: {fileID: 3386976702899972937}
   - component: {fileID: 5312517291373927200}
   - component: {fileID: 3405046701994034656}
+  - component: {fileID: 2982235690839921539}
+  - component: {fileID: 4895409766976285457}
   m_Layer: 6
   m_Name: Guard
   m_TagString: Untagged
@@ -733,11 +735,6 @@ MonoBehaviour:
   fovAngle: 90
   maxEnemyDetection: 10
   chaseSpeed: 3.5
-  patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   patrolMovementType: 0
   patrolSpeed: 2
   patrolWaitTime: 1
@@ -5675,6 +5672,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundDistance: 5
+--- !u!95 &2982235690839921539
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4505438167719402110}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4568a71f3485c7130bdb18890f448f5a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4895409766976285457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4505438167719402110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7d47768ff8c49cb9c291a942c0a5f29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveThreshold: 0.5
+  speed: 0
 --- !u!1 &4520287157609673067
 GameObject:
   m_ObjectHideFlags: 0
@@ -6198,6 +6231,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2104926760820417846}
   - component: {fileID: 8771482819722572307}
+  - component: {fileID: 385850998911142479}
   m_Layer: 6
   m_Name: rig GUARD 1
   m_TagString: Untagged
@@ -6232,10 +6266,10 @@ Animator:
   m_GameObject: {fileID: 7332298975883116955}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 334b952de4e015741b9739d82af6b4a8, type: 3}
-  m_Controller: {fileID: 9100000, guid: f3c9d8a1dc195414a959068963131dc2, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4568a71f3485c7130bdb18890f448f5a, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -6244,6 +6278,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &385850998911142479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7332298975883116955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7d47768ff8c49cb9c291a942c0a5f29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveThreshold: 1
+  speed: 0
 --- !u!1 &7338026329061330471
 GameObject:
   m_ObjectHideFlags: 0
