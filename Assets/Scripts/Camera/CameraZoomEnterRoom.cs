@@ -3,7 +3,7 @@ using UnityEngine.Assertions;
 
 public class CameraZoomEnterRoom : MonoBehaviour
 {
-    [SerializeField] private Camera mainCamera;
+    private Camera mainCamera;
     [SerializeField] private float smooth = 5f;
     [SerializeField] private LayerMask playerLayer;
     private Rooms rooms;
@@ -12,7 +12,8 @@ public class CameraZoomEnterRoom : MonoBehaviour
     private void Awake()
     {
         rooms = GetComponentInParent<Rooms>();
-        Assert.IsNotNull(mainCamera, "Main Camera component is not assigned.");
+        mainCamera = Camera.main;
+        Assert.IsNotNull(mainCamera, "Main camera not found");
     }
 
     private void Update()

@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 7114515551777537933}
   - component: {fileID: 5420258715367242094}
   - component: {fileID: 4943740825565376607}
-  - component: {fileID: 8636087622833863411}
+  - component: {fileID: 1276290631274817963}
   m_Layer: 10
   m_Name: elevatorExitVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &7114515551777537933
 Transform:
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 3803685579478083306}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.78, z: 0}
+  m_LocalPosition: {x: 0, y: 3.33, z: 0}
   m_LocalScale: {x: 2.4999998, y: 2.5, z: 2.4999998}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -87,8 +87,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8636087622833863411
-BoxCollider:
+--- !u!64 &1276290631274817963
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,12 +102,13 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.0000005, y: 3.0309377, z: 2.0000005}
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5495902117074765545, guid: 0d6e6230cf0de0ecf89d57039e50609b, type: 3}
 --- !u!1 &5069241928241297310
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,8 +162,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5.007996, y: 7.598511, z: 5.0248003}
-  m_Center: {x: -0.008402109, y: 3.8059099, z: 0.016804218}
+  m_Size: {x: 5.007996, y: 7.634969, z: 5.0248003}
+  m_Center: {x: -0.008402109, y: 3.350177, z: 0.016804218}
 --- !u!114 &1106448510650562896
 MonoBehaviour:
   m_ObjectHideFlags: 0

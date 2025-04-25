@@ -108,32 +108,30 @@ public class RangeWeapon : Weapon
             }
         }
 
+        Quaternion shootDirectionRotation = Quaternion.LookRotation(playerTransform.forward);
+        
         if (targetHit.HasValue)
         {
             Debug.Log($"Hit object: {targetHit.Value.collider.gameObject.name}");
-            bulletSpawner.transform.rotation =
-                Quaternion.LookRotation(targetHit.Value.collider.transform.position - bulletSpawner.transform.position);
+            shootDirectionRotation =
+                Quaternion.LookRotation(targetHit.Value.collider.transform.position - transform.position);
 
             Debug.DrawLine(ray.origin, targetHit.Value.collider.transform.position, Color.green, 0.2f);
             DrawCircle(targetHit.Value.collider.transform.position, sphereRadius, targetHit.Value.normal, Color.red,
                 0.2f);
         }
-        else
-        {
-            bulletSpawner.transform.localRotation = Quaternion.identity;
-        }
 
         for (int i = 0; i < ammoShoot; i++)
         {
             float spreadAngle = (ammoShoot > 1) ? (i - (ammoShoot - 1) / 2f) * bulletSpread : 0f;
-            Quaternion bulletRotation = bulletSpawner.transform.rotation * Quaternion.Euler(0, spreadAngle, 0);
+            Quaternion bulletRotation = shootDirectionRotation * Quaternion.Euler(0, spreadAngle, 0);
             Vector3 bulletSpawnPos = bulletSpawner.transform.position;
 
             Bullet bullet = bulletSpawner.SpawnBullet(damage, hitLayerMask, bulletSpawnPos, bulletRotation, transform);
 
-
             bullet.gameObject.SetActive(true);
         }
+
         onWeaponUsed?.Invoke(ammoConsume);
 
         // Play the weapon's attack SFX.

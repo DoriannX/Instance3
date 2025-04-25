@@ -17,10 +17,12 @@ public class Player : Entity
     [SerializeField] private float ammoMultiplier = 1.0f;
     [SerializeField] private float cooldownMultiplier = 1.0f;
     public static bool hasKey { get; private set; }
+    public static event Action onKeyStateChanged;
 
     public void HasKey(bool value)
     {
         hasKey = value;
+        onKeyStateChanged?.Invoke();
     }
 
     private void OnDestroy()

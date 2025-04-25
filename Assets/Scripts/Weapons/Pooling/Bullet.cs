@@ -50,10 +50,6 @@ public class Bullet : MonoBehaviour, IPooledObject<Bullet>
         hitLayerMask = layerMask;
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if ((hitLayerMask.value & (1 << other.gameObject.layer)) == 0)

@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f475bbb32094546acdeab42c344dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  room: {fileID: 0}
+  room: {fileID: 11400000, guid: 79cb4e53e47e7c543a60cf3748ff6d7a, type: 2}
   spawnTracker: 0
   roomTranstions: []
   <zoomCameraData>k__BackingField: 0
@@ -112,7 +112,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccd3d474bd10d16439b9620fcf45721c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
   smooth: 5
   playerLayer:
     serializedVersion: 2

@@ -39,7 +39,7 @@ namespace Entities.Enemy.BehaviorTree
         [SerializeField] private float chaseSpeed = 3.5f;
         
         [Header("Patrol")]
-        [SerializeField] private Transform[] patrolPoints;
+        private Transform[] patrolPoints;
         [SerializeField] private PatrolMovementType patrolMovementType;
         [SerializeField] private float patrolSpeed = 2f;
         [SerializeField] private float patrolWaitTime = 2f;
@@ -52,6 +52,14 @@ namespace Entities.Enemy.BehaviorTree
         
         private AttackMode attackMode;
         private Transform selfTransform;
+        
+        public void SetupPatrolPoints(Transform[] patrolPoints)
+        {
+            if (patrolPoints == null || patrolPoints.Length == 0)
+                throw new ArgumentNullException(nameof(patrolPoints), "Patrol points are null or empty.");
+
+            this.patrolPoints = patrolPoints.OrderBy(_ => Random.value).ToArray();
+        }
 
         protected override Node SetupTree()
         {
