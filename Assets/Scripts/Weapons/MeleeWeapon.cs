@@ -5,7 +5,6 @@ public class MeleeWeapon : Weapon
 {
     [Header("Melee Weapon Stats")]
     [SerializeField] private LayerMask hitableLayer;
-    [SerializeField] private LayerMask enemyLayer;
     private float attackRange;
 
     public override void LoadData(WeaponData data)
@@ -55,7 +54,7 @@ public class MeleeWeapon : Weapon
             if (hitCollider.TryGetComponent(out Bullet bullet))
             {
                 bullet.ParryBullet();
-                bullet.SetLayer(enemyLayer);
+                bullet.SetLayer(hitableLayer);
                 onWeaponUsed?.Invoke(0);
             }
         }
